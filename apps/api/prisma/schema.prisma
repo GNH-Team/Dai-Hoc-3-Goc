@@ -1,0 +1,37 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+/// @@allow('create,read', true)
+/// @@allow('all', auth() == this)
+model User {
+  id    Int    @id @default(autoincrement())
+  name  String
+  posts Post[]
+}
+
+/// @@allow('all', auth() == author)
+/// @@allow('read', published)
+model Post {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  title     String
+  published Boolean  @default(false)
+  authorId  Int?
+  author    User?    @relation(fields: [authorId], references: [id])
+
+  @@index([authorId], map: "Post_authorId_fkey")
+}
+
+model xxx {
+  id   Int    @id @default(autoincrement())
+  name String
+  age Int @default(0)
+  sex Int @default(0)
+}

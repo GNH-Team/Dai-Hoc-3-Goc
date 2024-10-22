@@ -1,19 +1,12 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
+**/node_modules
 node_modules
 dist
 .pnp
 .pnp.js
-
-# testing
-coverage
-
-# build outputs
-.nuxt/
-.output/
-out/
-build
+*.zip
 
 # misc
 .DS_Store
@@ -31,8 +24,22 @@ yarn-error.log*
 .env.test.local
 .env.production.local
 
-# turbo
-.turbo
+wp-content/uploads
+wp-content/upgrade
 
-# vercel
-.vercel
+wp-content/debug.log
+**/plugins/elementor
+**/plugins/header-footer-elementor
+**/plugins/image-optimization
+**/plugins/mailchimp-for-wp
+**/plugins/loco-translate
+**/plugins/user-role-editor
+**/plugins/elementor-pro
+
+twentytwentyfour
+wp-admin
+wp-includes
+
+wp-content/languages/plugins/*.json
+wp-content/languages/plugins/*-backup-*
+wp-content/languages/*.json
