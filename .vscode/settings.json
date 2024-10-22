@@ -1,9 +1,12 @@
 {
-    "prettier.requireConfig": true,
-    "files.eol": "\n",
-    // "explorer.excludeGitIgnore": true
-    // "explorer.excludeGitIgnore": true,
-    "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": "explicit"
+  "prettier.requireConfig": true,
+  "files.eol": "\n",
+  // "explorer.excludeGitIgnore": true
+  // "explorer.excludeGitIgnore": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
   },
+  "[php]": {
+    "editor.formatOnSave": false
+  }
 }
