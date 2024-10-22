@@ -1,0 +1,8 @@
+.stm_lms_single_bundle_card__rating, 
+.stm_lms_instructor_courses__single__inner .stm_lms_instructor_courses__single--meta,
+.masterstudy-popular-courses__item .masterstudy-popular-courses__rating,
+.masterstudy-popular-courses__item .masterstudy-popular-courses__instructor ,
+.masterstudy-related-courses__item .masterstudy-related-courses__instructor,
+.masterstudy-related-courses__item .masterstudy-related-courses__rating {
+    display: none!important;
+}

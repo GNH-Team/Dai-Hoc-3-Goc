@@ -1,0 +1,919 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: eRoom - Zoom Meetings & Webinar\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-04-13 09:38+0000\n"
+"PO-Revision-Date: 2024-10-06 16:09+0000\n"
+"Last-Translator: \n"
+"Language-Team: Vietnamese (Viet Nam)\n"
+"Language: vi_VN\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.6.11; wp-6.6.2\n"
+"X-Domain: eroom-zoom-meetings-webinar"
+
+#: zoom-conference/StmZoomAdminMenus.php:171
+msgid " in easy steps by running the migration wizard."
+msgstr "theo các bước đơn giản bằng cách chạy trình hướng dẫn di chuyển."
+
+#: zoom-conference/StmZoomAdminMenus.php:148
+#: zoom-conference/StmZoomAdminMenus.php:162
+msgid ""
+" to generate API values from Zoom App Marketplace using your Zoom account."
+msgstr ""
+"để tạo giá trị API từ Zoom App Marketplace bằng tài khoản Zoom của bạn."
+
+#: admin_templates/go_pro.php:158 admin_templates/go_pro.php:159
+msgid "1 year"
+msgstr "1 năm"
+
+#: admin_templates/add_users.php:73
+msgid ""
+"<b>Create</b> - User will get an email sent from Zoom. There is a "
+"confirmation link in this email. The user will then need to use the link to "
+"activate their Zoom account. The user can then set or change their password."
+"<br>\n"
+"\t\t\t\t\t\t\t\t<b>Auto Create</b> - This action is provided for the "
+"enterprise customer who has a managed domain. This feature is disabled by "
+"default because of the security risk involved in creating a user who does "
+"not belong to your domain.<br>\n"
+"\t\t\t\t\t\t\t\t<b>Cust Create</b> - Users created via this option do not "
+"have passwords and will not have the ability to log into the Zoom Web Portal "
+"or the Zoom Client. To use this option, you must contact the ISV Platform "
+"Sales team at isv@zoom.us.<br>\n"
+"\t\t\t\t\t\t\t\t<b>SSO Create</b> - This action is provided for the enabled "
+"“Pre-provisioning SSO User” option. A user created in this way has no "
+"password. If not a basic user, a personal vanity URL using the user name (no "
+"domain) of the provisioning email will be generated. If the user name or PMI "
+"is invalid or occupied, it will use a random number or random personal "
+"vanity URL."
+msgstr ""
+"<b>Tạo</b> - Người dùng sẽ nhận được email được gửi từ Zoom. Có một liên kết "
+"xác nhận trong email này. Sau đó, người dùng sẽ cần sử dụng liên kết để kích "
+"hoạt tài khoản Zoom của họ. Sau đó, người dùng có thể đặt hoặc thay đổi mật "
+"khẩu của họ.<br>\n"
+"<b>Tự động tạo</b> - Hành động này được cung cấp cho khách hàng doanh nghiệp "
+"có tên miền được quản lý. Tính năng này bị tắt theo mặc định vì rủi ro bảo "
+"mật liên quan đến việc tạo người dùng không thuộc tên miền của bạn.<br>\n"
+"<b>Tạo tùy chỉnh</b> - Người dùng được tạo thông qua tùy chọn này không có "
+"mật khẩu và sẽ không có khả năng đăng nhập vào Cổng thông tin web Zoom hoặc "
+"Máy khách Zoom. Để sử dụng tùy chọn này, bạn phải liên hệ với nhóm Bán hàng "
+"nền tảng ISV theo địa chỉ isv@zoom.us.<br>\n"
+"<b>Tạo SSO</b> - Hành động này được cung cấp cho tùy chọn \"Người dùng SSO "
+"trước khi cung cấp\" được bật. Người dùng được tạo theo cách này không có "
+"mật khẩu. Nếu không phải là người dùng cơ bản, URL tùy chỉnh cá nhân sử dụng "
+"tên người dùng (không có tên miền) của email cung cấp sẽ được tạo. Nếu tên "
+"người dùng hoặc PMI không hợp lệ hoặc đã có người sử dụng, hệ thống sẽ sử "
+"dụng một số ngẫu nhiên hoặc URL tùy chỉnh cá nhân ngẫu nhiên."
+
+#: zoom-conference/StmZoomAdminMenus.php:140
+msgid "Account ID"
+msgstr "ID tài khoản"
+
+#: admin_templates/add_users.php:63
+msgid "Action (Required)"
+msgstr "Hành động (Bắt buộc)"
+
+#: zoom-conference/StmZoomPostTypes.php:90
+#: zoom-conference/StmZoomPostTypes.php:91
+#: zoom-conference/StmZoomPostTypes.php:115
+#: zoom-conference/StmZoomPostTypes.php:116
+msgid "Add new"
+msgstr "Thêm mới"
+
+#: zoom-conference/StmZoom.php:450
+msgid "Add to:"
+msgstr "Thêm vào:"
+
+#: admin_templates/add_users.php:54
+msgid "Add User"
+msgstr "Thêm người dùng"
+
+#: zoom-conference/StmZoomAdminMenus.php:73
+msgid "Add user"
+msgstr "Thêm người dùng"
+
+#: zoom-conference/StmZoomPostTypes.php:242
+#: zoom-conference/StmZoomPostTypes.php:319
+msgid "Allow participants to join anytime"
+msgstr "Cho phép người tham gia tham gia bất cứ lúc nào"
+
+#: zoom-conference/StmZoomPostTypes.php:267
+#: zoom-conference/StmZoomPostTypes.php:339
+msgid "Alternative hosts"
+msgstr "Máy chủ thay thế"
+
+#: admin_templates/go_pro.php:118
+msgid "Annual"
+msgstr "Hàng năm"
+
+#: zoom-conference/StmZoomAdminMenus.php:160
+msgid "API key"
+msgstr "Khóa API"
+
+#: zoom-conference/StmZoomAdminMenus.php:166
+msgid "API Secret"
+msgstr "Bí mật API"
+
+#. %s: string, number
+#: zoom-conference/StmZoomPostTypes.php:450
+#, php-format
+msgid "Appointment #%1$s - %2$s"
+msgstr "Cuộc hẹn #%1$s - %2$s"
+
+#: zoom-conference/StmZoomPostTypes.php:185
+#: zoom-conference/StmZoomPostTypes.php:194
+msgid "Approved Or Denied countries"
+msgstr "Các quốc gia được chấp thuận hoặc bị từ chối"
+
+#: zoom-conference/StmZoomAdminMenus.php:83
+msgid "Assign host id"
+msgstr "Chỉ định ID máy chủ"
+
+#: admin_templates/assign_host.php:14
+msgid "Assign Zoom host id to WordPress users"
+msgstr "Gán ID máy chủ Zoom cho người dùng WordPress"
+
+#: zoom-conference/StmZoomAdminMenus.php:213
+msgid "Auto-generation of the password for meeting/webinar if left empty"
+msgstr "Tự động tạo mật khẩu cho cuộc họp/hội thảo trên web nếu để trống"
+
+#: zoom-conference/StmZoomAdminMenus.php:230
+msgid "Bookit Appointment Integration"
+msgstr "Tích hợp đặt lịch hẹn Bookit"
+
+#: admin_templates/migration/migration.php:43
+msgid "Check and Save Credentials"
+msgstr "Kiểm tra và lưu thông tin xác thực"
+
+#: zoom-conference/StmZoomAdminMenus.php:146
+#: zoom-conference/StmZoomAdminMenus.php:199
+msgid "Client ID"
+msgstr "Mã khách hàng"
+
+#: zoom-conference/StmZoomAdminMenus.php:152
+#: zoom-conference/StmZoomAdminMenus.php:205
+msgid "Client Secret"
+msgstr "Bí mật của khách hàng"
+
+#: vc/main.php:12 vc/main.php:30 vc/main.php:84
+#: elementor/widgets/stm_zoom_webinar.php:84
+#: elementor/widgets/stm_zoom_meeting.php:84
+#: elementor/widgets/stm_zoom_meetings_grid.php:83
+msgid "Content"
+msgstr "Nội dung"
+
+#: vc/main.php:45 elementor/widgets/stm_zoom_meetings_grid.php:126
+msgid "Count of meetings"
+msgstr "Số lượng cuộc họp"
+
+#: admin_templates/users.php:46
+msgid "Created on"
+msgstr "Được tạo ra vào"
+
+#. %s: string, number
+#: zoom-conference/StmZoomPostTypes.php:458
+#, php-format
+msgid "Customer: %1$s, %2$s, %3$s. Payment via %4$s: %5$s"
+msgstr "Khách hàng: %1$s, %2$s, %3$s. Thanh toán qua %4$s: %5$s"
+
+#: admin_templates/reports.php:47
+msgid "Date"
+msgstr "Ngày"
+
+#: zoom-conference/StmZoom.php:60
+msgid "Days"
+msgstr "Ngày"
+
+#: admin_templates/users.php:36
+msgid "Delete cache"
+msgstr "Xóa bộ nhớ đệm"
+
+#: zoom-conference/StmZoomPostTypes.php:204
+msgid "Denied countries"
+msgstr "Các quốc gia bị từ chối"
+
+#: admin_templates/go_pro.php:37
+msgid "Developer Oriented"
+msgstr "Hướng đến nhà phát triển"
+
+#: zoom-conference/StmZoomPostTypes.php:92
+msgid "Edit meeting"
+msgstr "Chỉnh sửa cuộc họp"
+
+#: zoom-conference/StmZoomPostTypes.php:117
+msgid "Edit webinar"
+msgstr "Chỉnh sửa hội thảo trên web"
+
+#: admin_templates/users.php:43 admin_templates/assign_host.php:26
+#: templates/single/meeting_view.php:123
+msgid "Email"
+msgstr "E-mail"
+
+#: admin_templates/add_users.php:86
+msgid "Email (required)"
+msgstr "Email (bắt buộc)"
+
+#: admin_templates/reports.php:5
+msgid "Enter month e.g. 03"
+msgstr "Nhập tháng ví dụ 03"
+
+#: admin_templates/reports.php:7
+msgid "Enter year e.g. 2020"
+msgstr "Nhập năm ví dụ: 2020"
+
+#: admin_templates/go_pro.php:100
+msgid "eRoom - WordPress and Zoom Integration"
+msgstr "eRoom - Tích hợp WordPress và Zoom"
+
+#. Name of the plugin
+msgid "eRoom - Zoom Meetings & Webinars"
+msgstr "eRoom - Cuộc họp Zoom & Hội thảo trên web"
+
+#. Description of the plugin
+msgid ""
+"eRoom Zoom Meetings & Webinars WordPress Plugin provides you with great "
+"functionality of managing Zoom meetings, scheduling options, and users "
+"directly from your WordPress dashboard."
+msgstr ""
+"Plugin WordPress eRoom Zoom Meetings & Webinars cung cấp cho bạn chức năng "
+"tuyệt vời để quản lý các cuộc họp Zoom, tùy chọn lên lịch và người dùng trực "
+"tiếp từ bảng điều khiển WordPress của bạn."
+
+#: admin_templates/add_users.php:43
+msgid "Error"
+msgstr "Lỗi"
+
+#: admin_templates/notices/top_bar.php:10
+msgid "Feedback"
+msgstr "Nhận xét"
+
+#: admin_templates/add_users.php:91
+msgid "First Name"
+msgstr "Tên đầu tiên"
+
+#: admin_templates/migration/migration.php:23
+msgid "Follow the documentation "
+msgstr "Thực hiện theo tài liệu"
+
+#: admin_templates/notices/required_fields.php:15
+#: admin_templates/notices/required_fields.php:29
+msgid "for more details, It is recommended to run the"
+msgstr "để biết thêm chi tiết, bạn nên chạy"
+
+#: admin_templates/go_pro.php:163
+msgid ""
+"from the date of purchase. We offer 30 days Money Back Guarantee based on"
+msgstr ""
+"kể từ ngày mua. Chúng tôi cung cấp Bảo đảm hoàn tiền trong 30 ngày dựa trên"
+
+#: zoom-conference/StmZoom.php:417
+msgid "From:"
+msgstr "Từ:"
+
+#: zoom-conference/StmZoomAdminMenus.php:211
+msgid "Generate password"
+msgstr "Tạo mật khẩu"
+
+#: admin_templates/go_pro.php:147
+msgid "Get now"
+msgstr "Nhận ngay bây giờ"
+
+#: zoom-conference/StmZoom.php:451
+msgid "Google Calendar"
+msgstr "Lịch Google"
+
+#: templates/single/meeting_view.php:16
+msgid "Guest"
+msgstr "Khách mời"
+
+#: zoom-conference/StmZoomAdminMenus.php:148
+#: zoom-conference/StmZoomAdminMenus.php:162
+#: zoom-conference/StmZoomAdminMenus.php:201
+msgid "guide"
+msgstr "hướng dẫn"
+
+#. %s: string
+#: zoom-conference/StmZoomPostTypes.php:565
+#, php-format
+msgid "Hello, new meeting will begin at: %1$s, %2$s"
+msgstr "Xin chào, cuộc họp mới sẽ bắt đầu lúc: %1$s, %2$s"
+
+#. %s: string, number
+#: zoom-conference/StmZoomPostTypes.php:555
+#, php-format
+msgid "Hello, your meeting will begin at: %1$s, %2$s"
+msgstr "Xin chào, cuộc họp của bạn sẽ bắt đầu lúc: %1$s, %2$s"
+
+#: admin_templates/migration/migration.php:23
+msgid "Here"
+msgstr "Đây"
+
+#: admin_templates/users.php:42 admin_templates/assign_host.php:28
+msgid "Host ID"
+msgstr "ID máy chủ"
+
+#: zoom-conference/StmZoomPostTypes.php:250
+#: zoom-conference/StmZoomPostTypes.php:327
+msgid "Host video"
+msgstr "Video lưu trữ"
+
+#: zoom-conference/StmZoom.php:61
+msgid "Hours"
+msgstr "Giờ"
+
+#. Author URI of the plugin
+msgid "https://stylemixthemes.com/"
+msgstr "https://stylemixthemes.com/"
+
+#. URI of the plugin
+msgid "https://wordpress.org/plugins/zoom-video-conference/"
+msgstr "https://wordpress.org/plugins/zoom-video-conference/"
+
+#: zoom-conference/StmZoom.php:454
+msgid "iCal Export"
+msgstr "Xuất iCal"
+
+#: admin_templates/notices/required_fields.php:15
+#: admin_templates/notices/required_fields.php:29
+msgid ""
+"in easy steps to smooth the transition to the new Server to Server OAuth "
+"system."
+msgstr ""
+"theo các bước đơn giản để chuyển đổi dễ dàng sang hệ thống OAuth Máy chủ tới "
+"Máy chủ mới."
+
+#: admin_templates/notices/required_fields.php:8
+msgid "Join In Browser"
+msgstr "Tham gia trong trình duyệt"
+
+#: zoom-conference/StmZoom.php:465
+msgid "Join in browser"
+msgstr "Tham gia trong trình duyệt"
+
+#: zoom-conference/StmZoom.php:468
+msgid "Join in zoom app"
+msgstr "Tham gia ứng dụng zoom"
+
+#: zoom-conference/StmZoomAdminMenus.php:157
+msgid "JWT (JSON WEB TOKEN)  credentials"
+msgstr "Thông tin xác thực JWT (JSON WEB TOKEN)"
+
+#: admin_templates/notices/required_fields.php:15
+#: admin_templates/notices/required_fields.php:29
+msgid "JWT App Type Depreciation FAQ"
+msgstr "Câu hỏi thường gặp về khấu hao loại ứng dụng JWT"
+
+#: admin_templates/users.php:48
+msgid "Last Client"
+msgstr "Khách hàng cuối cùng"
+
+#: admin_templates/users.php:47
+msgid "Last login"
+msgstr "Đăng nhập lần cuối"
+
+#: admin_templates/add_users.php:96
+msgid "Last Name"
+msgstr "Họ"
+
+#: admin_templates/users.php:45
+msgid "Last name"
+msgstr "Họ"
+
+#: admin_templates/go_pro.php:184
+msgid "Last Update:"
+msgstr "Cập nhật lần cuối:"
+
+#: admin_templates/go_pro.php:109
+msgid "Learn more."
+msgstr "Tìm hiểu thêm."
+
+#: admin_templates/go_pro.php:123 admin_templates/go_pro.php:158
+msgid "Lifetime"
+msgstr "Trọn đời"
+
+#: templates/single/meeting_view.php:139
+msgid "Login"
+msgstr "Đăng nhập"
+
+#: zoom-conference/StmZoomAdminMenus.php:135
+msgid "Main settings"
+msgstr "Cài đặt chính"
+
+#: zoom-conference/StmZoomPostTypes.php:89 vc/main.php:17
+#: elementor/widgets/stm_zoom_meeting.php:92
+msgid "Meeting"
+msgstr "Cuộc họp"
+
+#: zoom-conference/StmZoomPostTypes.php:176
+msgid "Meeting agenda"
+msgstr "Chương trình họp"
+
+#: zoom-conference/StmZoom.php:438 zoom-conference/StmZoomPostTypes.php:214
+msgid "Meeting date"
+msgstr "Ngày họp"
+
+#: zoom-conference/StmZoomPostTypes.php:228
+msgid "Meeting duration (in min)"
+msgstr "Thời lượng cuộc họp (tính bằng phút)"
+
+#: zoom-conference/StmZoomPostTypes.php:180
+msgid "Meeting host"
+msgstr "Người chủ trì cuộc họp"
+
+#: admin_templates/reports.php:51
+msgid "Meeting Minutes"
+msgstr "Biên bản cuộc họp"
+
+#. %s: string
+#: zoom-conference/StmZoomPostTypes.php:562
+#: zoom-conference/StmZoomPostTypes.php:572
+#, php-format
+msgid "Meeting Notification: %s"
+msgstr "Thông báo cuộc họp: %s"
+
+#: zoom-conference/StmZoomPostTypes.php:232
+msgid "Meeting password"
+msgstr "Mật khẩu cuộc họp"
+
+#. %s: string
+#: zoom-conference/StmZoomPostTypes.php:568
+#, php-format
+msgid "Meeting password: %s"
+msgstr "Mật khẩu cuộc họp: %s"
+
+#: zoom-conference/StmZoom.php:430
+msgid "Meeting recurrence:"
+msgstr "Cuộc họp tái diễn:"
+
+#: admin_templates/notices/required_fields.php:8
+msgid "Meeting SDK"
+msgstr "SDK họp"
+
+#: zoom-conference/StmZoomAdminMenus.php:196
+msgid "Meeting SDK credentials"
+msgstr "Thông tin xác thực của SDK cuộc họp"
+
+#: zoom-conference/StmZoomPostTypes.php:172
+msgid "Meeting settings"
+msgstr "Cài đặt cuộc họp"
+
+#: zoom-conference/StmZoomPostTypes.php:375
+msgid "Meeting shortcode"
+msgstr "Mã ngắn cuộc họp"
+
+#: zoom-conference/StmZoom.php:347
+msgid "Meeting starts in"
+msgstr "Cuộc họp bắt đầu vào"
+
+#: zoom-conference/StmZoomPostTypes.php:218
+msgid "Meeting time"
+msgstr "Thời gian họp"
+
+#: zoom-conference/StmZoomPostTypes.php:222
+msgid "Meeting timezone"
+msgstr "Múi giờ họp"
+
+#: vc/main.php:67 elementor/widgets/stm_zoom_meetings_grid.php:91
+msgid "Meeting type"
+msgstr "Loại cuộc họp"
+
+#: zoom-conference/StmZoomPostTypes.php:566
+msgid "Meeting url: "
+msgstr "Đường dẫn cuộc họp:"
+
+#: zoom-conference/StmZoomAdminMenus.php:232
+msgid "Meeting will be created when someone books an Appointment"
+msgstr "Cuộc họp sẽ được tạo khi ai đó đặt lịch hẹn"
+
+#: zoom-conference/StmZoomPostTypes.php:88
+#: zoom-conference/StmZoomPostTypes.php:98 admin_templates/reports.php:49
+#: vc/main.php:71 elementor/widgets/stm_zoom_meetings_grid.php:96
+msgid "Meetings"
+msgstr "Cuộc họp"
+
+#: vc/main.php:51 elementor/widgets/stm_zoom_meetings_grid.php:108
+msgid "Meetings per row"
+msgstr "Cuộc họp theo hàng"
+
+#: admin_templates/migration/migration.php:16
+msgid "Migrate from JWT to Server to Server Oauth in easy steps"
+msgstr "Di chuyển từ JWT sang Server tới Server Oauth theo các bước dễ dàng"
+
+#: zoom-conference/StmZoomAdminMenus.php:175
+#: admin_templates/migration/migration.php:15
+msgid "Migration Wizard"
+msgstr "Trình hướng dẫn di chuyển"
+
+#: admin_templates/notices/required_fields.php:15
+#: admin_templates/notices/required_fields.php:29
+msgid "migration wizard"
+msgstr "thuật sĩ di chuyển"
+
+#: zoom-conference/StmZoom.php:62
+msgid "Minutes"
+msgstr "Phút"
+
+#: admin_templates/go_pro.php:32
+msgid "Most Popular"
+msgstr "Phổ biến nhất"
+
+#: zoom-conference/StmZoomPostTypes.php:258
+#: zoom-conference/StmZoomPostTypes.php:335
+msgid "Mute participants upon entry"
+msgstr "Tắt tiếng người tham gia khi nhập"
+
+#: admin_templates/users.php:44 templates/single/meeting_view.php:121
+msgid "Name"
+msgstr "Tên"
+
+#: zoom-conference/StmZoomPostTypes.php:93
+msgid "New meeting"
+msgstr "Cuộc họp mới"
+
+#: admin_templates/reports.php:48
+msgid "New Users"
+msgstr "Người dùng mới"
+
+#: zoom-conference/StmZoomPostTypes.php:118
+msgid "New webinar"
+msgstr "Hội thảo trực tuyến mới"
+
+#: zoom-conference/StmZoom.php:412
+msgid "No fixed time"
+msgstr "Không có thời gian cố định"
+
+#: zoom-conference/StmZoomPostTypes.php:96
+#: zoom-conference/StmZoomPostTypes.php:97
+#: zoom-conference/StmZoomPostTypes.php:121
+#: zoom-conference/StmZoomPostTypes.php:122
+msgid "Not found"
+msgstr "Không tìm thấy"
+
+#: admin_templates/migration/migration.php:23
+msgid "on how to generate Server to Server Oauth Credentials."
+msgstr "về cách tạo thông tin xác thực Oauth từ máy chủ đến máy chủ."
+
+#: zoom-conference/StmZoomPostTypes.php:263
+msgid ""
+"Only authenticated users can join meetings. This setting works only for Zoom "
+"accounts with Pro license or higher"
+msgstr ""
+"Chỉ những người dùng đã xác thực mới có thể tham gia cuộc họp. Cài đặt này "
+"chỉ hoạt động đối với tài khoản Zoom có giấy phép Pro hoặc cao hơn"
+
+#: zoom-conference/StmZoomPostTypes.php:238
+#: zoom-conference/StmZoomPostTypes.php:315
+msgid "Only users admitted by the host can join the meeting"
+msgstr ""
+"Chỉ những người dùng được chủ nhà cho phép mới có thể tham gia cuộc họp"
+
+#: zoom-conference/StmZoomPostTypes.php:233
+msgid "Only users who have the invite link or passcode can join the meeting"
+msgstr ""
+"Chỉ những người dùng có liên kết mời hoặc mật mã mới có thể tham gia cuộc họp"
+
+#: zoom-conference/StmZoomPostTypes.php:310
+msgid "Only users who have the invite link or passcode can join the webinar"
+msgstr ""
+"Chỉ những người dùng có liên kết mời hoặc mật mã mới có thể tham gia hội "
+"thảo trên web"
+
+#: admin_templates/reports.php:50
+msgid "Participants"
+msgstr "Người tham gia"
+
+#: zoom-conference/StmZoomPostTypes.php:254
+#: zoom-conference/StmZoomPostTypes.php:331
+msgid "Participants video"
+msgstr "Video của người tham gia"
+
+#: zoom-conference/StmZoom.php:460
+msgid "Password: "
+msgstr "Mật khẩu: "
+
+#: admin_templates/go_pro.php:139
+msgid "per year"
+msgstr "mỗi năm"
+
+#: admin_templates/notices/required_fields.php:8
+msgid "Please add"
+msgstr "Xin vui lòng thêm"
+
+#: admin_templates/migration/migration.php:18
+msgid "Please check your credentials"
+msgstr "Vui lòng kiểm tra thông tin của bạn"
+
+#: admin_templates/notices/required_fields.php:20
+msgid "Please complete all OAuth fields"
+msgstr "Vui lòng hoàn thành tất cả các trường OAuth"
+
+#: zoom-conference/StmZoomAdminMenus.php:162
+msgid "Please follow this"
+msgstr "Xin hãy làm theo điều này"
+
+#: zoom-conference/StmZoomAdminMenus.php:148
+msgid "Please follow this "
+msgstr "Xin hãy làm theo điều này"
+
+#: zoom-conference/StmZoomPostTypes.php:149
+#: zoom-conference/StmZoomPostTypes.php:155
+msgid "Post settings"
+msgstr "Cài đặt bài đăng"
+
+#: admin_templates/go_pro.php:116
+msgid "Pricing"
+msgstr "Giá cả"
+
+#: vc/main.php:70 elementor/widgets/stm_zoom_meetings_grid.php:95
+msgid "Products"
+msgstr "Các sản phẩm"
+
+#: admin_templates/add_users.php:18
+msgid "Provide API key & API secret key to crete new user"
+msgstr "Cung cấp khóa API và khóa bí mật API để tạo người dùng mới"
+
+#: admin_templates/go_pro.php:165
+msgid "Refund Policy."
+msgstr "Chính sách hoàn tiền."
+
+#: zoom-conference/StmZoomAdminMenus.php:78 admin_templates/reports.php:2
+msgid "Reports"
+msgstr "Báo cáo"
+
+#: zoom-conference/StmZoomPostTypes.php:262
+msgid "Require authentication to join: Sign in to Zoom"
+msgstr "Yêu cầu xác thực để tham gia: Đăng nhập vào Zoom"
+
+#: admin_templates/add_users.php:110
+msgid "Save"
+msgstr "Cứu"
+
+#: zoom-conference/StmZoomPostTypes.php:95
+msgid "Search meeting"
+msgstr "Tìm kiếm cuộc họp"
+
+#: zoom-conference/StmZoomPostTypes.php:120
+msgid "Search webinar"
+msgstr "Tìm kiếm hội thảo trên web"
+
+#: zoom-conference/StmZoom.php:63
+msgid "Seconds"
+msgstr "Giây"
+
+#: zoom-conference/StmZoomAdminMenus.php:139
+msgid "Server to Server Oauth Credentials"
+msgstr "Thông tin xác thực Oauth từ máy chủ đến máy chủ"
+
+#: admin_templates/migration/migration.php:29
+msgid "Server-to-Server OAuth Account ID"
+msgstr "ID tài khoản OAuth máy chủ đến máy chủ"
+
+#: admin_templates/migration/migration.php:33
+msgid "Server-to-Server OAuth Client ID"
+msgstr "ID máy khách OAuth từ máy chủ đến máy chủ"
+
+#: admin_templates/migration/migration.php:37
+msgid "Server-to-Server OAuth Client Secret"
+msgstr "Bí mật máy khách OAuth từ máy chủ đến máy chủ"
+
+#: zoom-conference/StmZoomAdminMenus.php:291
+msgid "Settings"
+msgstr "Cài đặt"
+
+#: zoom-conference/StmZoomAdminMenus.php:218
+msgid "Shortcodes"
+msgstr "Mã ngắn"
+
+#: admin_templates/reports.php:10
+msgid "Show"
+msgstr "Trình diễn"
+
+#: admin_templates/go_pro.php:25
+msgid "Single Site"
+msgstr "Trang web đơn lẻ"
+
+#: admin_templates/users.php:49
+msgid "Status"
+msgstr "Trạng thái"
+
+#. Author of the plugin
+msgid "StylemixThemes"
+msgstr "Phong cách mixThemes"
+
+#: admin_templates/go_pro.php:200
+msgid "Tested up to:"
+msgstr "Đã thử nghiệm tới:"
+
+#: admin_templates/notices/required_fields.php:8
+msgid "to integrate Zoom Client functionalities and make"
+msgstr "để tích hợp các chức năng của Zoom Client và thực hiện"
+
+#: zoom-conference/StmZoomAdminMenus.php:201
+msgid "To make Join in Browser option work please generate API following this"
+msgstr ""
+"Để tùy chọn Tham gia trong Trình duyệt hoạt động, vui lòng tạo API theo sau"
+
+#: admin_templates/reports.php:34
+msgid "To view the following reports and other advanced features, upgrade to"
+msgstr ""
+"Để xem các báo cáo sau và các tính năng nâng cao khác, hãy nâng cấp lên"
+
+#: zoom-conference/StmZoom.php:423
+msgid "To:"
+msgstr "ĐẾN:"
+
+#: admin_templates/go_pro.php:36
+msgid "Up to 25 Sites"
+msgstr "Lên đến 25 trang web"
+
+#: admin_templates/go_pro.php:31
+msgid "Up to 5 Sites"
+msgstr "Lên đến 5 trang web"
+
+#: admin_templates/go_pro.php:161
+msgid "updates and support"
+msgstr "cập nhật và hỗ trợ"
+
+#: zoom-conference/StmZoomAdminMenus.php:117
+#: zoom-conference/StmZoomAdminMenus.php:118
+msgid "Upgrade"
+msgstr "Nâng cấp"
+
+#: zoom-conference/StmZoomAdminMenus.php:295
+msgid "Upgrade to Pro"
+msgstr "Nâng cấp lên Pro"
+
+#: admin_templates/add_users.php:36
+msgid "User added successfully"
+msgstr "Người dùng đã được thêm thành công"
+
+#: admin_templates/add_users.php:101
+msgid "User Type (Required)"
+msgstr "Loại người dùng (Bắt buộc)"
+
+#: admin_templates/assign_host.php:27
+msgid "Username"
+msgstr "Tên người dùng"
+
+#: zoom-conference/StmZoomAdminMenus.php:68 admin_templates/users.php:23
+msgid "Users"
+msgstr "Người sử dụng"
+
+#: admin_templates/users.php:78
+msgid "Users not found!"
+msgstr "Không tìm thấy người dùng!"
+
+#: admin_templates/notices/top_bar.php:5
+#, php-format
+msgid "v %s"
+msgstr "v%s"
+
+#: admin_templates/go_pro.php:173
+msgid "Version:"
+msgstr "Phiên bản:"
+
+#: admin_templates/go_pro.php:178
+msgid "View Changelog"
+msgstr "Xem Nhật ký thay đổi"
+
+#: zoom-conference/StmZoomPostTypes.php:94
+msgid "View meeting"
+msgstr "Xem cuộc họp"
+
+#: zoom-conference/StmZoomPostTypes.php:119
+msgid "View webinar"
+msgstr "Xem hội thảo trên web"
+
+#: zoom-conference/StmZoomPostTypes.php:237
+#: zoom-conference/StmZoomPostTypes.php:314
+msgid "Waiting room"
+msgstr "Phòng chờ"
+
+#: zoom-conference/StmZoomAdminMenus.php:171
+msgid "We recommend that you create Server-to-Server OAuth"
+msgstr "Chúng tôi khuyên bạn nên tạo OAuth từ máy chủ đến máy chủ"
+
+#: zoom-conference/StmZoomPostTypes.php:114 vc/main.php:35
+#: elementor/widgets/stm_zoom_webinar.php:92
+msgid "Webinar"
+msgstr "Hội thảo trực tuyến"
+
+#: zoom-conference/StmZoomPostTypes.php:282
+msgid "Webinar agenda"
+msgstr "Chương trình hội thảo trực tuyến"
+
+#: zoom-conference/StmZoom.php:438 zoom-conference/StmZoomPostTypes.php:291
+msgid "Webinar date"
+msgstr "Ngày hội thảo trực tuyến"
+
+#: zoom-conference/StmZoomPostTypes.php:305
+msgid "Webinar duration (in min)"
+msgstr "Thời lượng hội thảo trên web (tính bằng phút)"
+
+#: zoom-conference/StmZoomPostTypes.php:286
+msgid "Webinar host"
+msgstr "Người tổ chức hội thảo trên web"
+
+#: zoom-conference/StmZoomPostTypes.php:309
+msgid "Webinar password"
+msgstr "Mật khẩu hội thảo trên web"
+
+#: zoom-conference/StmZoom.php:430
+msgid "Webinar recurrence:"
+msgstr "Hội thảo trực tuyến lặp lại:"
+
+#: zoom-conference/StmZoomPostTypes.php:278
+msgid "Webinar settings"
+msgstr "Cài đặt hội thảo trên web"
+
+#: zoom-conference/StmZoomPostTypes.php:394
+msgid "Webinar shortcode"
+msgstr "Mã ngắn hội thảo trên web"
+
+#: zoom-conference/StmZoom.php:347
+msgid "Webinar starts in"
+msgstr "Hội thảo trực tuyến bắt đầu vào"
+
+#: zoom-conference/StmZoomPostTypes.php:295
+msgid "Webinar time"
+msgstr "Thời gian hội thảo trên web"
+
+#: zoom-conference/StmZoomPostTypes.php:299
+msgid "Webinar timezone"
+msgstr "Múi giờ hội thảo trên web"
+
+#: zoom-conference/StmZoomPostTypes.php:113
+#: zoom-conference/StmZoomPostTypes.php:123
+#: zoom-conference/StmZoomAdminMenus.php:90
+#: zoom-conference/StmZoomAdminMenus.php:91 vc/main.php:72
+#: elementor/widgets/stm_zoom_meetings_grid.php:97
+msgid "Webinars"
+msgstr "Hội thảo trên web"
+
+#: admin_templates/go_pro.php:192
+msgid "Wordpress Version:"
+msgstr "Phiên bản Wordpress:"
+
+#: admin_templates/notices/required_fields.php:8
+msgid "work"
+msgstr "công việc"
+
+#: admin_templates/add_users.php:47
+msgid "You don't have permission to add a new user"
+msgstr "Bạn không có quyền thêm người dùng mới"
+
+#: admin_templates/go_pro.php:156
+msgid "You get"
+msgstr "Bạn nhận được"
+
+#: zoom-conference/StmZoomPostTypes.php:190
+#: zoom-conference/StmZoomPostTypes.php:196
+#: zoom-conference/StmZoomPostTypes.php:206
+msgid ""
+"You only have to choose one option: Approved countries or Denied countries"
+msgstr ""
+"Bạn chỉ phải chọn một tùy chọn: Quốc gia được chấp thuận hoặc Quốc gia bị từ "
+"chối"
+
+#. %s: string
+#: zoom-conference/StmZoomPostTypes.php:558
+#, php-format
+msgid "Your meeting password: %s"
+msgstr "Mật khẩu cuộc họp của bạn: %s"
+
+#: zoom-conference/StmZoomPostTypes.php:556
+msgid "Your meeting url: "
+msgstr "Đường dẫn cuộc họp của bạn:"
+
+#: zoom-conference/StmZoomAdminMenus.php:171
+msgid "Zoom is deprecating their JWT app from June 1 of 2023."
+msgstr "Zoom sẽ ngừng hỗ trợ ứng dụng JWT kể từ ngày 1 tháng 6 năm 2023."
+
+#: admin_templates/notices/required_fields.php:15
+#: admin_templates/notices/required_fields.php:29
+msgid ""
+"Zoom is deprecating their JWT app from June of 2023 and until the deadline "
+"all your current APIs will work. Please see"
+msgstr ""
+"Zoom sẽ ngừng sử dụng ứng dụng JWT của họ từ tháng 6 năm 2023 và cho đến "
+"thời hạn đó, tất cả các API hiện tại của bạn sẽ hoạt động. Vui lòng xem"
+
+#: vc/main.php:7 elementor/widgets/stm_zoom_meeting.php:46
+msgid "Zoom Meeting"
+msgstr "Cuộc họp Zoom"
+
+#: vc/main.php:79 elementor/widgets/stm_zoom_meetings_grid.php:45
+msgid "Zoom Meetings/Webinars Grid"
+msgstr "Lưới cuộc họp/hội thảo trên web Zoom"
+
+#: admin_templates/reports.php:34
+msgid "Zoom Pro plan."
+msgstr "Gói Zoom Pro."
+
+#: vc/main.php:25 elementor/widgets/stm_zoom_webinar.php:46
+msgid "Zoom Webinar"
+msgstr "Hội thảo trực tuyến Zoom"
