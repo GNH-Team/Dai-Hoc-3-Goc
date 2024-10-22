@@ -1,0 +1,24 @@
+{
+  "name": "@xstack/utils",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "lint": "eslint .",
+    "dev": "tsc --watch"
+  },
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./index.ts",
+      "default": "./index.ts"
+    }
+  },
+  "devDependencies": {
+    "@xstack/eslint": "workspace:^",
+    "typescript": "^5.4.5"
+  }
+}

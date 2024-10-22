@@ -1,5 +1,5 @@
 module.exports = {
-    extends: [require.resolve("@xutils/eslint/nuxt")], // Installed in next step
+    extends: [require.resolve("@xstack/eslint/nuxt")], // Installed in next step
     root: true, // Very important!
     parserOptions: {
         project: true

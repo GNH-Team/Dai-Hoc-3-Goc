@@ -1,15 +1,22 @@
 {
-  "name": "ui",
+  "name": "@xstack/ui",
   "version": "0.0.0",
-  "private": true,
-  "main": "./index.ts",
-  "types": "./index.ts",
+  "type": "module",
   "scripts": {
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "dev": "tsc --watch",
+    "build": "tsc"
+  },
+  "exports": {
+    "./add": {
+      "types": "./src/add.ts",
+      "default": "./src/add.ts"
+    }
   },
   "devDependencies": {
-    "@xutils/eslint": "workspace:^",
-    "@xutils/tsconfig": "workspace:*",
+    "@xstack/eslint": "workspace:^",
+    "@xstack/tsconfig": "workspace:*",
+    "typescript": "^5.4.5",
     "vue": "^3.4.21"
   }
 }

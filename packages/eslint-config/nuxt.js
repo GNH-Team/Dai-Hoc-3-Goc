@@ -36,6 +36,9 @@ module.exports = {
         // Disable conflicting rules with prettier
         "@typescript-eslint/indent": "off",
         "@typescript-eslint/quotes": "off",
-        "@typescript-eslint/semi": "off"
-    }
+        "@typescript-eslint/semi": "off",
+        "import/prefer-default-export": "off",
+        "max-len": ["warn", { "code": 130 }]
+    },
+    ignores: ["**node_modules/", "**directus-11.0.0/"]
 }

@@ -1,5 +1,5 @@
 {
-  "extends": "@xutils/tsconfig/vue.json",
+  "extends": "@xstack/tsconfig/vue.json",
   "include": [
     "."
   ],

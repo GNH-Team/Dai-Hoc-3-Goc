@@ -26,12 +26,16 @@ module.exports = {
         "simple-import-sort/imports": "warn",
         "simple-import-sort/exports": "warn",
         "comma-dangle": "off",
-        "@typescript-eslint/comma-dangle": "off",
+        "@typescript-eslint/comma-dangle": 'off',
         "import/extensions": [
-            "never",
+            "warn",
             "ignorePackages",
             {
-                "": "never"
+                "": "never",
+                js: "never",
+                jsx: "never",
+                ts: "never",
+                tsx: "never"
             }
         ],
 
@@ -45,5 +49,9 @@ module.exports = {
         // "jsx-quotes": "off",
         "react/jsx-one-expression-per-line": "off",
         "react/jsx-indent-props": "off",
-    }
+        "react/jsx-props-no-spreading": "off",
+        "react/destructuring-assignment": "off",
+        "max-len": ["warn", { "code": 130 }]
+    },
+    // ignores: ["node_modules/"]
 }
