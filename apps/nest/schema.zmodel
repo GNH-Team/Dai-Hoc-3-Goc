@@ -7,6 +7,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+plugin openapi {
+  provider = "@zenstackhq/openapi"
+  output = "todo-api.json"
+  title = "My Todo API"
+  version = "1.0.0"
+  flavor = "rpc"
+}
+
 model g_actionscheduler_actions {
   action_id            BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
   hook                 String
