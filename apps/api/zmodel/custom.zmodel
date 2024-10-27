@@ -1,0 +1,83 @@
+
+abstract model g_base {
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
+}
+
+model g_usermeta {
+    umeta_id   BigInt  @id @default(autoincrement()) @db.UnsignedBigInt
+    user_id    BigInt  @default(0) @db.UnsignedBigInt
+    meta_key   String? @db.VarChar(255)
+    meta_value String? @db.LongText
+
+    @@index([meta_key(length: 191)], map: "meta_key")
+    @@index([user_id], map: "user_id")
+    @@map("3g_usermeta")
+}
+
+model g_users {
+    ID                  BigInt   @id @default(autoincrement()) @db.UnsignedBigInt
+    user_login          String   @default("") @db.VarChar(60)
+    user_pass           String   @default("") @db.VarChar(255)
+    user_nicename       String   @default("") @db.VarChar(50)
+    user_email          String   @default("") @db.VarChar(100)
+    user_url            String   @default("") @db.VarChar(100)
+    user_registered     DateTime @default(dbgenerated("('0000-00-00 00:00:00')")) @db.DateTime(0)
+    user_activation_key String   @default("") @db.VarChar(255)
+    user_status         Int      @default(0)
+    display_name        String   @default("") @db.VarChar(250)
+
+    @@index([user_email], map: "user_email")
+    @@index([user_login], map: "user_login_key")
+    @@index([user_nicename], map: "user_nicename")
+    @@map("3g_users")
+    @@auth
+}
+
+model g_stm_lms_user_courses {
+    user_course_id    Int     @id @default(autoincrement()) @db.MediumInt
+    user_id           BigInt
+    course_id         Int
+    current_lesson_id Int?
+    progress_percent  Int     @db.MediumInt
+    status            String  @default("") @db.VarChar(45)
+    lng_code          String  @default("en_US") @db.VarChar(45)
+    subscription_id   Int?
+    enterprise_id     Int?    @default(0)
+    bundle_id         Int?    @default(0)
+    start_time        Int
+    end_time          Int?    @default(0)
+    for_points        String? @default("") @db.VarChar(255)
+
+    @@index([user_id, course_id, bundle_id], map: "ix_user_course_bundle")
+    @@index([user_id, course_id, current_lesson_id], map: "ix_user_course_current")
+    @@index([user_id, course_id, enterprise_id], map: "ix_user_course_enterprice")
+    @@index([user_id, course_id, start_time], map: "ix_user_course_start_time")
+    @@map("3g_stm_lms_user_courses")
+}
+
+model g_classroom_groups extends g_base {
+    id          Int                        @id @default(autoincrement())
+    course_id   Int
+    group_name  String                     @length(max: 100)
+    description String                     @length(max: 255)
+    created_by  BigInt                     @default(auth().ID) @db.UnsignedBigInt
+
+    users_group g_classroom_groups_users[]
+}
+
+model g_classroom_groups_users {
+    id         Int                @id @default(autoincrement())
+    user_id    BigInt
+    group_id   Int
+    group      g_classroom_groups @relation(fields: [group_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    role       GroupRole          @default(THANHVIEN)
+
+    created_at DateTime           @default(now())
+}
+
+enum GroupRole {
+    TRUONGTHON
+    PHOTHON
+    THANHVIEN
+}
