@@ -1,0 +1,38 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "z:init": "npx zenstack init",
+    "z:gen": "npx zenstack generate",
+    "pull": "npx prisma db pull",
+    "push": "npx prisma db push",
+    "build": "tsc --project tsconfig.json",
+    "dev": "NODE_ENV=development tsx watch src/server.ts",
+    "start": "NODE_ENV=production node dist/server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@fastify/static": "^8.0.2",
+    "@prisma/client": "^5.21.1",
+    "@zenstackhq/runtime": "2.7.4",
+    "@zenstackhq/server": "^2.7.1",
+    "dotenv": "^16.4.5",
+    "fastify": "^5.0.0",
+    "fastify-plugin": "^5.0.1",
+    "typescript": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.8.0",
+    "@xstack/eslint": "workspace:*",
+    "@zenstackhq/openapi": "^2.7.3",
+    "pino-pretty": "^11.3.0",
+    "prisma": "^5.21.1",
+    "tsx": "^4.19.1",
+    "typescript": "^5.6.3",
+    "zenstack": "2.7.4"
+  }
+}
