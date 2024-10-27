@@ -6,6 +6,7 @@ import { enhance } from '@zenstackhq/runtime';
 import { ZenStackFastifyPlugin } from '@zenstackhq/server/fastify';
 import prisma  from './db';
 
+import cors from '@fastify/cors'
 import fastifyStatic from '@fastify/static';
 import path from 'node:path';
 
@@ -40,6 +41,10 @@ const server = Fastify(
     logger: envToLogger[envConfig.get('NODE_ENV')] ?? true // defaults to true if no entry matches in the map
   }
 );
+
+await server.register(cors, { 
+  origin: '*',
+})
 
 // Đăng ký plugin @fastify/static với Fastify
 server.register(fastifyStatic, {
