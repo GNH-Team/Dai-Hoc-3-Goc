@@ -72,8 +72,25 @@ model g_classroom_groups_users {
     group_id   Int
     group      g_classroom_groups @relation(fields: [group_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
     role       GroupRole          @default(THANHVIEN)
+    order      Int
 
+    created_by BigInt             @default(auth().ID) @db.UnsignedBigInt
     created_at DateTime           @default(now())
+}
+
+model g_attendance {
+    id         Int              @id @default(autoincrement())
+    user_id    BigInt
+    course_id  Int
+    lesson_id  Int
+    status     AttendanceStatus
+    created_at DateTime         @default(now())
+}
+
+enum AttendanceStatus {
+    TRONVEN
+    VANGMAT
+    MUON
 }
 
 enum GroupRole {
