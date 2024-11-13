@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,30 +7,726 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id    Int    @id() @default(autoincrement())
-  name  String
-  posts Post[]
-
-  // anyone can sign up, and user profiles are public
-  @@allow('create,read', true)
-
-  // users have full access to their own profile
-  @@allow('all', auth() == this)
+plugin openapi {
+  provider = "@zenstackhq/openapi"
+  output = "public/openapi.yaml"
+  title = "API specs"
+  version = "1.0.0"
+  prefix = "/api/model"
 }
 
-model Post {
-  id        Int      @id() @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt()
-  title     String
-  published Boolean  @default(false)
-  author    User?    @relation(fields: [authorId], references: [id])
-  authorId  Int?
+model g_actionscheduler_actions {
+  action_id            BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  hook                 String
+  status               String    @db.VarChar(20)
+  scheduled_date_gmt   DateTime? @default(dbgenerated("('0000-00-00 00:00:00')")) @db.DateTime(0)
+  scheduled_date_local DateTime? @default(dbgenerated("('0000-00-00 00:00:00')")) @db.DateTime(0)
+  priority             Int       @default(10) @db.UnsignedTinyInt
+  args                 String?
+  schedule             String?   @db.LongText
+  group_id             BigInt    @default(0) @db.UnsignedBigInt
+  attempts             Int       @default(0)
+  last_attempt_gmt     DateTime? @default(dbgenerated("('0000-00-00 00:00:00')")) @db.DateTime(0)
+  last_attempt_local   DateTime? @default(dbgenerated("('0000-00-00 00:00:00')")) @db.DateTime(0)
+  claim_id             BigInt    @default(0) @db.UnsignedBigInt
+  extended_args        String?   @db.VarChar(8000)
 
-  // author has full access
-  @@allow('all', auth() == author)
+  @@index([args], map: "args")
+  @@index([claim_id, status, scheduled_date_gmt], map: "claim_id_status_scheduled_date_gmt")
+  @@index([group_id], map: "group_id")
+  @@index([hook(length: 163), status, scheduled_date_gmt], map: "hook_status_scheduled_date_gmt")
+  @@index([last_attempt_gmt], map: "last_attempt_gmt")
+  @@index([scheduled_date_gmt], map: "scheduled_date_gmt")
+  @@index([status, scheduled_date_gmt], map: "status_scheduled_date_gmt")
+  @@map("3g_actionscheduler_actions")
+}
 
-  // published posts are readable to all
-  @@allow('read', published)
+model g_actionscheduler_claims {
+  claim_id         BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  date_created_gmt DateTime? @default(dbgenerated("('0000-00-00 00:00:00')")) @db.DateTime(0)
+
+  @@index([date_created_gmt], map: "date_created_gmt")
+  @@map("3g_actionscheduler_claims")
+}
+
+model g_actionscheduler_groups {
+  group_id BigInt @id @default(autoincrement()) @db.UnsignedBigInt
+  slug     String @db.VarChar(255)
+
+  @@index([slug(length: 191)], map: "slug")
+  @@map("3g_actionscheduler_groups")
+}
+
+model g_actionscheduler_logs {
+  log_id         BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  action_id      BigInt    @db.UnsignedBigInt
+  message        String    @db.Text
+  log_date_gmt   DateTime? @default(dbgenerated("('0000-00-00 00:00:00')")) @db.DateTime(0)
+  log_date_local DateTime? @default(dbgenerated("('0000-00-00 00:00:00')")) @db.DateTime(0)
+
+  @@index([action_id], map: "action_id")
+  @@index([log_date_gmt], map: "log_date_gmt")
+  @@map("3g_actionscheduler_logs")
+}
+
+model g_commentmeta {
+  meta_id    BigInt  @id @default(autoincrement()) @db.UnsignedBigInt
+  comment_id BigInt  @default(0) @db.UnsignedBigInt
+  meta_key   String? @db.VarChar(255)
+  meta_value String? @db.LongText
+
+  @@index([comment_id], map: "comment_id")
+  @@index([meta_key(length: 191)], map: "meta_key")
+  @@map("3g_commentmeta")
+}
+
+model g_comments {
+  comment_ID           BigInt   @id @default(autoincrement()) @db.UnsignedBigInt
+  comment_post_ID      BigInt   @default(0) @db.UnsignedBigInt
+  comment_author       String   @db.TinyText
+  comment_author_email String   @default("") @db.VarChar(100)
+  comment_author_url   String   @default("") @db.VarChar(200)
+  comment_author_IP    String   @default("") @db.VarChar(100)
+  comment_date         DateTime @default(dbgenerated("('0000-00-00 00:00:00')")) @db.DateTime(0)
+  comment_date_gmt     DateTime @default(dbgenerated("('0000-00-00 00:00:00')")) @db.DateTime(0)
+  comment_content      String   @db.Text
+  comment_karma        Int      @default(0)
+  comment_approved     String   @default("1") @db.VarChar(20)
+  comment_agent        String   @default("") @db.VarChar(255)
+  comment_type         String   @default("comment") @db.VarChar(20)
+  comment_parent       BigInt   @default(0) @db.UnsignedBigInt
+  user_id              BigInt   @default(0) @db.UnsignedBigInt
+
+  @@index([comment_approved, comment_date_gmt], map: "comment_approved_date_gmt")
+  @@index([comment_author_email(length: 10)], map: "comment_author_email")
+  @@index([comment_date_gmt], map: "comment_date_gmt")
+  @@index([comment_parent], map: "comment_parent")
+  @@index([comment_post_ID], map: "comment_post_ID")
+  @@map("3g_comments")
+}
+
+model g_e_events {
+  id         BigInt   @id @default(autoincrement()) @db.UnsignedBigInt
+  event_data String?  @db.Text
+  created_at DateTime @db.DateTime(0)
+
+  @@index([created_at], map: "created_at_index")
+  @@map("3g_e_events")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model g_e_notes {
+  id                  BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  route_url           String?   @db.Text
+  route_title         String?   @db.VarChar(255)
+  route_post_id       BigInt?   @db.UnsignedBigInt
+  post_id             BigInt?   @db.UnsignedBigInt
+  element_id          String?   @db.VarChar(60)
+  parent_id           BigInt    @default(0) @db.UnsignedBigInt
+  author_id           BigInt?   @db.UnsignedBigInt
+  author_display_name String?   @db.VarChar(250)
+  status              String    @default("publish") @db.VarChar(20)
+  position            String?   @db.Text
+  content             String?   @db.LongText
+  is_resolved         Boolean   @default(false)
+  is_public           Boolean   @default(true)
+  last_activity_at    DateTime? @db.DateTime(0)
+  created_at          DateTime  @db.DateTime(0)
+  updated_at          DateTime  @db.DateTime(0)
+
+  @@index([author_id], map: "author_id_index")
+  @@index([created_at], map: "created_at_index")
+  @@index([element_id], map: "element_id_index")
+  @@index([is_public], map: "is_public_index")
+  @@index([is_resolved], map: "is_resolved_index")
+  @@index([last_activity_at], map: "last_activity_at_index")
+  @@index([parent_id], map: "parent_id_index")
+  @@index([post_id], map: "post_id_index")
+  @@index([route_url(length: 191)], map: "route_url_index")
+  @@index([status], map: "status_index")
+  @@index([updated_at], map: "updated_at_index")
+  @@map("3g_e_notes")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model g_e_notes_users_relations {
+  id         BigInt   @id @default(autoincrement()) @db.UnsignedBigInt
+  type       String   @db.VarChar(60)
+  note_id    BigInt   @db.UnsignedBigInt
+  user_id    BigInt   @db.UnsignedBigInt
+  created_at DateTime @db.DateTime(0)
+  updated_at DateTime @db.DateTime(0)
+
+  @@index([note_id], map: "note_id_index")
+  @@index([type], map: "type_index")
+  @@index([user_id], map: "user_id_index")
+  @@map("3g_e_notes_users_relations")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model g_e_submissions {
+  id                      BigInt   @id @default(autoincrement()) @db.UnsignedBigInt
+  type                    String?  @db.VarChar(60)
+  hash_id                 String   @unique(map: "hash_id_unique_index") @db.VarChar(60)
+  main_meta_id            BigInt   @db.UnsignedBigInt
+  post_id                 BigInt   @db.UnsignedBigInt
+  referer                 String   @db.VarChar(500)
+  referer_title           String?  @db.VarChar(300)
+  element_id              String   @db.VarChar(20)
+  form_name               String   @db.VarChar(60)
+  campaign_id             BigInt   @db.UnsignedBigInt
+  user_id                 BigInt?  @db.UnsignedBigInt
+  user_ip                 String   @db.VarChar(46)
+  user_agent              String   @db.Text
+  actions_count           Int?     @default(0)
+  actions_succeeded_count Int?     @default(0)
+  status                  String   @db.VarChar(20)
+  is_read                 Boolean  @default(false)
+  meta                    String?  @db.Text
+  created_at_gmt          DateTime @db.DateTime(0)
+  updated_at_gmt          DateTime @db.DateTime(0)
+  created_at              DateTime @db.DateTime(0)
+  updated_at              DateTime @db.DateTime(0)
+
+  @@index([campaign_id], map: "campaign_id_index")
+  @@index([created_at_gmt], map: "created_at_gmt_index")
+  @@index([created_at], map: "created_at_index")
+  @@index([element_id], map: "element_id_index")
+  @@index([hash_id], map: "hash_id_index")
+  @@index([is_read], map: "is_read_index")
+  @@index([main_meta_id], map: "main_meta_id_index")
+  @@index([post_id], map: "post_id_index")
+  @@index([referer(length: 191)], map: "referer_index")
+  @@index([referer_title(length: 191)], map: "referer_title_index")
+  @@index([status], map: "status_index")
+  @@index([type], map: "type_index")
+  @@index([updated_at_gmt], map: "updated_at_gmt_index")
+  @@index([updated_at], map: "updated_at_index")
+  @@index([user_id], map: "user_id_index")
+  @@index([user_ip], map: "user_ip_index")
+  @@map("3g_e_submissions")
+}
+
+model g_e_submissions_actions_log {
+  id             BigInt   @id @default(autoincrement()) @db.UnsignedBigInt
+  submission_id  BigInt   @db.UnsignedBigInt
+  action_name    String   @db.VarChar(60)
+  action_label   String?  @db.VarChar(60)
+  status         String   @db.VarChar(20)
+  log            String?  @db.Text
+  created_at_gmt DateTime @db.DateTime(0)
+  updated_at_gmt DateTime @db.DateTime(0)
+  created_at     DateTime @db.DateTime(0)
+  updated_at     DateTime @db.DateTime(0)
+
+  @@index([action_name], map: "action_name_index")
+  @@index([created_at_gmt], map: "created_at_gmt_index")
+  @@index([created_at], map: "created_at_index")
+  @@index([status], map: "status_index")
+  @@index([submission_id], map: "submission_id_index")
+  @@index([updated_at_gmt], map: "updated_at_gmt_index")
+  @@index([updated_at], map: "updated_at_index")
+  @@map("3g_e_submissions_actions_log")
+}
+
+model g_e_submissions_values {
+  id            BigInt  @id @default(autoincrement()) @db.UnsignedBigInt
+  submission_id BigInt  @default(0) @db.UnsignedBigInt
+  key           String? @db.VarChar(60)
+  value         String? @db.LongText
+
+  @@index([key], map: "key_index")
+  @@index([submission_id], map: "submission_id_index")
+  @@map("3g_e_submissions_values")
+}
+
+model g_links {
+  link_id          BigInt   @id @default(autoincrement()) @db.UnsignedBigInt
+  link_url         String   @default("") @db.VarChar(255)
+  link_name        String   @default("") @db.VarChar(255)
+  link_image       String   @default("") @db.VarChar(255)
+  link_target      String   @default("") @db.VarChar(25)
+  link_description String   @default("") @db.VarChar(255)
+  link_visible     String   @default("Y") @db.VarChar(20)
+  link_owner       BigInt   @default(1) @db.UnsignedBigInt
+  link_rating      Int      @default(0)
+  link_updated     DateTime @default(dbgenerated("('0000-00-00 00:00:00')")) @db.DateTime(0)
+  link_rel         String   @default("") @db.VarChar(255)
+  link_notes       String   @db.MediumText
+  link_rss         String   @default("") @db.VarChar(255)
+
+  @@index([link_visible], map: "link_visible")
+  @@map("3g_links")
+}
+
+model g_options {
+  option_id    BigInt @id @default(autoincrement()) @db.UnsignedBigInt
+  option_name  String @unique(map: "option_name") @default("")
+  option_value String @db.LongText
+  autoload     String @default("yes") @db.VarChar(20)
+
+  @@index([autoload], map: "autoload")
+  @@map("3g_options")
+}
+
+model g_postmeta {
+  meta_id    BigInt  @id @default(autoincrement()) @db.UnsignedBigInt
+  post_id    BigInt  @default(0) @db.UnsignedBigInt
+  meta_key   String? @db.VarChar(255)
+  meta_value String? @db.LongText
+
+  @@index([meta_key(length: 191)], map: "meta_key")
+  @@index([post_id], map: "post_id")
+  @@map("3g_postmeta")
+}
+
+model g_posts {
+  ID                    BigInt   @id @default(autoincrement()) @db.UnsignedBigInt
+  post_author           BigInt   @default(0) @db.UnsignedBigInt
+  post_date             DateTime @default(dbgenerated("('0000-00-00 00:00:00')")) @db.DateTime(0)
+  post_date_gmt         DateTime @default(dbgenerated("('0000-00-00 00:00:00')")) @db.DateTime(0)
+  post_content          String   @db.LongText
+  post_title            String   @db.Text
+  post_excerpt          String   @db.Text
+  post_status           String   @default("publish") @db.VarChar(20)
+  comment_status        String   @default("open") @db.VarChar(20)
+  ping_status           String   @default("open") @db.VarChar(20)
+  post_password         String   @default("") @db.VarChar(255)
+  post_name             String   @default("") @db.VarChar(200)
+  to_ping               String   @db.Text
+  pinged                String   @db.Text
+  post_modified         DateTime @default(dbgenerated("('0000-00-00 00:00:00')")) @db.DateTime(0)
+  post_modified_gmt     DateTime @default(dbgenerated("('0000-00-00 00:00:00')")) @db.DateTime(0)
+  post_content_filtered String   @db.LongText
+  post_parent           BigInt   @default(0) @db.UnsignedBigInt
+  guid                  String   @default("") @db.VarChar(255)
+  menu_order            Int      @default(0)
+  post_type             String   @default("post") @db.VarChar(20)
+  post_mime_type        String   @default("") @db.VarChar(100)
+  comment_count         BigInt   @default(0)
+
+  @@index([post_author], map: "post_author")
+  @@index([post_name(length: 191)], map: "post_name")
+  @@index([post_parent], map: "post_parent")
+  @@index([post_type, post_status, post_date, ID], map: "type_status_date")
+  @@map("3g_posts")
+
+  @@allow("read", true == true)
+}
+
+model g_presto_player_audio_presets {
+  id                     BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  name                   String?   @db.VarChar(155)
+  slug                   String?   @db.VarChar(155)
+  icon                   String?   @db.VarChar(155)
+  skin                   String?   @db.VarChar(155)
+  rewind                 Boolean   @default(false)
+  play                   Boolean   @default(false)
+  play_large             Boolean   @default(false) @map("play-large")
+  fast_forward           Boolean   @default(false) @map("fast-forward")
+  progress               Boolean   @default(false)
+  current_time           Boolean   @default(false) @map("current-time")
+  mute                   Boolean   @default(false)
+  volume                 Boolean   @default(false)
+  speed                  Boolean   @default(false)
+  pip                    Boolean   @default(false)
+  reset_on_end           Boolean   @default(false)
+  save_player_position   Boolean   @default(false)
+  sticky_scroll          Boolean   @default(false)
+  sticky_scroll_position String?   @db.VarChar(16)
+  on_video_end           String?   @db.VarChar(16)
+  play_video_viewport    Boolean   @default(false)
+  show_time_elapsed      Boolean   @default(false)
+  hide_logo              Boolean   @default(false)
+  border_radius          BigInt?   @db.UnsignedBigInt
+  background_color       String?   @db.VarChar(155)
+  control_color          String?   @db.VarChar(155)
+  is_locked              Boolean   @default(false)
+  cta                    String    @db.LongText
+  email_collection       String    @db.LongText
+  action_bar             String    @db.LongText
+  created_by             BigInt?   @db.UnsignedBigInt
+  created_at             DateTime  @default(now()) @db.Timestamp(0)
+  updated_at             DateTime  @db.Timestamp(0)
+  deleted_at             DateTime? @db.Timestamp(0)
+
+  @@index([name], map: "name")
+  @@map("3g_presto_player_audio_presets")
+}
+
+model g_presto_player_email_collection {
+  id                  BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  enabled             Boolean   @default(false)
+  behavior            String    @db.VarChar(155)
+  percentage          BigInt?
+  allow_skip          Boolean   @default(false)
+  headline            String    @db.VarChar(155)
+  bottom_text         String    @db.VarChar(155)
+  button_text         String    @db.VarChar(155)
+  preset_id           BigInt?
+  border_radius       BigInt
+  email_provider      String?   @db.VarChar(155)
+  email_provider_list String?   @db.VarChar(155)
+  email_provider_tag  String?   @db.VarChar(155)
+  created_by          BigInt?   @db.UnsignedBigInt
+  created_at          DateTime  @default(now()) @db.Timestamp(0)
+  updated_at          DateTime  @db.Timestamp(0)
+  deleted_at          DateTime? @db.Timestamp(0)
+
+  @@index([preset_id], map: "preset_id")
+  @@map("3g_presto_player_email_collection")
+}
+
+model g_presto_player_presets {
+  id                     BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  name                   String?   @db.VarChar(155)
+  slug                   String?   @db.VarChar(155)
+  icon                   String?   @db.VarChar(155)
+  skin                   String?   @db.VarChar(155)
+  play_large             Boolean   @default(false) @map("play-large")
+  rewind                 Boolean   @default(false)
+  play                   Boolean   @default(false)
+  fast_forward           Boolean   @default(false) @map("fast-forward")
+  progress               Boolean   @default(false)
+  current_time           Boolean   @default(false) @map("current-time")
+  mute                   Boolean   @default(false)
+  volume                 Boolean   @default(false)
+  speed                  Boolean   @default(false)
+  pip                    Boolean   @default(false)
+  fullscreen             Boolean   @default(false)
+  captions               Boolean   @default(false)
+  reset_on_end           Boolean   @default(false)
+  auto_hide              Boolean   @default(false)
+  show_time_elapsed      Boolean   @default(false)
+  captions_enabled       Boolean   @default(false)
+  save_player_position   Boolean   @default(false)
+  sticky_scroll          Boolean   @default(false)
+  sticky_scroll_position String?   @db.VarChar(16)
+  on_video_end           String?   @db.VarChar(16)
+  play_video_viewport    Boolean   @default(false)
+  hide_youtube           Boolean   @default(false)
+  lazy_load_youtube      Boolean   @default(false)
+  hide_logo              Boolean   @default(false)
+  border_radius          BigInt?   @db.UnsignedBigInt
+  caption_style          String?   @db.VarChar(155)
+  caption_background     String?   @db.VarChar(155)
+  is_locked              Boolean   @default(false)
+  cta                    String    @db.LongText
+  watermark              String    @db.LongText
+  search                 String    @db.LongText
+  email_collection       String    @db.LongText
+  action_bar             String    @db.LongText
+  created_by             BigInt?   @db.UnsignedBigInt
+  created_at             DateTime  @default(now()) @db.Timestamp(0)
+  updated_at             DateTime  @db.Timestamp(0)
+  deleted_at             DateTime? @db.Timestamp(0)
+
+  @@index([name], map: "name")
+  @@map("3g_presto_player_presets")
+}
+
+model g_presto_player_videos {
+  id            BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  title         String    @db.VarChar(255)
+  type          String    @db.VarChar(155)
+  external_id   String?   @db.VarChar(155)
+  attachment_id BigInt?   @db.UnsignedBigInt
+  post_id       BigInt?
+  src           String?   @db.VarChar(255)
+  created_by    BigInt?   @db.UnsignedBigInt
+  created_at    DateTime  @default(now()) @db.Timestamp(0)
+  updated_at    DateTime  @db.Timestamp(0)
+  deleted_at    DateTime? @db.Timestamp(0)
+
+  @@index([attachment_id], map: "attachment_id")
+  @@index([created_at], map: "created_at")
+  @@index([external_id], map: "external_id")
+  @@index([updated_at], map: "updated_at")
+  @@map("3g_presto_player_videos")
+}
+
+model g_presto_player_visits {
+  id         BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  user_id    BigInt?   @db.UnsignedBigInt
+  duration   BigInt    @db.UnsignedBigInt
+  video_id   BigInt    @db.UnsignedBigInt
+  ip_address String?   @default("") @db.VarChar(39)
+  created_at DateTime  @default(now()) @db.Timestamp(0)
+  updated_at DateTime  @db.Timestamp(0)
+  deleted_at DateTime? @db.Timestamp(0)
+
+  @@index([created_at], map: "created_at")
+  @@index([ip_address], map: "ip_address")
+  @@index([updated_at], map: "updated_at")
+  @@index([user_id], map: "user_id")
+  @@index([video_id], map: "video_id")
+  @@map("3g_presto_player_visits")
+}
+
+model g_presto_player_webhooks {
+  id         BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  name       String?   @db.VarChar(155)
+  url        String?   @db.VarChar(255)
+  method     String?   @db.VarChar(155)
+  email_name String?   @db.VarChar(155)
+  headers    String?   @db.VarChar(255)
+  created_by BigInt?   @db.UnsignedBigInt
+  created_at DateTime  @default(now()) @db.Timestamp(0)
+  updated_at DateTime  @db.Timestamp(0)
+  deleted_at DateTime? @db.Timestamp(0)
+
+  @@index([name], map: "name")
+  @@map("3g_presto_player_webhooks")
+}
+
+model g_stm_lms_attendance {
+  id              Int      @id @default(autoincrement()) @db.MediumInt
+  user_id         BigInt
+  course_id       BigInt
+  attendance_date DateTime @db.Date
+  status          String   @db.VarChar(10)
+
+  @@map("3g_stm_lms_attendance")
+}
+
+model g_stm_lms_curriculum_materials {
+  id         Int    @id @default(autoincrement()) @db.MediumInt
+  post_id    BigInt
+  post_type  String @default("") @db.VarChar(50)
+  section_id Int    @default(0) @db.MediumInt
+  order      Int    @default(0) @db.SmallInt
+
+  @@map("3g_stm_lms_curriculum_materials")
+}
+
+model g_stm_lms_curriculum_sections {
+  id        Int    @id @default(autoincrement()) @db.MediumInt
+  title     String @default("") @db.VarChar(255)
+  course_id BigInt
+  order     Int    @default(0) @db.SmallInt
+
+  @@map("3g_stm_lms_curriculum_sections")
+}
+
+model g_stm_lms_order_items {
+  id          BigInt  @id @default(autoincrement())
+  order_id    BigInt  @db.UnsignedBigInt
+  object_id   BigInt  @db.UnsignedBigInt
+  payout_id   BigInt? @db.UnsignedBigInt
+  quantity    Int
+  price       Float?  @db.Float
+  transaction String? @db.VarChar(100)
+
+  @@index([object_id], map: "3g_stm_lms_order_items_object_id_index")
+  @@index([order_id], map: "3g_stm_lms_order_items_order_id_index")
+  @@index([payout_id], map: "3g_stm_lms_order_items_payout_id_index")
+  @@map("3g_stm_lms_order_items")
+}
+
+model g_stm_lms_user_answers {
+  user_answer_id Int     @id @default(autoincrement()) @db.MediumInt
+  user_id        BigInt
+  course_id      Int
+  quiz_id        Int
+  question_id    Int
+  user_answer    String  @default("") @db.Text
+  correct_answer Boolean
+  attempt_number Int     @db.MediumInt
+
+  @@map("3g_stm_lms_user_answers")
+}
+
+model g_stm_lms_user_cart {
+  user_cart_id Int    @id @default(autoincrement()) @db.MediumInt
+  user_id      BigInt
+  item_id      Int
+  quantity     Int    @db.MediumInt
+  price        Float  @db.Float
+  enterprise   Float? @default(0) @db.Float
+  bundle       Float? @default(0) @db.Float
+
+  @@map("3g_stm_lms_user_cart")
+}
+
+model g_stm_lms_user_chat {
+  message_id      Int    @id @default(autoincrement())
+  user_to         BigInt
+  user_from       BigInt
+  timestamp       Int
+  message         String @db.Text
+  status          String @db.TinyText
+  conversation_id Int
+
+  @@map("3g_stm_lms_user_chat")
+}
+
+model g_stm_lms_user_conversation {
+  conversation_id Int @id @default(autoincrement())
+  user_to         Int
+  user_from       Int
+  timestamp       Int
+  messages_number Int
+  ut_new_messages Int
+  uf_new_messages Int
+
+  @@map("3g_stm_lms_user_conversation")
+}
+
+model g_stm_lms_user_courses {
+  user_course_id    Int     @id @default(autoincrement()) @db.MediumInt
+  user_id           BigInt
+  course_id         Int
+  current_lesson_id Int?
+  progress_percent  Int     @db.MediumInt
+  status            String  @default("") @db.VarChar(45)
+  lng_code          String  @default("en_US") @db.VarChar(45)
+  subscription_id   Int?
+  enterprise_id     Int?    @default(0)
+  bundle_id         Int?    @default(0)
+  start_time        Int
+  end_time          Int?    @default(0)
+  for_points        String? @default("") @db.VarChar(255)
+
+  @@index([user_id, course_id, bundle_id], map: "ix_user_course_bundle")
+  @@index([user_id, course_id, current_lesson_id], map: "ix_user_course_current")
+  @@index([user_id, course_id, enterprise_id], map: "ix_user_course_enterprice")
+  @@index([user_id, course_id, start_time], map: "ix_user_course_start_time")
+  @@map("3g_stm_lms_user_courses")
+}
+
+model g_stm_lms_user_lessons {
+  user_lesson_id Int    @id @default(autoincrement()) @db.MediumInt
+  user_id        BigInt
+  course_id      Int
+  lesson_id      Int
+  start_time     Int?
+  end_time       Int?
+
+  @@index([user_id, course_id, lesson_id], map: "ix_user_course_lesson")
+  @@map("3g_stm_lms_user_lessons")
+}
+
+model g_stm_lms_user_points {
+  user_points_id Int      @id @default(autoincrement())
+  user_id        Int
+  id             Int
+  action_id      String   @db.Text
+  score          Int      @db.MediumInt
+  timestamp      Int
+  completed      Boolean? @default(false)
+
+  @@map("3g_stm_lms_user_points")
+}
+
+model g_stm_lms_user_quizzes {
+  user_quiz_id Int    @id @default(autoincrement()) @db.MediumInt
+  user_id      BigInt
+  course_id    Int
+  quiz_id      Int
+  progress     Int    @db.MediumInt
+  status       String @default("") @db.VarChar(45)
+  sequency     String @default("") @db.Text
+
+  @@map("3g_stm_lms_user_quizzes")
+}
+
+model g_stm_lms_user_quizzes_times {
+  user_quiz_time_id Int    @id @default(autoincrement()) @db.MediumInt
+  user_id           BigInt
+  quiz_id           Int
+  start_time        Int
+  end_time          Int
+
+  @@map("3g_stm_lms_user_quizzes_times")
+}
+
+model g_stm_lms_user_searches {
+  user_search_id Int     @id @default(autoincrement()) @db.MediumInt
+  user_id        BigInt?
+  time           Int?
+  search         String  @db.Text
+
+  @@map("3g_stm_lms_user_searches")
+}
+
+model g_stm_lms_user_searches_stats {
+  user_search_stat_id Int     @id @default(autoincrement()) @db.MediumInt
+  search              String  @db.Text
+  stat                BigInt?
+
+  @@map("3g_stm_lms_user_searches_stats")
+}
+
+model g_term_relationships {
+  object_id        BigInt @default(0) @db.UnsignedBigInt
+  term_taxonomy_id BigInt @default(0) @db.UnsignedBigInt
+  term_order       Int    @default(0)
+
+  @@id([object_id, term_taxonomy_id])
+  @@index([term_taxonomy_id], map: "term_taxonomy_id")
+  @@map("3g_term_relationships")
+}
+
+model g_term_taxonomy {
+  term_taxonomy_id BigInt @id @default(autoincrement()) @db.UnsignedBigInt
+  term_id          BigInt @default(0) @db.UnsignedBigInt
+  taxonomy         String @default("") @db.VarChar(32)
+  description      String @db.LongText
+  parent           BigInt @default(0) @db.UnsignedBigInt
+  count            BigInt @default(0)
+
+  @@unique([term_id, taxonomy], map: "term_id_taxonomy")
+  @@index([taxonomy], map: "taxonomy")
+  @@map("3g_term_taxonomy")
+}
+
+model g_termmeta {
+  meta_id    BigInt  @id @default(autoincrement()) @db.UnsignedBigInt
+  term_id    BigInt  @default(0) @db.UnsignedBigInt
+  meta_key   String? @db.VarChar(255)
+  meta_value String? @db.LongText
+
+  @@index([meta_key(length: 191)], map: "meta_key")
+  @@index([term_id], map: "term_id")
+  @@map("3g_termmeta")
+}
+
+model g_terms {
+  term_id    BigInt @id @default(autoincrement()) @db.UnsignedBigInt
+  name       String @default("") @db.VarChar(200)
+  slug       String @default("") @db.VarChar(200)
+  term_group BigInt @default(0)
+
+  @@index([name(length: 191)], map: "name")
+  @@index([slug(length: 191)], map: "slug")
+  @@map("3g_terms")
+}
+
+model g_usermeta {
+  umeta_id   BigInt  @id @default(autoincrement()) @db.UnsignedBigInt
+  user_id    BigInt  @default(0) @db.UnsignedBigInt
+  meta_key   String? @db.VarChar(255)
+  meta_value String? @db.LongText
+
+  @@index([meta_key(length: 191)], map: "meta_key")
+  @@index([user_id], map: "user_id")
+  @@map("3g_usermeta")
+}
+
+model g_users {
+  ID                  BigInt   @id @default(autoincrement()) @db.UnsignedBigInt
+  user_login          String   @default("") @db.VarChar(60)
+  user_pass           String   @default("") @db.VarChar(255)
+  user_nicename       String   @default("") @db.VarChar(50)
+  user_email          String   @default("") @db.VarChar(100)
+  user_url            String   @default("") @db.VarChar(100)
+  user_registered     DateTime @default(dbgenerated("('0000-00-00 00:00:00')")) @db.DateTime(0)
+  user_activation_key String   @default("") @db.VarChar(255)
+  user_status         Int      @default(0)
+  display_name        String   @default("") @db.VarChar(250)
+
+  @@index([user_email], map: "user_email")
+  @@index([user_login], map: "user_login_key")
+  @@index([user_nicename], map: "user_nicename")
+  @@map("3g_users")
 }

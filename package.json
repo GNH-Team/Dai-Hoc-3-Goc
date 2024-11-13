@@ -1,18 +1,16 @@
 {
-  "name": "with-vue-nuxt",
+  "name": "daihoc3g",
   "private": true,
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
-    "lint:fix": "turbo run lint:fix",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "lint:fix": "turbo run lint:fix"
   },
   "devDependencies": {
-    "@xutils/eslint": "workspace:^",
+    "@xstack/eslint": "workspace:^",
     "eslint": "^8.57.0",
-    "prettier": "^3.2.5",
-    "@xutils/tsconfig": "workspace:*",
+    "@xstack/tsconfig": "workspace:*",
     "turbo": "latest"
   },
   "packageManager": "pnpm@8.6.10"

@@ -15,6 +15,39 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit nếu truy cập trực tiếp
 }
 
+// Hàm xử lý shortcode với tham số
+function gen_form_unique_id($atts) {
+    // Thiết lập giá trị mặc định cho các tham số
+    $atts = shortcode_atts(
+        array(
+            'id' => 'default',
+        ),
+        $atts,
+        'gen_form_unique_id'
+    );
+
+    return time();
+}
+
+// Đăng ký shortcode với WordPress
+add_shortcode('gen-form-id', 'gen_form_unique_id');
+
+function send_custom_webhook( $record, $handler ) {
+
+	$form_name = $record->get_form_settings( 'form_name' );
+
+	$raw_fields = $record->get( 'fields' );
+	$fields = [];
+	foreach ( $raw_fields as $id => $field ) {
+		$fields[ $id ] = $field['value'];
+	}
+
+    echo print_r($fields);
+    die;
+
+}
+// add_action( 'elementor_pro/forms/new_record', 'send_custom_webhook', 10, 2 );
+
 add_action('init', 'add_custom_on_init');
 function add_custom_on_init()
 {

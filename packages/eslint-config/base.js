@@ -23,6 +23,7 @@ module.exports = {
     rules: {
         "no-console": "warn",
         "@typescript-eslint/no-unused-vars": "off",
+        "class-methods-use-this": "off",
         "simple-import-sort/imports": "warn",
         "simple-import-sort/exports": "warn",
         "comma-dangle": "off",
