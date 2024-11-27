@@ -24,7 +24,7 @@ yarn-error.log*
 .env.test.local
 .env.production.local
 
-wp-content/uploads
+**/wp-content/uploads
 wp-content/upgrade
 
 wp-content/debug.log
@@ -35,6 +35,14 @@ wp-content/debug.log
 **/plugins/loco-translate
 **/plugins/user-role-editor
 **/plugins/elementor-pro
+
+**/plugins/masterstudy-lms-learning-management-system
+**/plugins/masterstudy-lms-learning-management-system-pro
+**/plugins/presto-player
+**/plugins/presto-player-pro
+**/plugins/eroom-zoom-meetings-webinar
+
+backup
 
 twentytwentyfour
 wp-admin
