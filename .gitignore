@@ -49,6 +49,6 @@ twentytwentyfour
 wp-admin
 wp-includes
 
-wp-content/languages/plugins/*.json
-wp-content/languages/plugins/*-backup-*
-wp-content/languages/*.json
+apps/wp/wp-content/languages/plugins/*.json
+apps/wp/wp-content/languages/plugins/*-backup-*
+apps/wp/wp-content/languages/*.json
