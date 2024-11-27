@@ -254,9 +254,9 @@ function ms_lms_starter_customizer_header( $wp_customize ) {
 		$wp_customize->add_setting(
 			'ms_lms_starter_search_popup',
 			array(
-				'default'           => '',
+				'default'           => true ? 1 : 0,
 				'transport'         => 'refresh',
-				'sanitize_callback' => 'esc_url_raw',
+				'sanitize_callback' => 'absint',
 			)
 		);
 		$wp_customize->add_control(

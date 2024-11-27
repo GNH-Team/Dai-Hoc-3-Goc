@@ -11,9 +11,9 @@
 				<small></small>
 				<?php
 				echo sprintf(
-					'<strong>%s</strong> <span>$%s.00 / %s</span>',
+					'<strong>%s</strong> <span>%s / %s</span>',
 					esc_html__( 'Annual', 'masterstudy_starter' ),
-					esc_html( $price['annual_price'] ),
+					wp_kses_post( $price['annual_price'] ),
 					esc_html__( 'year', 'masterstudy_starter' ),
 				);
 				?>
@@ -22,9 +22,9 @@
 				<small></small>
 				<?php
 				echo sprintf(
-					'<strong>%s</strong> <span>$%s.00</span>',
+					'<strong>%s</strong> <span>%s</span>',
 					esc_html__( 'Lifetime', 'masterstudy_starter' ),
-					esc_html( $price['lifetime_price'] ),
+					wp_kses_post( $price['lifetime_price'] ),
 				);
 				?>
 			</div>

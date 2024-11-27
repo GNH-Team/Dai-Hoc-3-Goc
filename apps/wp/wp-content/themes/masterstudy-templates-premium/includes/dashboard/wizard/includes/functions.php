@@ -479,12 +479,28 @@ function getAnnualPriceFromAPI() {
 		$pricing       = $data['plans'][ $defaultPlanId ]['pricing'][0];
 		$annualPrice   = $pricing['annual_price'] ?? '';
 		$lifetimePrice = $pricing['lifetime_price'] ?? '';
+		$sale          = check_data_sale();
 
-		return array(
-			'annual_price'   => $annualPrice,
-			'lifetime_price' => $lifetimePrice,
-		);
+		if ( $sale ) {
+			return array(
+				'annual_price'   => ' $<s>' . esc_html( $annualPrice ) . '</s> $' . esc_html( number_format( $annualPrice * 0.50, 0, '.', '' ) ),
+				'lifetime_price' => ' $<s>' . esc_html( $lifetimePrice ) . '</s> $' . esc_html( number_format( $lifetimePrice * 0.50, 0, '.', '' ) ),
+			);
+		} else {
+			return array(
+				'annual_price'   => ' $' . $annualPrice,
+				'lifetime_price' => ' $' . $lifetimePrice,
+			);
+		}
 	}
 
 	return 'Plan or pricing information not found.';
+}
+
+function check_data_sale() {
+	$current_date = new DateTime();
+	$start_date   = new DateTime( '2024-11-14' );
+	$end_date     = new DateTime( '2024-12-04' );
+
+	return $current_date >= $start_date && $current_date <= $end_date;
 }

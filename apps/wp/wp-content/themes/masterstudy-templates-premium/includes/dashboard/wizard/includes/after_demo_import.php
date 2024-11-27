@@ -89,3 +89,50 @@ function ms_starter_fix_mailchimp_slashes( $processed_posts, $processed_terms, $
 	}
 }
 
+//Update curriculum lessons
+add_action( 'masterstudy_starter_after_demo_import', 'stm_lms_update_curriculum', 20 );
+
+//Update courses page
+add_action( 'masterstudy_starter_after_demo_import', 'masterstudy_starter_set_courses_page', 20 );
+
+function masterstudy_starter_set_courses_page() {
+	$options = get_option( 'stm_lms_settings', array() );
+
+	if ( empty( $options['courses_page'] ) ) {
+		$args = array(
+			'post_type'   => 'page',
+			'post_status' => 'publish',
+		);
+
+		$pages = get_pages( $args );
+
+		foreach ( $pages as $page ) {
+			if ( 'courses' === $page->post_name ) {
+				$options['courses_page'] = ( $page->ID );
+			}
+			update_option( 'stm_lms_settings', $options );
+		}
+	}
+}
+
+//Update menu location
+add_action( 'masterstudy_starter_after_demo_import', 'masterstudy_starter_update_menu_location', 10, 4 );
+
+function masterstudy_starter_update_menu_location() {
+	$locations = get_theme_mod( 'nav_menu_locations' );
+	$menus     = wp_get_nav_menus();
+
+	if ( ! empty( $menus ) ) {
+		foreach ( $menus as $menu ) {
+			$menu_names = array(
+				'MS LMS Starter Theme Main Menu',
+				'MS Starter Gutenberg Menu',
+			);
+
+			if ( is_object( $menu ) && in_array( $menu->name, $menu_names ) ) {
+				$locations['ms-lms-starter-theme-main-menu'] = $menu->term_id;
+			}
+		}
+	}
+	set_theme_mod( 'nav_menu_locations', $locations );
+}

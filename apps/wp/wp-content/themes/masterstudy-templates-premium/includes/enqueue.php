@@ -44,9 +44,9 @@ if ( ! function_exists( 'starter_styles_and_scripts' ) && ! is_admin() ) {
 		}
 
 	}
-}
 
-add_action( 'wp_enqueue_scripts', 'starter_styles_and_scripts' );
+	add_action( 'wp_enqueue_scripts', 'starter_styles_and_scripts' );
+}
 
 function masterstudy_starter_admin_register_script_styles() {
 	

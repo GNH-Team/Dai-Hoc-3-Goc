@@ -76,7 +76,10 @@
       }
       if ($(this).data('template') === 'finish' || 
         $(this).hasClass('masterstudy-starter-wizard__button-install-child')) {
-        $(window).off('beforeunload');
+          $(window).off('beforeunload');
+      }
+      if ($(this).data('template') === 'activation' || $(this).data('template') === 'plugins') {
+        $('html, body').animate({ scrollTop: 0 }, 200);
       }
     });
 

@@ -5,8 +5,8 @@ wp_enqueue_script( 'ms_lms_courses_searchbox' );
 
 $search_options = array(
 	'presets'            => get_theme_mod( 'ms_lms_starter_search_presets' ),
-	'popup'              => get_theme_mod( 'ms_lms_starter_search_popup' ),
-	'popup_presets'      => get_theme_mod( 'ms_lms_starter_search_popup_presets' ),
+	'popup'              => get_theme_mod( 'ms_lms_starter_search_popup', true ),
+	'popup_presets'      => get_theme_mod( 'ms_lms_starter_search_popup_presets', 'without_wrapper' ),
 	'categories'         => get_theme_mod( 'ms_lms_starter_search_category' ),
 	'search_placeholder' => get_theme_mod( 'ms_lms_starter__search_placeholder' ),
 );

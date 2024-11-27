@@ -9,7 +9,7 @@
 			echo esc_html__( 'All Premium templates just for', 'masterstudy_starter' );
 
 			$annualPrice = getAnnualPriceFromAPI();
-			echo esc_html( ' $' . $annualPrice['annual_price'] );
+			echo wp_kses_post( $annualPrice['annual_price'] );
 		?>
 	</div>
 	<?php endif; ?>
@@ -58,10 +58,28 @@
 				'preview'     => 'https://masterstudy.stylemixthemes.com/lms-plugin/template-art',
 			),
 			array(
+				'image'       => STM_TEMPLATE_URI . '/includes/dashboard/assets/images/template-coaching.jpg',
+				'status'      => 'Premium',
+				'title'       => 'Coaching',
+				'slug'        => 'demo_5',
+				'builder'     => 'elementor',
+				'old_builder' => 'elementor-builder',
+				'preview'     => 'https://masterstudy.stylemixthemes.com/lms-plugin/template-coaching/',
+			),
+			array(
+				'image'       => STM_TEMPLATE_URI . '/includes/dashboard/assets/images/template-technology.jpg',
+				'status'      => 'Premium',
+				'title'       => 'Technology',
+				'slug'        => 'demo_6',
+				'builder'     => 'elementor',
+				'old_builder' => 'elementor-builder',
+				'preview'     => 'https://masterstudy.stylemixthemes.com/lms-plugin/template-technology/',
+			),
+			array(
 				'image'       => STM_TEMPLATE_URI . '/includes/dashboard/assets/images/template-free.jpg',
 				'status'      => 'Free',
 				'title'       => 'Starter',
-				'slug'        => 'demo_5',
+				'slug'        => 'gutenberg_demo_1',
 				'builder'     => 'gutenberg',
 				'old_builder' => 'gutenberg-builder',
 				'preview'     => 'https://masterstudy.stylemixthemes.com/lms-plugin/',
@@ -94,6 +112,26 @@
 				'builder'     => 'gutenberg',
 				'old_builder' => 'gutenberg-builder',
 				'preview'     => 'https://masterstudy.stylemixthemes.com/lms-plugin/template-art',
+				'demo_status' => 'pending',
+			),
+			array(
+				'image'       => STM_TEMPLATE_URI . '/includes/dashboard/assets/images/template-coaching.jpg',
+				'status'      => 'Premium',
+				'title'       => 'Coming Soon',
+				'slug'        => '#',
+				'builder'     => 'gutenberg',
+				'old_builder' => 'gutenberg-builder',
+				'preview'     => 'https://masterstudy.stylemixthemes.com/lms-plugin/template-coaching',
+				'demo_status' => 'pending',
+			),
+			array(
+				'image'       => STM_TEMPLATE_URI . '/includes/dashboard/assets/images/template-technology.jpg',
+				'status'      => 'Premium',
+				'title'       => 'Coming Soon',
+				'slug'        => '#',
+				'builder'     => 'gutenberg',
+				'old_builder' => 'gutenberg-builder',
+				'preview'     => 'https://masterstudy.stylemixthemes.com/lms-plugin/template-technology',
 				'demo_status' => 'pending',
 			),
 		);
