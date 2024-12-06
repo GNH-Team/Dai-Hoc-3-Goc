@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2024-08-08T05:36:55+00:00\n"
-"PO-Revision-Date: 2024-11-27 04:27+0000\n"
+"PO-Revision-Date: 2024-11-30 11:47+0000\n"
 "X-Generator: Loco https://localise.biz/\n"
 "Language: vi\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
@@ -13980,11 +13980,11 @@ msgstr "Không thêm được vật liệu"
 
 #: assets/course-builder/js/main.js:1 react/build/static/js/main.js:1
 msgid "Import %d materials to Section %d"
-msgstr "Nhập %d vật liệu vào Mục %d"
+msgstr "Thêm %d bài học vào Mục %d"
 
 #: assets/course-builder/js/main.js:1 react/build/static/js/main.js:1
 msgid "Search materials"
-msgstr "Tìm tài liệu"
+msgstr "Tìm bài học"
 
 #: assets/course-builder/js/main.js:1 react/build/static/js/main.js:1
 msgid "results"
@@ -14772,7 +14772,7 @@ msgstr "Không lưu được cài đặt"
 
 #: assets/course-builder/js/main.js:1 react/build/static/js/main.js:1
 msgid "Select option"
-msgstr "Chọn tùy chọn"
+msgstr "Chọn một loại"
 
 #: assets/course-builder/js/main.js:1 react/build/static/js/main.js:1
 msgid "Main"
