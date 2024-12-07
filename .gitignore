@@ -24,9 +24,6 @@ yarn-error.log*
 .env.test.local
 .env.production.local
 
-**/wp-content/uploads
-wp-content/upgrade
-
 wp-content/debug.log
 **/plugins/elementor
 **/plugins/header-footer-elementor
@@ -52,3 +49,5 @@ wp-includes
 apps/wp/wp-content/languages/plugins/*.json
 apps/wp/wp-content/languages/plugins/*-backup-*
 apps/wp/wp-content/languages/*.json
+apps/wp/wp-content/uploads
+apps/wp/wp-content/upgrade

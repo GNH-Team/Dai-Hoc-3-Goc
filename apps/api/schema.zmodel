@@ -1,5 +1,11 @@
+import "./zmodel/custom"
+
 generator client {
   provider = "prisma-client-js"
+}
+
+generator dbml {
+  provider = "prisma-dbml-generator"
 }
 
 datasource db {
@@ -729,4 +735,6 @@ model g_users {
   @@index([user_login], map: "user_login_key")
   @@index([user_nicename], map: "user_nicename")
   @@map("3g_users")
+
+  @@auth
 }

@@ -5,12 +5,13 @@
   "type": "module",
   "scripts": {
     "z:init": "npx zenstack init",
-    "z:gen": "npx zenstack generate",
+    "z:gen": "npx zenstack generate && pnpm run dbml",
     "pull": "npx prisma db pull",
     "push": "npx prisma db push",
     "build": "tsc --project tsconfig.json",
     "dev": "NODE_ENV=development tsx watch src/server.ts",
-    "start": "NODE_ENV=production node dist/server.js"
+    "start": "NODE_ENV=production node dist/server.js",
+    "dbml": "tsx ./zmodel/filter.ts"
   },
   "keywords": [],
   "author": "",
@@ -32,8 +33,13 @@
     "@zenstackhq/openapi": "^2.7.3",
     "pino-pretty": "^11.3.0",
     "prisma": "^5.21.1",
+    "prisma-dbml-generator": "^0.12.0",
     "tsx": "^4.19.1",
     "typescript": "^5.6.3",
     "zenstack": "2.7.4"
+  },
+  "packageManager": "pnpm@9.3.0",
+  "engines": {
+    "node": "20.12.1"
   }
 }

@@ -9,9 +9,8 @@
   },
   "devDependencies": {
     "@xstack/eslint": "workspace:^",
-    "eslint": "^8.57.0",
     "@xstack/tsconfig": "workspace:*",
     "turbo": "latest"
   },
-  "packageManager": "pnpm@8.6.10"
+  "packageManager": "pnpm@9.3.0"
 }

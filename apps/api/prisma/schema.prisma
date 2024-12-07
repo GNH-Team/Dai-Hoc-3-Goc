@@ -12,6 +12,22 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator dbml {
+  provider = "prisma-dbml-generator"
+}
+
+enum AttendanceStatus {
+  TRONVEN
+  VANGMAT
+  MUON
+}
+
+enum GroupRole {
+  TRUONGTHON
+  PHOTHON
+  THANHVIEN
+}
+
 model g_actionscheduler_actions {
   action_id            BigInt    @id() @default(autoincrement()) @db.UnsignedBigInt()
   hook                 String
@@ -277,7 +293,7 @@ model g_postmeta {
   @@map("3g_postmeta")
 }
 
-/// @@allow('all', true == true)
+/// @@allow('read', true == true)
 model g_posts {
   ID                    BigInt   @id() @default(autoincrement()) @db.UnsignedBigInt()
   post_author           BigInt   @default(0) @db.UnsignedBigInt()
@@ -709,6 +725,7 @@ model g_usermeta {
   @@map("3g_usermeta")
 }
 
+/// @@auth
 model g_users {
   ID                  BigInt   @id() @default(autoincrement()) @db.UnsignedBigInt()
   user_login          String   @default("") @db.VarChar(60)
@@ -727,10 +744,35 @@ model g_users {
   @@map("3g_users")
 }
 
-model posts {
-  ID            BigInt   @id() @default(autoincrement()) @db.UnsignedBigInt()
-  post_date     DateTime @default(dbgenerated("('0000-00-00 00:00:00')")) @db.DateTime(0)
-  post_date_gmt DateTime @default(dbgenerated("('0000-00-00 00:00:00')")) @db.DateTime(0)
-  post_content  String   @db.LongText()
-  post_title    String   @db.Text()
+model g_classroom_groups {
+  created_at  DateTime                   @default(now())
+  updated_at  DateTime                   @updatedAt()
+  id          Int                        @id() @default(autoincrement())
+  course_id   Int
+  /// @length(max: 100)
+  group_name  String
+  /// @length(max: 255)
+  description String
+  created_by  BigInt                     @db.UnsignedBigInt()
+  users_group g_classroom_groups_users[]
+}
+
+model g_classroom_groups_users {
+  id         Int                @id() @default(autoincrement())
+  user_id    BigInt
+  group_id   Int
+  group      g_classroom_groups @relation(fields: [group_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  role       GroupRole          @default(THANHVIEN)
+  order      Int
+  created_by BigInt             @db.UnsignedBigInt()
+  created_at DateTime           @default(now())
+}
+
+model g_attendance {
+  id         Int              @id() @default(autoincrement())
+  user_id    BigInt
+  course_id  Int
+  lesson_id  Int
+  status     AttendanceStatus
+  created_at DateTime         @default(now())
 }

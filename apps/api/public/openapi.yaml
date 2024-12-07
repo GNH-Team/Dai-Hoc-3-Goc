@@ -89,10 +89,26 @@ tags:
     description: g_usermeta operations
   - name: g_users
     description: g_users operations
-  - name: posts
-    description: posts operations
+  - name: g_classroom_groups
+    description: g_classroom_groups operations
+  - name: g_classroom_groups_users
+    description: g_classroom_groups_users operations
+  - name: g_attendance
+    description: g_attendance operations
 components:
   schemas:
+    GroupRole:
+      type: string
+      enum:
+        - TRUONGTHON
+        - PHOTHON
+        - THANHVIEN
+    AttendanceStatus:
+      type: string
+      enum:
+        - TRONVEN
+        - VANGMAT
+        - MUON
     G_actionscheduler_actionsScalarFieldEnum:
       type: string
       enum:
@@ -618,14 +634,35 @@ components:
         - user_activation_key
         - user_status
         - display_name
-    PostsScalarFieldEnum:
+    G_classroom_groupsScalarFieldEnum:
       type: string
       enum:
-        - ID
-        - post_date
-        - post_date_gmt
-        - post_content
-        - post_title
+        - created_at
+        - updated_at
+        - id
+        - course_id
+        - group_name
+        - description
+        - created_by
+    G_classroom_groups_usersScalarFieldEnum:
+      type: string
+      enum:
+        - id
+        - user_id
+        - group_id
+        - role
+        - order
+        - created_by
+        - created_at
+    G_attendanceScalarFieldEnum:
+      type: string
+      enum:
+        - id
+        - user_id
+        - course_id
+        - lesson_id
+        - status
+        - created_at
     SortOrder:
       type: string
       enum:
@@ -2145,27 +2182,89 @@ components:
         - user_activation_key
         - user_status
         - display_name
-    Posts:
+    G_classroom_groups:
       type: object
       properties:
-        ID:
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        id:
           type: integer
-        post_date:
+        course_id:
+          type: integer
+        group_name:
           type: string
-          format: date-time
-        post_date_gmt:
+        description:
           type: string
-          format: date-time
-        post_content:
-          type: string
-        post_title:
-          type: string
+        created_by:
+          type: integer
+        users_group:
+          type: array
+          items:
+            $ref: "#/components/schemas/G_classroom_groups_users"
       required:
-        - ID
-        - post_date
-        - post_date_gmt
-        - post_content
-        - post_title
+        - created_at
+        - updated_at
+        - id
+        - course_id
+        - group_name
+        - description
+        - created_by
+    G_classroom_groups_users:
+      type: object
+      properties:
+        id:
+          type: integer
+        user_id:
+          type: integer
+        group_id:
+          type: integer
+        group:
+          $ref: "#/components/schemas/G_classroom_groups"
+        role:
+          $ref: "#/components/schemas/GroupRole"
+        order:
+          type: integer
+        created_by:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - user_id
+        - group_id
+        - group
+        - role
+        - order
+        - created_by
+        - created_at
+    G_attendance:
+      type: object
+      properties:
+        id:
+          type: integer
+        user_id:
+          type: integer
+        course_id:
+          type: integer
+        lesson_id:
+          type: integer
+        status:
+          $ref: "#/components/schemas/AttendanceStatus"
+        created_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - user_id
+        - course_id
+        - lesson_id
+        - status
+        - created_at
     G_actionscheduler_actionsWhereInput:
       type: object
       properties:
@@ -10971,140 +11070,494 @@ components:
           oneOf:
             - $ref: "#/components/schemas/StringWithAggregatesFilter"
             - type: string
-    PostsWhereInput:
+    G_classroom_groupsWhereInput:
       type: object
       properties:
         AND:
           oneOf:
-            - $ref: "#/components/schemas/PostsWhereInput"
+            - $ref: "#/components/schemas/G_classroom_groupsWhereInput"
             - type: array
               items:
-                $ref: "#/components/schemas/PostsWhereInput"
+                $ref: "#/components/schemas/G_classroom_groupsWhereInput"
         OR:
           type: array
           items:
-            $ref: "#/components/schemas/PostsWhereInput"
+            $ref: "#/components/schemas/G_classroom_groupsWhereInput"
         NOT:
           oneOf:
-            - $ref: "#/components/schemas/PostsWhereInput"
+            - $ref: "#/components/schemas/G_classroom_groupsWhereInput"
             - type: array
               items:
-                $ref: "#/components/schemas/PostsWhereInput"
-        ID:
+                $ref: "#/components/schemas/G_classroom_groupsWhereInput"
+        created_at:
+          oneOf:
+            - $ref: "#/components/schemas/DateTimeFilter"
+            - type: string
+              format: date-time
+        updated_at:
+          oneOf:
+            - $ref: "#/components/schemas/DateTimeFilter"
+            - type: string
+              format: date-time
+        id:
+          oneOf:
+            - $ref: "#/components/schemas/IntFilter"
+            - type: integer
+        course_id:
+          oneOf:
+            - $ref: "#/components/schemas/IntFilter"
+            - type: integer
+        group_name:
+          oneOf:
+            - $ref: "#/components/schemas/StringFilter"
+            - type: string
+        description:
+          oneOf:
+            - $ref: "#/components/schemas/StringFilter"
+            - type: string
+        created_by:
           oneOf:
             - $ref: "#/components/schemas/BigIntFilter"
             - type: integer
-        post_date:
-          oneOf:
-            - $ref: "#/components/schemas/DateTimeFilter"
-            - type: string
-              format: date-time
-        post_date_gmt:
-          oneOf:
-            - $ref: "#/components/schemas/DateTimeFilter"
-            - type: string
-              format: date-time
-        post_content:
-          oneOf:
-            - $ref: "#/components/schemas/StringFilter"
-            - type: string
-        post_title:
-          oneOf:
-            - $ref: "#/components/schemas/StringFilter"
-            - type: string
-    PostsOrderByWithRelationInput:
+        users_group:
+          $ref: "#/components/schemas/G_classroom_groups_usersListRelationFilter"
+    G_classroom_groupsOrderByWithRelationInput:
       type: object
       properties:
-        ID:
+        created_at:
           $ref: "#/components/schemas/SortOrder"
-        post_date:
+        updated_at:
           $ref: "#/components/schemas/SortOrder"
-        post_date_gmt:
+        id:
           $ref: "#/components/schemas/SortOrder"
-        post_content:
+        course_id:
           $ref: "#/components/schemas/SortOrder"
-        post_title:
+        group_name:
           $ref: "#/components/schemas/SortOrder"
-    PostsWhereUniqueInput:
+        description:
+          $ref: "#/components/schemas/SortOrder"
+        created_by:
+          $ref: "#/components/schemas/SortOrder"
+        users_group:
+          $ref: "#/components/schemas/G_classroom_groups_usersOrderByRelationAggregateInp\
+            ut"
+    G_classroom_groupsWhereUniqueInput:
       type: object
       properties:
-        ID:
+        id:
           type: integer
         AND:
           oneOf:
-            - $ref: "#/components/schemas/PostsWhereInput"
+            - $ref: "#/components/schemas/G_classroom_groupsWhereInput"
             - type: array
               items:
-                $ref: "#/components/schemas/PostsWhereInput"
+                $ref: "#/components/schemas/G_classroom_groupsWhereInput"
         OR:
           type: array
           items:
-            $ref: "#/components/schemas/PostsWhereInput"
+            $ref: "#/components/schemas/G_classroom_groupsWhereInput"
         NOT:
           oneOf:
-            - $ref: "#/components/schemas/PostsWhereInput"
+            - $ref: "#/components/schemas/G_classroom_groupsWhereInput"
             - type: array
               items:
-                $ref: "#/components/schemas/PostsWhereInput"
-        post_date:
+                $ref: "#/components/schemas/G_classroom_groupsWhereInput"
+        created_at:
           oneOf:
             - $ref: "#/components/schemas/DateTimeFilter"
             - type: string
               format: date-time
-        post_date_gmt:
+        updated_at:
           oneOf:
             - $ref: "#/components/schemas/DateTimeFilter"
             - type: string
               format: date-time
-        post_content:
+        course_id:
+          oneOf:
+            - $ref: "#/components/schemas/IntFilter"
+            - type: integer
+        group_name:
           oneOf:
             - $ref: "#/components/schemas/StringFilter"
             - type: string
-        post_title:
+        description:
           oneOf:
             - $ref: "#/components/schemas/StringFilter"
             - type: string
-    PostsScalarWhereWithAggregatesInput:
+        created_by:
+          oneOf:
+            - $ref: "#/components/schemas/BigIntFilter"
+            - type: integer
+        users_group:
+          $ref: "#/components/schemas/G_classroom_groups_usersListRelationFilter"
+    G_classroom_groupsScalarWhereWithAggregatesInput:
       type: object
       properties:
         AND:
           oneOf:
-            - $ref: "#/components/schemas/PostsScalarWhereWithAggregatesInput"
+            - $ref: "#/components/schemas/G_classroom_groupsScalarWhereWithAggregatesInput"
             - type: array
               items:
-                $ref: "#/components/schemas/PostsScalarWhereWithAggregatesInput"
+                $ref: "#/components/schemas/G_classroom_groupsScalarWhereWithAggregatesInput"
         OR:
           type: array
           items:
-            $ref: "#/components/schemas/PostsScalarWhereWithAggregatesInput"
+            $ref: "#/components/schemas/G_classroom_groupsScalarWhereWithAggregatesInput"
         NOT:
           oneOf:
-            - $ref: "#/components/schemas/PostsScalarWhereWithAggregatesInput"
+            - $ref: "#/components/schemas/G_classroom_groupsScalarWhereWithAggregatesInput"
             - type: array
               items:
-                $ref: "#/components/schemas/PostsScalarWhereWithAggregatesInput"
-        ID:
+                $ref: "#/components/schemas/G_classroom_groupsScalarWhereWithAggregatesInput"
+        created_at:
+          oneOf:
+            - $ref: "#/components/schemas/DateTimeWithAggregatesFilter"
+            - type: string
+              format: date-time
+        updated_at:
+          oneOf:
+            - $ref: "#/components/schemas/DateTimeWithAggregatesFilter"
+            - type: string
+              format: date-time
+        id:
+          oneOf:
+            - $ref: "#/components/schemas/IntWithAggregatesFilter"
+            - type: integer
+        course_id:
+          oneOf:
+            - $ref: "#/components/schemas/IntWithAggregatesFilter"
+            - type: integer
+        group_name:
+          oneOf:
+            - $ref: "#/components/schemas/StringWithAggregatesFilter"
+            - type: string
+        description:
+          oneOf:
+            - $ref: "#/components/schemas/StringWithAggregatesFilter"
+            - type: string
+        created_by:
           oneOf:
             - $ref: "#/components/schemas/BigIntWithAggregatesFilter"
             - type: integer
-        post_date:
+    G_classroom_groups_usersWhereInput:
+      type: object
+      properties:
+        AND:
+          oneOf:
+            - $ref: "#/components/schemas/G_classroom_groups_usersWhereInput"
+            - type: array
+              items:
+                $ref: "#/components/schemas/G_classroom_groups_usersWhereInput"
+        OR:
+          type: array
+          items:
+            $ref: "#/components/schemas/G_classroom_groups_usersWhereInput"
+        NOT:
+          oneOf:
+            - $ref: "#/components/schemas/G_classroom_groups_usersWhereInput"
+            - type: array
+              items:
+                $ref: "#/components/schemas/G_classroom_groups_usersWhereInput"
+        id:
+          oneOf:
+            - $ref: "#/components/schemas/IntFilter"
+            - type: integer
+        user_id:
+          oneOf:
+            - $ref: "#/components/schemas/BigIntFilter"
+            - type: integer
+        group_id:
+          oneOf:
+            - $ref: "#/components/schemas/IntFilter"
+            - type: integer
+        role:
+          oneOf:
+            - $ref: "#/components/schemas/EnumGroupRoleFilter"
+            - $ref: "#/components/schemas/GroupRole"
+        order:
+          oneOf:
+            - $ref: "#/components/schemas/IntFilter"
+            - type: integer
+        created_by:
+          oneOf:
+            - $ref: "#/components/schemas/BigIntFilter"
+            - type: integer
+        created_at:
+          oneOf:
+            - $ref: "#/components/schemas/DateTimeFilter"
+            - type: string
+              format: date-time
+        group:
+          oneOf:
+            - $ref: "#/components/schemas/G_classroom_groupsRelationFilter"
+            - $ref: "#/components/schemas/G_classroom_groupsWhereInput"
+    G_classroom_groups_usersOrderByWithRelationInput:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/SortOrder"
+        user_id:
+          $ref: "#/components/schemas/SortOrder"
+        group_id:
+          $ref: "#/components/schemas/SortOrder"
+        role:
+          $ref: "#/components/schemas/SortOrder"
+        order:
+          $ref: "#/components/schemas/SortOrder"
+        created_by:
+          $ref: "#/components/schemas/SortOrder"
+        created_at:
+          $ref: "#/components/schemas/SortOrder"
+        group:
+          $ref: "#/components/schemas/G_classroom_groupsOrderByWithRelationInput"
+    G_classroom_groups_usersWhereUniqueInput:
+      type: object
+      properties:
+        id:
+          type: integer
+        AND:
+          oneOf:
+            - $ref: "#/components/schemas/G_classroom_groups_usersWhereInput"
+            - type: array
+              items:
+                $ref: "#/components/schemas/G_classroom_groups_usersWhereInput"
+        OR:
+          type: array
+          items:
+            $ref: "#/components/schemas/G_classroom_groups_usersWhereInput"
+        NOT:
+          oneOf:
+            - $ref: "#/components/schemas/G_classroom_groups_usersWhereInput"
+            - type: array
+              items:
+                $ref: "#/components/schemas/G_classroom_groups_usersWhereInput"
+        user_id:
+          oneOf:
+            - $ref: "#/components/schemas/BigIntFilter"
+            - type: integer
+        group_id:
+          oneOf:
+            - $ref: "#/components/schemas/IntFilter"
+            - type: integer
+        role:
+          oneOf:
+            - $ref: "#/components/schemas/EnumGroupRoleFilter"
+            - $ref: "#/components/schemas/GroupRole"
+        order:
+          oneOf:
+            - $ref: "#/components/schemas/IntFilter"
+            - type: integer
+        created_by:
+          oneOf:
+            - $ref: "#/components/schemas/BigIntFilter"
+            - type: integer
+        created_at:
+          oneOf:
+            - $ref: "#/components/schemas/DateTimeFilter"
+            - type: string
+              format: date-time
+        group:
+          oneOf:
+            - $ref: "#/components/schemas/G_classroom_groupsRelationFilter"
+            - $ref: "#/components/schemas/G_classroom_groupsWhereInput"
+    G_classroom_groups_usersScalarWhereWithAggregatesInput:
+      type: object
+      properties:
+        AND:
+          oneOf:
+            - $ref: "#/components/schemas/G_classroom_groups_usersScalarWhereWithAggregatesIn\
+                put"
+            - type: array
+              items:
+                $ref: "#/components/schemas/G_classroom_groups_usersScalarWhereWithAggregatesIn\
+                  put"
+        OR:
+          type: array
+          items:
+            $ref: "#/components/schemas/G_classroom_groups_usersScalarWhereWithAggregatesIn\
+              put"
+        NOT:
+          oneOf:
+            - $ref: "#/components/schemas/G_classroom_groups_usersScalarWhereWithAggregatesIn\
+                put"
+            - type: array
+              items:
+                $ref: "#/components/schemas/G_classroom_groups_usersScalarWhereWithAggregatesIn\
+                  put"
+        id:
+          oneOf:
+            - $ref: "#/components/schemas/IntWithAggregatesFilter"
+            - type: integer
+        user_id:
+          oneOf:
+            - $ref: "#/components/schemas/BigIntWithAggregatesFilter"
+            - type: integer
+        group_id:
+          oneOf:
+            - $ref: "#/components/schemas/IntWithAggregatesFilter"
+            - type: integer
+        role:
+          oneOf:
+            - $ref: "#/components/schemas/EnumGroupRoleWithAggregatesFilter"
+            - $ref: "#/components/schemas/GroupRole"
+        order:
+          oneOf:
+            - $ref: "#/components/schemas/IntWithAggregatesFilter"
+            - type: integer
+        created_by:
+          oneOf:
+            - $ref: "#/components/schemas/BigIntWithAggregatesFilter"
+            - type: integer
+        created_at:
           oneOf:
             - $ref: "#/components/schemas/DateTimeWithAggregatesFilter"
             - type: string
               format: date-time
-        post_date_gmt:
+    G_attendanceWhereInput:
+      type: object
+      properties:
+        AND:
+          oneOf:
+            - $ref: "#/components/schemas/G_attendanceWhereInput"
+            - type: array
+              items:
+                $ref: "#/components/schemas/G_attendanceWhereInput"
+        OR:
+          type: array
+          items:
+            $ref: "#/components/schemas/G_attendanceWhereInput"
+        NOT:
+          oneOf:
+            - $ref: "#/components/schemas/G_attendanceWhereInput"
+            - type: array
+              items:
+                $ref: "#/components/schemas/G_attendanceWhereInput"
+        id:
+          oneOf:
+            - $ref: "#/components/schemas/IntFilter"
+            - type: integer
+        user_id:
+          oneOf:
+            - $ref: "#/components/schemas/BigIntFilter"
+            - type: integer
+        course_id:
+          oneOf:
+            - $ref: "#/components/schemas/IntFilter"
+            - type: integer
+        lesson_id:
+          oneOf:
+            - $ref: "#/components/schemas/IntFilter"
+            - type: integer
+        status:
+          oneOf:
+            - $ref: "#/components/schemas/EnumAttendanceStatusFilter"
+            - $ref: "#/components/schemas/AttendanceStatus"
+        created_at:
+          oneOf:
+            - $ref: "#/components/schemas/DateTimeFilter"
+            - type: string
+              format: date-time
+    G_attendanceOrderByWithRelationInput:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/SortOrder"
+        user_id:
+          $ref: "#/components/schemas/SortOrder"
+        course_id:
+          $ref: "#/components/schemas/SortOrder"
+        lesson_id:
+          $ref: "#/components/schemas/SortOrder"
+        status:
+          $ref: "#/components/schemas/SortOrder"
+        created_at:
+          $ref: "#/components/schemas/SortOrder"
+    G_attendanceWhereUniqueInput:
+      type: object
+      properties:
+        id:
+          type: integer
+        AND:
+          oneOf:
+            - $ref: "#/components/schemas/G_attendanceWhereInput"
+            - type: array
+              items:
+                $ref: "#/components/schemas/G_attendanceWhereInput"
+        OR:
+          type: array
+          items:
+            $ref: "#/components/schemas/G_attendanceWhereInput"
+        NOT:
+          oneOf:
+            - $ref: "#/components/schemas/G_attendanceWhereInput"
+            - type: array
+              items:
+                $ref: "#/components/schemas/G_attendanceWhereInput"
+        user_id:
+          oneOf:
+            - $ref: "#/components/schemas/BigIntFilter"
+            - type: integer
+        course_id:
+          oneOf:
+            - $ref: "#/components/schemas/IntFilter"
+            - type: integer
+        lesson_id:
+          oneOf:
+            - $ref: "#/components/schemas/IntFilter"
+            - type: integer
+        status:
+          oneOf:
+            - $ref: "#/components/schemas/EnumAttendanceStatusFilter"
+            - $ref: "#/components/schemas/AttendanceStatus"
+        created_at:
+          oneOf:
+            - $ref: "#/components/schemas/DateTimeFilter"
+            - type: string
+              format: date-time
+    G_attendanceScalarWhereWithAggregatesInput:
+      type: object
+      properties:
+        AND:
+          oneOf:
+            - $ref: "#/components/schemas/G_attendanceScalarWhereWithAggregatesInput"
+            - type: array
+              items:
+                $ref: "#/components/schemas/G_attendanceScalarWhereWithAggregatesInput"
+        OR:
+          type: array
+          items:
+            $ref: "#/components/schemas/G_attendanceScalarWhereWithAggregatesInput"
+        NOT:
+          oneOf:
+            - $ref: "#/components/schemas/G_attendanceScalarWhereWithAggregatesInput"
+            - type: array
+              items:
+                $ref: "#/components/schemas/G_attendanceScalarWhereWithAggregatesInput"
+        id:
+          oneOf:
+            - $ref: "#/components/schemas/IntWithAggregatesFilter"
+            - type: integer
+        user_id:
+          oneOf:
+            - $ref: "#/components/schemas/BigIntWithAggregatesFilter"
+            - type: integer
+        course_id:
+          oneOf:
+            - $ref: "#/components/schemas/IntWithAggregatesFilter"
+            - type: integer
+        lesson_id:
+          oneOf:
+            - $ref: "#/components/schemas/IntWithAggregatesFilter"
+            - type: integer
+        status:
+          oneOf:
+            - $ref: "#/components/schemas/EnumAttendanceStatusWithAggregatesFilter"
+            - $ref: "#/components/schemas/AttendanceStatus"
+        created_at:
           oneOf:
             - $ref: "#/components/schemas/DateTimeWithAggregatesFilter"
             - type: string
               format: date-time
-        post_content:
-          oneOf:
-            - $ref: "#/components/schemas/StringWithAggregatesFilter"
-            - type: string
-        post_title:
-          oneOf:
-            - $ref: "#/components/schemas/StringWithAggregatesFilter"
-            - type: string
     G_actionscheduler_actionsCreateInput:
       type: object
       properties:
@@ -17341,92 +17794,296 @@ components:
           oneOf:
             - type: string
             - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
-    PostsCreateInput:
+    G_classroom_groupsCreateInput:
       type: object
       properties:
-        ID:
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        course_id:
           type: integer
-        post_date:
+        group_name:
           type: string
-          format: date-time
-        post_date_gmt:
+        description:
           type: string
-          format: date-time
-        post_content:
-          type: string
-        post_title:
-          type: string
+        created_by:
+          type: integer
+        users_group:
+          $ref: "#/components/schemas/G_classroom_groups_usersCreateNestedManyWithoutGrou\
+            pInput"
       required:
-        - post_content
-        - post_title
-    PostsUpdateInput:
+        - course_id
+        - group_name
+        - description
+    G_classroom_groupsUpdateInput:
       type: object
       properties:
-        ID:
+        created_at:
+          oneOf:
+            - type: string
+              format: date-time
+            - $ref: "#/components/schemas/DateTimeFieldUpdateOperationsInput"
+        updated_at:
+          oneOf:
+            - type: string
+              format: date-time
+            - $ref: "#/components/schemas/DateTimeFieldUpdateOperationsInput"
+        course_id:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/IntFieldUpdateOperationsInput"
+        group_name:
+          oneOf:
+            - type: string
+            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
+        description:
+          oneOf:
+            - type: string
+            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
+        created_by:
           oneOf:
             - type: integer
             - $ref: "#/components/schemas/BigIntFieldUpdateOperationsInput"
-        post_date:
-          oneOf:
-            - type: string
-              format: date-time
-            - $ref: "#/components/schemas/DateTimeFieldUpdateOperationsInput"
-        post_date_gmt:
-          oneOf:
-            - type: string
-              format: date-time
-            - $ref: "#/components/schemas/DateTimeFieldUpdateOperationsInput"
-        post_content:
-          oneOf:
-            - type: string
-            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
-        post_title:
-          oneOf:
-            - type: string
-            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
-    PostsCreateManyInput:
+        users_group:
+          $ref: "#/components/schemas/G_classroom_groups_usersUpdateManyWithoutGroupNeste\
+            dInput"
+    G_classroom_groupsCreateManyInput:
       type: object
       properties:
-        ID:
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        id:
           type: integer
-        post_date:
+        course_id:
+          type: integer
+        group_name:
           type: string
-          format: date-time
-        post_date_gmt:
+        description:
           type: string
-          format: date-time
-        post_content:
-          type: string
-        post_title:
-          type: string
+        created_by:
+          type: integer
       required:
-        - post_content
-        - post_title
-    PostsUpdateManyMutationInput:
+        - course_id
+        - group_name
+        - description
+    G_classroom_groupsUpdateManyMutationInput:
       type: object
       properties:
-        ID:
+        created_at:
+          oneOf:
+            - type: string
+              format: date-time
+            - $ref: "#/components/schemas/DateTimeFieldUpdateOperationsInput"
+        updated_at:
+          oneOf:
+            - type: string
+              format: date-time
+            - $ref: "#/components/schemas/DateTimeFieldUpdateOperationsInput"
+        course_id:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/IntFieldUpdateOperationsInput"
+        group_name:
+          oneOf:
+            - type: string
+            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
+        description:
+          oneOf:
+            - type: string
+            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
+        created_by:
           oneOf:
             - type: integer
             - $ref: "#/components/schemas/BigIntFieldUpdateOperationsInput"
-        post_date:
+    G_classroom_groups_usersCreateInput:
+      type: object
+      properties:
+        user_id:
+          type: integer
+        role:
+          $ref: "#/components/schemas/GroupRole"
+        order:
+          type: integer
+        created_by:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        group:
+          $ref: "#/components/schemas/G_classroom_groupsCreateNestedOneWithoutUsers_group\
+            Input"
+      required:
+        - user_id
+        - order
+        - group
+    G_classroom_groups_usersUpdateInput:
+      type: object
+      properties:
+        user_id:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/BigIntFieldUpdateOperationsInput"
+        role:
+          oneOf:
+            - $ref: "#/components/schemas/GroupRole"
+            - $ref: "#/components/schemas/EnumGroupRoleFieldUpdateOperationsInput"
+        order:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/IntFieldUpdateOperationsInput"
+        created_by:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/BigIntFieldUpdateOperationsInput"
+        created_at:
           oneOf:
             - type: string
               format: date-time
             - $ref: "#/components/schemas/DateTimeFieldUpdateOperationsInput"
-        post_date_gmt:
+        group:
+          $ref: "#/components/schemas/G_classroom_groupsUpdateOneRequiredWithoutUsers_gro\
+            upNestedInput"
+    G_classroom_groups_usersCreateManyInput:
+      type: object
+      properties:
+        id:
+          type: integer
+        user_id:
+          type: integer
+        group_id:
+          type: integer
+        role:
+          $ref: "#/components/schemas/GroupRole"
+        order:
+          type: integer
+        created_by:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+      required:
+        - user_id
+        - group_id
+        - order
+    G_classroom_groups_usersUpdateManyMutationInput:
+      type: object
+      properties:
+        user_id:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/BigIntFieldUpdateOperationsInput"
+        role:
+          oneOf:
+            - $ref: "#/components/schemas/GroupRole"
+            - $ref: "#/components/schemas/EnumGroupRoleFieldUpdateOperationsInput"
+        order:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/IntFieldUpdateOperationsInput"
+        created_by:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/BigIntFieldUpdateOperationsInput"
+        created_at:
           oneOf:
             - type: string
               format: date-time
             - $ref: "#/components/schemas/DateTimeFieldUpdateOperationsInput"
-        post_content:
+    G_attendanceCreateInput:
+      type: object
+      properties:
+        user_id:
+          type: integer
+        course_id:
+          type: integer
+        lesson_id:
+          type: integer
+        status:
+          $ref: "#/components/schemas/AttendanceStatus"
+        created_at:
+          type: string
+          format: date-time
+      required:
+        - user_id
+        - course_id
+        - lesson_id
+        - status
+    G_attendanceUpdateInput:
+      type: object
+      properties:
+        user_id:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/BigIntFieldUpdateOperationsInput"
+        course_id:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/IntFieldUpdateOperationsInput"
+        lesson_id:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/IntFieldUpdateOperationsInput"
+        status:
+          oneOf:
+            - $ref: "#/components/schemas/AttendanceStatus"
+            - $ref: "#/components/schemas/EnumAttendanceStatusFieldUpdateOperationsInput"
+        created_at:
           oneOf:
             - type: string
-            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
-        post_title:
+              format: date-time
+            - $ref: "#/components/schemas/DateTimeFieldUpdateOperationsInput"
+    G_attendanceCreateManyInput:
+      type: object
+      properties:
+        id:
+          type: integer
+        user_id:
+          type: integer
+        course_id:
+          type: integer
+        lesson_id:
+          type: integer
+        status:
+          $ref: "#/components/schemas/AttendanceStatus"
+        created_at:
+          type: string
+          format: date-time
+      required:
+        - user_id
+        - course_id
+        - lesson_id
+        - status
+    G_attendanceUpdateManyMutationInput:
+      type: object
+      properties:
+        user_id:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/BigIntFieldUpdateOperationsInput"
+        course_id:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/IntFieldUpdateOperationsInput"
+        lesson_id:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/IntFieldUpdateOperationsInput"
+        status:
+          oneOf:
+            - $ref: "#/components/schemas/AttendanceStatus"
+            - $ref: "#/components/schemas/EnumAttendanceStatusFieldUpdateOperationsInput"
+        created_at:
           oneOf:
             - type: string
-            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
+              format: date-time
+            - $ref: "#/components/schemas/DateTimeFieldUpdateOperationsInput"
     BigIntFilter:
       type: object
       properties:
@@ -18220,6 +18877,107 @@ components:
       required:
         - term_id
         - taxonomy
+    G_classroom_groups_usersListRelationFilter:
+      type: object
+      properties:
+        every:
+          $ref: "#/components/schemas/G_classroom_groups_usersWhereInput"
+        some:
+          $ref: "#/components/schemas/G_classroom_groups_usersWhereInput"
+        none:
+          $ref: "#/components/schemas/G_classroom_groups_usersWhereInput"
+    G_classroom_groups_usersOrderByRelationAggregateInput:
+      type: object
+      properties:
+        _count:
+          $ref: "#/components/schemas/SortOrder"
+    EnumGroupRoleFilter:
+      type: object
+      properties:
+        equals:
+          $ref: "#/components/schemas/GroupRole"
+        in:
+          type: array
+          items:
+            $ref: "#/components/schemas/GroupRole"
+        notIn:
+          type: array
+          items:
+            $ref: "#/components/schemas/GroupRole"
+        not:
+          oneOf:
+            - $ref: "#/components/schemas/GroupRole"
+            - $ref: "#/components/schemas/NestedEnumGroupRoleFilter"
+    G_classroom_groupsRelationFilter:
+      type: object
+      properties:
+        is:
+          $ref: "#/components/schemas/G_classroom_groupsWhereInput"
+        isNot:
+          $ref: "#/components/schemas/G_classroom_groupsWhereInput"
+    EnumGroupRoleWithAggregatesFilter:
+      type: object
+      properties:
+        equals:
+          $ref: "#/components/schemas/GroupRole"
+        in:
+          type: array
+          items:
+            $ref: "#/components/schemas/GroupRole"
+        notIn:
+          type: array
+          items:
+            $ref: "#/components/schemas/GroupRole"
+        not:
+          oneOf:
+            - $ref: "#/components/schemas/GroupRole"
+            - $ref: "#/components/schemas/NestedEnumGroupRoleWithAggregatesFilter"
+        _count:
+          $ref: "#/components/schemas/NestedIntFilter"
+        _min:
+          $ref: "#/components/schemas/NestedEnumGroupRoleFilter"
+        _max:
+          $ref: "#/components/schemas/NestedEnumGroupRoleFilter"
+    EnumAttendanceStatusFilter:
+      type: object
+      properties:
+        equals:
+          $ref: "#/components/schemas/AttendanceStatus"
+        in:
+          type: array
+          items:
+            $ref: "#/components/schemas/AttendanceStatus"
+        notIn:
+          type: array
+          items:
+            $ref: "#/components/schemas/AttendanceStatus"
+        not:
+          oneOf:
+            - $ref: "#/components/schemas/AttendanceStatus"
+            - $ref: "#/components/schemas/NestedEnumAttendanceStatusFilter"
+    EnumAttendanceStatusWithAggregatesFilter:
+      type: object
+      properties:
+        equals:
+          $ref: "#/components/schemas/AttendanceStatus"
+        in:
+          type: array
+          items:
+            $ref: "#/components/schemas/AttendanceStatus"
+        notIn:
+          type: array
+          items:
+            $ref: "#/components/schemas/AttendanceStatus"
+        not:
+          oneOf:
+            - $ref: "#/components/schemas/AttendanceStatus"
+            - $ref: "#/components/schemas/NestedEnumAttendanceStatusWithAggregatesFilter"
+        _count:
+          $ref: "#/components/schemas/NestedIntFilter"
+        _min:
+          $ref: "#/components/schemas/NestedEnumAttendanceStatusFilter"
+        _max:
+          $ref: "#/components/schemas/NestedEnumAttendanceStatusFilter"
     BigIntFieldUpdateOperationsInput:
       type: object
       properties:
@@ -18342,6 +19100,163 @@ components:
           oneOf:
             - type: "null"
             - type: boolean
+    G_classroom_groups_usersCreateNestedManyWithoutGroupInput:
+      type: object
+      properties:
+        create:
+          oneOf:
+            - $ref: "#/components/schemas/G_classroom_groups_usersCreateWithoutGroupInput"
+            - type: array
+              items:
+                $ref: "#/components/schemas/G_classroom_groups_usersCreateWithoutGroupInput"
+            - $ref: "#/components/schemas/G_classroom_groups_usersUncheckedCreateWithoutGroup\
+                Input"
+            - type: array
+              items:
+                $ref: "#/components/schemas/G_classroom_groups_usersUncheckedCreateWithoutGroup\
+                  Input"
+        connectOrCreate:
+          oneOf:
+            - $ref: "#/components/schemas/G_classroom_groups_usersCreateOrConnectWithoutGroup\
+                Input"
+            - type: array
+              items:
+                $ref: "#/components/schemas/G_classroom_groups_usersCreateOrConnectWithoutGroup\
+                  Input"
+        createMany:
+          $ref: "#/components/schemas/G_classroom_groups_usersCreateManyGroupInputEnvelop\
+            e"
+        connect:
+          oneOf:
+            - $ref: "#/components/schemas/G_classroom_groups_usersWhereUniqueInput"
+            - type: array
+              items:
+                $ref: "#/components/schemas/G_classroom_groups_usersWhereUniqueInput"
+    G_classroom_groups_usersUpdateManyWithoutGroupNestedInput:
+      type: object
+      properties:
+        create:
+          oneOf:
+            - $ref: "#/components/schemas/G_classroom_groups_usersCreateWithoutGroupInput"
+            - type: array
+              items:
+                $ref: "#/components/schemas/G_classroom_groups_usersCreateWithoutGroupInput"
+            - $ref: "#/components/schemas/G_classroom_groups_usersUncheckedCreateWithoutGroup\
+                Input"
+            - type: array
+              items:
+                $ref: "#/components/schemas/G_classroom_groups_usersUncheckedCreateWithoutGroup\
+                  Input"
+        connectOrCreate:
+          oneOf:
+            - $ref: "#/components/schemas/G_classroom_groups_usersCreateOrConnectWithoutGroup\
+                Input"
+            - type: array
+              items:
+                $ref: "#/components/schemas/G_classroom_groups_usersCreateOrConnectWithoutGroup\
+                  Input"
+        upsert:
+          oneOf:
+            - $ref: "#/components/schemas/G_classroom_groups_usersUpsertWithWhereUniqueWithou\
+                tGroupInput"
+            - type: array
+              items:
+                $ref: "#/components/schemas/G_classroom_groups_usersUpsertWithWhereUniqueWithou\
+                  tGroupInput"
+        createMany:
+          $ref: "#/components/schemas/G_classroom_groups_usersCreateManyGroupInputEnvelop\
+            e"
+        set:
+          oneOf:
+            - $ref: "#/components/schemas/G_classroom_groups_usersWhereUniqueInput"
+            - type: array
+              items:
+                $ref: "#/components/schemas/G_classroom_groups_usersWhereUniqueInput"
+        disconnect:
+          oneOf:
+            - $ref: "#/components/schemas/G_classroom_groups_usersWhereUniqueInput"
+            - type: array
+              items:
+                $ref: "#/components/schemas/G_classroom_groups_usersWhereUniqueInput"
+        delete:
+          oneOf:
+            - $ref: "#/components/schemas/G_classroom_groups_usersWhereUniqueInput"
+            - type: array
+              items:
+                $ref: "#/components/schemas/G_classroom_groups_usersWhereUniqueInput"
+        connect:
+          oneOf:
+            - $ref: "#/components/schemas/G_classroom_groups_usersWhereUniqueInput"
+            - type: array
+              items:
+                $ref: "#/components/schemas/G_classroom_groups_usersWhereUniqueInput"
+        update:
+          oneOf:
+            - $ref: "#/components/schemas/G_classroom_groups_usersUpdateWithWhereUniqueWithou\
+                tGroupInput"
+            - type: array
+              items:
+                $ref: "#/components/schemas/G_classroom_groups_usersUpdateWithWhereUniqueWithou\
+                  tGroupInput"
+        updateMany:
+          oneOf:
+            - $ref: "#/components/schemas/G_classroom_groups_usersUpdateManyWithWhereWithoutG\
+                roupInput"
+            - type: array
+              items:
+                $ref: "#/components/schemas/G_classroom_groups_usersUpdateManyWithWhereWithoutG\
+                  roupInput"
+        deleteMany:
+          oneOf:
+            - $ref: "#/components/schemas/G_classroom_groups_usersScalarWhereInput"
+            - type: array
+              items:
+                $ref: "#/components/schemas/G_classroom_groups_usersScalarWhereInput"
+    G_classroom_groupsCreateNestedOneWithoutUsers_groupInput:
+      type: object
+      properties:
+        create:
+          oneOf:
+            - $ref: "#/components/schemas/G_classroom_groupsCreateWithoutUsers_groupInput"
+            - $ref: "#/components/schemas/G_classroom_groupsUncheckedCreateWithoutUsers_group\
+                Input"
+        connectOrCreate:
+          $ref: "#/components/schemas/G_classroom_groupsCreateOrConnectWithoutUsers_group\
+            Input"
+        connect:
+          $ref: "#/components/schemas/G_classroom_groupsWhereUniqueInput"
+    EnumGroupRoleFieldUpdateOperationsInput:
+      type: object
+      properties:
+        set:
+          $ref: "#/components/schemas/GroupRole"
+    G_classroom_groupsUpdateOneRequiredWithoutUsers_groupNestedInput:
+      type: object
+      properties:
+        create:
+          oneOf:
+            - $ref: "#/components/schemas/G_classroom_groupsCreateWithoutUsers_groupInput"
+            - $ref: "#/components/schemas/G_classroom_groupsUncheckedCreateWithoutUsers_group\
+                Input"
+        connectOrCreate:
+          $ref: "#/components/schemas/G_classroom_groupsCreateOrConnectWithoutUsers_group\
+            Input"
+        upsert:
+          $ref: "#/components/schemas/G_classroom_groupsUpsertWithoutUsers_groupInput"
+        connect:
+          $ref: "#/components/schemas/G_classroom_groupsWhereUniqueInput"
+        update:
+          oneOf:
+            - $ref: "#/components/schemas/G_classroom_groupsUpdateToOneWithWhereWithoutUsers_\
+                groupInput"
+            - $ref: "#/components/schemas/G_classroom_groupsUpdateWithoutUsers_groupInput"
+            - $ref: "#/components/schemas/G_classroom_groupsUncheckedUpdateWithoutUsers_group\
+                Input"
+    EnumAttendanceStatusFieldUpdateOperationsInput:
+      type: object
+      properties:
+        set:
+          $ref: "#/components/schemas/AttendanceStatus"
     NestedBigIntFilter:
       type: object
       properties:
@@ -19106,6 +20021,524 @@ components:
           $ref: "#/components/schemas/NestedBoolNullableFilter"
         _max:
           $ref: "#/components/schemas/NestedBoolNullableFilter"
+    NestedEnumGroupRoleFilter:
+      type: object
+      properties:
+        equals:
+          $ref: "#/components/schemas/GroupRole"
+        in:
+          type: array
+          items:
+            $ref: "#/components/schemas/GroupRole"
+        notIn:
+          type: array
+          items:
+            $ref: "#/components/schemas/GroupRole"
+        not:
+          oneOf:
+            - $ref: "#/components/schemas/GroupRole"
+            - $ref: "#/components/schemas/NestedEnumGroupRoleFilter"
+    NestedEnumGroupRoleWithAggregatesFilter:
+      type: object
+      properties:
+        equals:
+          $ref: "#/components/schemas/GroupRole"
+        in:
+          type: array
+          items:
+            $ref: "#/components/schemas/GroupRole"
+        notIn:
+          type: array
+          items:
+            $ref: "#/components/schemas/GroupRole"
+        not:
+          oneOf:
+            - $ref: "#/components/schemas/GroupRole"
+            - $ref: "#/components/schemas/NestedEnumGroupRoleWithAggregatesFilter"
+        _count:
+          $ref: "#/components/schemas/NestedIntFilter"
+        _min:
+          $ref: "#/components/schemas/NestedEnumGroupRoleFilter"
+        _max:
+          $ref: "#/components/schemas/NestedEnumGroupRoleFilter"
+    NestedEnumAttendanceStatusFilter:
+      type: object
+      properties:
+        equals:
+          $ref: "#/components/schemas/AttendanceStatus"
+        in:
+          type: array
+          items:
+            $ref: "#/components/schemas/AttendanceStatus"
+        notIn:
+          type: array
+          items:
+            $ref: "#/components/schemas/AttendanceStatus"
+        not:
+          oneOf:
+            - $ref: "#/components/schemas/AttendanceStatus"
+            - $ref: "#/components/schemas/NestedEnumAttendanceStatusFilter"
+    NestedEnumAttendanceStatusWithAggregatesFilter:
+      type: object
+      properties:
+        equals:
+          $ref: "#/components/schemas/AttendanceStatus"
+        in:
+          type: array
+          items:
+            $ref: "#/components/schemas/AttendanceStatus"
+        notIn:
+          type: array
+          items:
+            $ref: "#/components/schemas/AttendanceStatus"
+        not:
+          oneOf:
+            - $ref: "#/components/schemas/AttendanceStatus"
+            - $ref: "#/components/schemas/NestedEnumAttendanceStatusWithAggregatesFilter"
+        _count:
+          $ref: "#/components/schemas/NestedIntFilter"
+        _min:
+          $ref: "#/components/schemas/NestedEnumAttendanceStatusFilter"
+        _max:
+          $ref: "#/components/schemas/NestedEnumAttendanceStatusFilter"
+    G_classroom_groups_usersCreateWithoutGroupInput:
+      type: object
+      properties:
+        user_id:
+          type: integer
+        role:
+          $ref: "#/components/schemas/GroupRole"
+        order:
+          type: integer
+        created_by:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+      required:
+        - user_id
+        - order
+    G_classroom_groups_usersUncheckedCreateWithoutGroupInput:
+      type: object
+      properties:
+        id:
+          type: integer
+        user_id:
+          type: integer
+        role:
+          $ref: "#/components/schemas/GroupRole"
+        order:
+          type: integer
+        created_by:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+      required:
+        - user_id
+        - order
+    G_classroom_groups_usersCreateOrConnectWithoutGroupInput:
+      type: object
+      properties:
+        where:
+          $ref: "#/components/schemas/G_classroom_groups_usersWhereUniqueInput"
+        create:
+          oneOf:
+            - $ref: "#/components/schemas/G_classroom_groups_usersCreateWithoutGroupInput"
+            - $ref: "#/components/schemas/G_classroom_groups_usersUncheckedCreateWithoutGroup\
+                Input"
+      required:
+        - where
+        - create
+    G_classroom_groups_usersCreateManyGroupInputEnvelope:
+      type: object
+      properties:
+        data:
+          oneOf:
+            - $ref: "#/components/schemas/G_classroom_groups_usersCreateManyGroupInput"
+            - type: array
+              items:
+                $ref: "#/components/schemas/G_classroom_groups_usersCreateManyGroupInput"
+        skipDuplicates:
+          type: boolean
+      required:
+        - data
+    G_classroom_groups_usersUpsertWithWhereUniqueWithoutGroupInput:
+      type: object
+      properties:
+        where:
+          $ref: "#/components/schemas/G_classroom_groups_usersWhereUniqueInput"
+        update:
+          oneOf:
+            - $ref: "#/components/schemas/G_classroom_groups_usersUpdateWithoutGroupInput"
+            - $ref: "#/components/schemas/G_classroom_groups_usersUncheckedUpdateWithoutGroup\
+                Input"
+        create:
+          oneOf:
+            - $ref: "#/components/schemas/G_classroom_groups_usersCreateWithoutGroupInput"
+            - $ref: "#/components/schemas/G_classroom_groups_usersUncheckedCreateWithoutGroup\
+                Input"
+      required:
+        - where
+        - update
+        - create
+    G_classroom_groups_usersUpdateWithWhereUniqueWithoutGroupInput:
+      type: object
+      properties:
+        where:
+          $ref: "#/components/schemas/G_classroom_groups_usersWhereUniqueInput"
+        data:
+          oneOf:
+            - $ref: "#/components/schemas/G_classroom_groups_usersUpdateWithoutGroupInput"
+            - $ref: "#/components/schemas/G_classroom_groups_usersUncheckedUpdateWithoutGroup\
+                Input"
+      required:
+        - where
+        - data
+    G_classroom_groups_usersUpdateManyWithWhereWithoutGroupInput:
+      type: object
+      properties:
+        where:
+          $ref: "#/components/schemas/G_classroom_groups_usersScalarWhereInput"
+        data:
+          oneOf:
+            - $ref: "#/components/schemas/G_classroom_groups_usersUpdateManyMutationInput"
+            - $ref: "#/components/schemas/G_classroom_groups_usersUncheckedUpdateManyWithoutG\
+                roupInput"
+      required:
+        - where
+        - data
+    G_classroom_groups_usersScalarWhereInput:
+      type: object
+      properties:
+        AND:
+          oneOf:
+            - $ref: "#/components/schemas/G_classroom_groups_usersScalarWhereInput"
+            - type: array
+              items:
+                $ref: "#/components/schemas/G_classroom_groups_usersScalarWhereInput"
+        OR:
+          type: array
+          items:
+            $ref: "#/components/schemas/G_classroom_groups_usersScalarWhereInput"
+        NOT:
+          oneOf:
+            - $ref: "#/components/schemas/G_classroom_groups_usersScalarWhereInput"
+            - type: array
+              items:
+                $ref: "#/components/schemas/G_classroom_groups_usersScalarWhereInput"
+        id:
+          oneOf:
+            - $ref: "#/components/schemas/IntFilter"
+            - type: integer
+        user_id:
+          oneOf:
+            - $ref: "#/components/schemas/BigIntFilter"
+            - type: integer
+        group_id:
+          oneOf:
+            - $ref: "#/components/schemas/IntFilter"
+            - type: integer
+        role:
+          oneOf:
+            - $ref: "#/components/schemas/EnumGroupRoleFilter"
+            - $ref: "#/components/schemas/GroupRole"
+        order:
+          oneOf:
+            - $ref: "#/components/schemas/IntFilter"
+            - type: integer
+        created_by:
+          oneOf:
+            - $ref: "#/components/schemas/BigIntFilter"
+            - type: integer
+        created_at:
+          oneOf:
+            - $ref: "#/components/schemas/DateTimeFilter"
+            - type: string
+              format: date-time
+    G_classroom_groupsCreateWithoutUsers_groupInput:
+      type: object
+      properties:
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        course_id:
+          type: integer
+        group_name:
+          type: string
+        description:
+          type: string
+        created_by:
+          type: integer
+      required:
+        - course_id
+        - group_name
+        - description
+    G_classroom_groupsUncheckedCreateWithoutUsers_groupInput:
+      type: object
+      properties:
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        id:
+          type: integer
+        course_id:
+          type: integer
+        group_name:
+          type: string
+        description:
+          type: string
+        created_by:
+          type: integer
+      required:
+        - course_id
+        - group_name
+        - description
+    G_classroom_groupsCreateOrConnectWithoutUsers_groupInput:
+      type: object
+      properties:
+        where:
+          $ref: "#/components/schemas/G_classroom_groupsWhereUniqueInput"
+        create:
+          oneOf:
+            - $ref: "#/components/schemas/G_classroom_groupsCreateWithoutUsers_groupInput"
+            - $ref: "#/components/schemas/G_classroom_groupsUncheckedCreateWithoutUsers_group\
+                Input"
+      required:
+        - where
+        - create
+    G_classroom_groupsUpsertWithoutUsers_groupInput:
+      type: object
+      properties:
+        update:
+          oneOf:
+            - $ref: "#/components/schemas/G_classroom_groupsUpdateWithoutUsers_groupInput"
+            - $ref: "#/components/schemas/G_classroom_groupsUncheckedUpdateWithoutUsers_group\
+                Input"
+        create:
+          oneOf:
+            - $ref: "#/components/schemas/G_classroom_groupsCreateWithoutUsers_groupInput"
+            - $ref: "#/components/schemas/G_classroom_groupsUncheckedCreateWithoutUsers_group\
+                Input"
+        where:
+          $ref: "#/components/schemas/G_classroom_groupsWhereInput"
+      required:
+        - update
+        - create
+    G_classroom_groupsUpdateToOneWithWhereWithoutUsers_groupInput:
+      type: object
+      properties:
+        where:
+          $ref: "#/components/schemas/G_classroom_groupsWhereInput"
+        data:
+          oneOf:
+            - $ref: "#/components/schemas/G_classroom_groupsUpdateWithoutUsers_groupInput"
+            - $ref: "#/components/schemas/G_classroom_groupsUncheckedUpdateWithoutUsers_group\
+                Input"
+      required:
+        - data
+    G_classroom_groupsUpdateWithoutUsers_groupInput:
+      type: object
+      properties:
+        created_at:
+          oneOf:
+            - type: string
+              format: date-time
+            - $ref: "#/components/schemas/DateTimeFieldUpdateOperationsInput"
+        updated_at:
+          oneOf:
+            - type: string
+              format: date-time
+            - $ref: "#/components/schemas/DateTimeFieldUpdateOperationsInput"
+        course_id:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/IntFieldUpdateOperationsInput"
+        group_name:
+          oneOf:
+            - type: string
+            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
+        description:
+          oneOf:
+            - type: string
+            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
+        created_by:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/BigIntFieldUpdateOperationsInput"
+    G_classroom_groupsUncheckedUpdateWithoutUsers_groupInput:
+      type: object
+      properties:
+        created_at:
+          oneOf:
+            - type: string
+              format: date-time
+            - $ref: "#/components/schemas/DateTimeFieldUpdateOperationsInput"
+        updated_at:
+          oneOf:
+            - type: string
+              format: date-time
+            - $ref: "#/components/schemas/DateTimeFieldUpdateOperationsInput"
+        id:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/IntFieldUpdateOperationsInput"
+        course_id:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/IntFieldUpdateOperationsInput"
+        group_name:
+          oneOf:
+            - type: string
+            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
+        description:
+          oneOf:
+            - type: string
+            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
+        created_by:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/BigIntFieldUpdateOperationsInput"
+    G_classroom_groups_usersCreateManyGroupInput:
+      type: object
+      properties:
+        id:
+          type: integer
+        user_id:
+          type: integer
+        role:
+          $ref: "#/components/schemas/GroupRole"
+        order:
+          type: integer
+        created_by:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+      required:
+        - user_id
+        - order
+    G_classroom_groups_usersUpdateWithoutGroupInput:
+      type: object
+      properties:
+        user_id:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/BigIntFieldUpdateOperationsInput"
+        role:
+          oneOf:
+            - $ref: "#/components/schemas/GroupRole"
+            - $ref: "#/components/schemas/EnumGroupRoleFieldUpdateOperationsInput"
+        order:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/IntFieldUpdateOperationsInput"
+        created_by:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/BigIntFieldUpdateOperationsInput"
+        created_at:
+          oneOf:
+            - type: string
+              format: date-time
+            - $ref: "#/components/schemas/DateTimeFieldUpdateOperationsInput"
+    G_classroom_groups_usersUncheckedUpdateWithoutGroupInput:
+      type: object
+      properties:
+        id:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/IntFieldUpdateOperationsInput"
+        user_id:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/BigIntFieldUpdateOperationsInput"
+        role:
+          oneOf:
+            - $ref: "#/components/schemas/GroupRole"
+            - $ref: "#/components/schemas/EnumGroupRoleFieldUpdateOperationsInput"
+        order:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/IntFieldUpdateOperationsInput"
+        created_by:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/BigIntFieldUpdateOperationsInput"
+        created_at:
+          oneOf:
+            - type: string
+              format: date-time
+            - $ref: "#/components/schemas/DateTimeFieldUpdateOperationsInput"
+    G_classroom_groups_usersUncheckedUpdateManyWithoutGroupInput:
+      type: object
+      properties:
+        id:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/IntFieldUpdateOperationsInput"
+        user_id:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/BigIntFieldUpdateOperationsInput"
+        role:
+          oneOf:
+            - $ref: "#/components/schemas/GroupRole"
+            - $ref: "#/components/schemas/EnumGroupRoleFieldUpdateOperationsInput"
+        order:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/IntFieldUpdateOperationsInput"
+        created_by:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/BigIntFieldUpdateOperationsInput"
+        created_at:
+          oneOf:
+            - type: string
+              format: date-time
+            - $ref: "#/components/schemas/DateTimeFieldUpdateOperationsInput"
+    G_classroom_groupsArgs:
+      type: object
+      properties:
+        select:
+          $ref: "#/components/schemas/G_classroom_groupsSelect"
+        include:
+          $ref: "#/components/schemas/G_classroom_groupsInclude"
+    G_classroom_groupsInclude:
+      type: object
+      properties:
+        users_group:
+          oneOf:
+            - type: boolean
+            - $ref: "#/components/schemas/G_classroom_groups_usersFindManyArgs"
+        _count:
+          oneOf:
+            - type: boolean
+            - $ref: "#/components/schemas/G_classroom_groupsCountOutputTypeArgs"
+    G_classroom_groups_usersInclude:
+      type: object
+      properties:
+        group:
+          oneOf:
+            - type: boolean
+            - $ref: "#/components/schemas/G_classroom_groupsArgs"
+    G_classroom_groupsCountOutputTypeSelect:
+      type: object
+      properties:
+        users_group:
+          type: boolean
+    G_classroom_groupsCountOutputTypeArgs:
+      type: object
+      properties:
+        select:
+          $ref: "#/components/schemas/G_classroom_groupsCountOutputTypeSelect"
     G_actionscheduler_actionsSelect:
       type: object
       properties:
@@ -20027,18 +21460,66 @@ components:
           type: boolean
         display_name:
           type: boolean
-    PostsSelect:
+    G_classroom_groupsSelect:
       type: object
       properties:
-        ID:
+        created_at:
           type: boolean
-        post_date:
+        updated_at:
           type: boolean
-        post_date_gmt:
+        id:
           type: boolean
-        post_content:
+        course_id:
           type: boolean
-        post_title:
+        group_name:
+          type: boolean
+        description:
+          type: boolean
+        created_by:
+          type: boolean
+        users_group:
+          oneOf:
+            - type: boolean
+            - $ref: "#/components/schemas/G_classroom_groups_usersFindManyArgs"
+        _count:
+          oneOf:
+            - type: boolean
+            - $ref: "#/components/schemas/G_classroom_groupsCountOutputTypeArgs"
+    G_classroom_groups_usersSelect:
+      type: object
+      properties:
+        id:
+          type: boolean
+        user_id:
+          type: boolean
+        group_id:
+          type: boolean
+        group:
+          oneOf:
+            - type: boolean
+            - $ref: "#/components/schemas/G_classroom_groupsArgs"
+        role:
+          type: boolean
+        order:
+          type: boolean
+        created_by:
+          type: boolean
+        created_at:
+          type: boolean
+    G_attendanceSelect:
+      type: object
+      properties:
+        id:
+          type: boolean
+        user_id:
+          type: boolean
+        course_id:
+          type: boolean
+        lesson_id:
+          type: boolean
+        status:
+          type: boolean
+        created_at:
           type: boolean
     AggregateG_actionscheduler_actions:
       type: object
@@ -23426,70 +24907,211 @@ components:
         - user_activation_key
         - user_status
         - display_name
-    AggregatePosts:
+    AggregateG_classroom_groups:
       type: object
       properties:
         _count:
           oneOf:
             - type: "null"
-            - $ref: "#/components/schemas/PostsCountAggregateOutputType"
+            - $ref: "#/components/schemas/G_classroom_groupsCountAggregateOutputType"
         _avg:
           oneOf:
             - type: "null"
-            - $ref: "#/components/schemas/PostsAvgAggregateOutputType"
+            - $ref: "#/components/schemas/G_classroom_groupsAvgAggregateOutputType"
         _sum:
           oneOf:
             - type: "null"
-            - $ref: "#/components/schemas/PostsSumAggregateOutputType"
+            - $ref: "#/components/schemas/G_classroom_groupsSumAggregateOutputType"
         _min:
           oneOf:
             - type: "null"
-            - $ref: "#/components/schemas/PostsMinAggregateOutputType"
+            - $ref: "#/components/schemas/G_classroom_groupsMinAggregateOutputType"
         _max:
           oneOf:
             - type: "null"
-            - $ref: "#/components/schemas/PostsMaxAggregateOutputType"
-    PostsGroupByOutputType:
+            - $ref: "#/components/schemas/G_classroom_groupsMaxAggregateOutputType"
+    G_classroom_groupsGroupByOutputType:
       type: object
       properties:
-        ID:
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        id:
           type: integer
-        post_date:
+        course_id:
+          type: integer
+        group_name:
           type: string
-          format: date-time
-        post_date_gmt:
+        description:
           type: string
-          format: date-time
-        post_content:
-          type: string
-        post_title:
-          type: string
+        created_by:
+          type: integer
         _count:
           oneOf:
             - type: "null"
-            - $ref: "#/components/schemas/PostsCountAggregateOutputType"
+            - $ref: "#/components/schemas/G_classroom_groupsCountAggregateOutputType"
         _avg:
           oneOf:
             - type: "null"
-            - $ref: "#/components/schemas/PostsAvgAggregateOutputType"
+            - $ref: "#/components/schemas/G_classroom_groupsAvgAggregateOutputType"
         _sum:
           oneOf:
             - type: "null"
-            - $ref: "#/components/schemas/PostsSumAggregateOutputType"
+            - $ref: "#/components/schemas/G_classroom_groupsSumAggregateOutputType"
         _min:
           oneOf:
             - type: "null"
-            - $ref: "#/components/schemas/PostsMinAggregateOutputType"
+            - $ref: "#/components/schemas/G_classroom_groupsMinAggregateOutputType"
         _max:
           oneOf:
             - type: "null"
-            - $ref: "#/components/schemas/PostsMaxAggregateOutputType"
+            - $ref: "#/components/schemas/G_classroom_groupsMaxAggregateOutputType"
       required:
-        - ID
-        - post_date
-        - post_date_gmt
-        - post_content
-        - post_title
+        - created_at
+        - updated_at
+        - id
+        - course_id
+        - group_name
+        - description
+        - created_by
+    AggregateG_classroom_groups_users:
+      type: object
+      properties:
+        _count:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/G_classroom_groups_usersCountAggregateOutputType"
+        _avg:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/G_classroom_groups_usersAvgAggregateOutputType"
+        _sum:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/G_classroom_groups_usersSumAggregateOutputType"
+        _min:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/G_classroom_groups_usersMinAggregateOutputType"
+        _max:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/G_classroom_groups_usersMaxAggregateOutputType"
+    G_classroom_groups_usersGroupByOutputType:
+      type: object
+      properties:
+        id:
+          type: integer
+        user_id:
+          type: integer
+        group_id:
+          type: integer
+        role:
+          $ref: "#/components/schemas/GroupRole"
+        order:
+          type: integer
+        created_by:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        _count:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/G_classroom_groups_usersCountAggregateOutputType"
+        _avg:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/G_classroom_groups_usersAvgAggregateOutputType"
+        _sum:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/G_classroom_groups_usersSumAggregateOutputType"
+        _min:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/G_classroom_groups_usersMinAggregateOutputType"
+        _max:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/G_classroom_groups_usersMaxAggregateOutputType"
+      required:
+        - id
+        - user_id
+        - group_id
+        - role
+        - order
+        - created_by
+        - created_at
+    AggregateG_attendance:
+      type: object
+      properties:
+        _count:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/G_attendanceCountAggregateOutputType"
+        _avg:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/G_attendanceAvgAggregateOutputType"
+        _sum:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/G_attendanceSumAggregateOutputType"
+        _min:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/G_attendanceMinAggregateOutputType"
+        _max:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/G_attendanceMaxAggregateOutputType"
+    G_attendanceGroupByOutputType:
+      type: object
+      properties:
+        id:
+          type: integer
+        user_id:
+          type: integer
+        course_id:
+          type: integer
+        lesson_id:
+          type: integer
+        status:
+          $ref: "#/components/schemas/AttendanceStatus"
+        created_at:
+          type: string
+          format: date-time
+        _count:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/G_attendanceCountAggregateOutputType"
+        _avg:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/G_attendanceAvgAggregateOutputType"
+        _sum:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/G_attendanceSumAggregateOutputType"
+        _min:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/G_attendanceMinAggregateOutputType"
+        _max:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/G_attendanceMaxAggregateOutputType"
+      required:
+        - id
+        - user_id
+        - course_id
+        - lesson_id
+        - status
+        - created_at
     G_actionscheduler_actionsCountAggregateOutputType:
       type: object
       properties:
@@ -30039,92 +31661,387 @@ components:
           oneOf:
             - type: "null"
             - type: string
-    PostsCountAggregateOutputType:
+    G_classroom_groupsCountAggregateOutputType:
       type: object
       properties:
-        ID:
+        created_at:
           type: integer
-        post_date:
+        updated_at:
           type: integer
-        post_date_gmt:
+        id:
           type: integer
-        post_content:
+        course_id:
           type: integer
-        post_title:
+        group_name:
+          type: integer
+        description:
+          type: integer
+        created_by:
           type: integer
         _all:
           type: integer
       required:
-        - ID
-        - post_date
-        - post_date_gmt
-        - post_content
-        - post_title
+        - created_at
+        - updated_at
+        - id
+        - course_id
+        - group_name
+        - description
+        - created_by
         - _all
-    PostsAvgAggregateOutputType:
+    G_classroom_groupsAvgAggregateOutputType:
       type: object
       properties:
-        ID:
+        id:
           oneOf:
             - type: "null"
             - type: number
-    PostsSumAggregateOutputType:
+        course_id:
+          oneOf:
+            - type: "null"
+            - type: number
+        created_by:
+          oneOf:
+            - type: "null"
+            - type: number
+    G_classroom_groupsSumAggregateOutputType:
       type: object
       properties:
-        ID:
+        id:
           oneOf:
             - type: "null"
             - type: integer
-    PostsMinAggregateOutputType:
-      type: object
-      properties:
-        ID:
+        course_id:
           oneOf:
             - type: "null"
             - type: integer
-        post_date:
-          oneOf:
-            - type: "null"
-            - type: string
-              format: date-time
-        post_date_gmt:
-          oneOf:
-            - type: "null"
-            - type: string
-              format: date-time
-        post_content:
-          oneOf:
-            - type: "null"
-            - type: string
-        post_title:
-          oneOf:
-            - type: "null"
-            - type: string
-    PostsMaxAggregateOutputType:
-      type: object
-      properties:
-        ID:
+        created_by:
           oneOf:
             - type: "null"
             - type: integer
-        post_date:
+    G_classroom_groupsMinAggregateOutputType:
+      type: object
+      properties:
+        created_at:
           oneOf:
             - type: "null"
             - type: string
               format: date-time
-        post_date_gmt:
+        updated_at:
           oneOf:
             - type: "null"
             - type: string
               format: date-time
-        post_content:
+        id:
+          oneOf:
+            - type: "null"
+            - type: integer
+        course_id:
+          oneOf:
+            - type: "null"
+            - type: integer
+        group_name:
           oneOf:
             - type: "null"
             - type: string
-        post_title:
+        description:
           oneOf:
             - type: "null"
             - type: string
+        created_by:
+          oneOf:
+            - type: "null"
+            - type: integer
+    G_classroom_groupsMaxAggregateOutputType:
+      type: object
+      properties:
+        created_at:
+          oneOf:
+            - type: "null"
+            - type: string
+              format: date-time
+        updated_at:
+          oneOf:
+            - type: "null"
+            - type: string
+              format: date-time
+        id:
+          oneOf:
+            - type: "null"
+            - type: integer
+        course_id:
+          oneOf:
+            - type: "null"
+            - type: integer
+        group_name:
+          oneOf:
+            - type: "null"
+            - type: string
+        description:
+          oneOf:
+            - type: "null"
+            - type: string
+        created_by:
+          oneOf:
+            - type: "null"
+            - type: integer
+    G_classroom_groups_usersCountAggregateOutputType:
+      type: object
+      properties:
+        id:
+          type: integer
+        user_id:
+          type: integer
+        group_id:
+          type: integer
+        role:
+          type: integer
+        order:
+          type: integer
+        created_by:
+          type: integer
+        created_at:
+          type: integer
+        _all:
+          type: integer
+      required:
+        - id
+        - user_id
+        - group_id
+        - role
+        - order
+        - created_by
+        - created_at
+        - _all
+    G_classroom_groups_usersAvgAggregateOutputType:
+      type: object
+      properties:
+        id:
+          oneOf:
+            - type: "null"
+            - type: number
+        user_id:
+          oneOf:
+            - type: "null"
+            - type: number
+        group_id:
+          oneOf:
+            - type: "null"
+            - type: number
+        order:
+          oneOf:
+            - type: "null"
+            - type: number
+        created_by:
+          oneOf:
+            - type: "null"
+            - type: number
+    G_classroom_groups_usersSumAggregateOutputType:
+      type: object
+      properties:
+        id:
+          oneOf:
+            - type: "null"
+            - type: integer
+        user_id:
+          oneOf:
+            - type: "null"
+            - type: integer
+        group_id:
+          oneOf:
+            - type: "null"
+            - type: integer
+        order:
+          oneOf:
+            - type: "null"
+            - type: integer
+        created_by:
+          oneOf:
+            - type: "null"
+            - type: integer
+    G_classroom_groups_usersMinAggregateOutputType:
+      type: object
+      properties:
+        id:
+          oneOf:
+            - type: "null"
+            - type: integer
+        user_id:
+          oneOf:
+            - type: "null"
+            - type: integer
+        group_id:
+          oneOf:
+            - type: "null"
+            - type: integer
+        role:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/GroupRole"
+        order:
+          oneOf:
+            - type: "null"
+            - type: integer
+        created_by:
+          oneOf:
+            - type: "null"
+            - type: integer
+        created_at:
+          oneOf:
+            - type: "null"
+            - type: string
+              format: date-time
+    G_classroom_groups_usersMaxAggregateOutputType:
+      type: object
+      properties:
+        id:
+          oneOf:
+            - type: "null"
+            - type: integer
+        user_id:
+          oneOf:
+            - type: "null"
+            - type: integer
+        group_id:
+          oneOf:
+            - type: "null"
+            - type: integer
+        role:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/GroupRole"
+        order:
+          oneOf:
+            - type: "null"
+            - type: integer
+        created_by:
+          oneOf:
+            - type: "null"
+            - type: integer
+        created_at:
+          oneOf:
+            - type: "null"
+            - type: string
+              format: date-time
+    G_attendanceCountAggregateOutputType:
+      type: object
+      properties:
+        id:
+          type: integer
+        user_id:
+          type: integer
+        course_id:
+          type: integer
+        lesson_id:
+          type: integer
+        status:
+          type: integer
+        created_at:
+          type: integer
+        _all:
+          type: integer
+      required:
+        - id
+        - user_id
+        - course_id
+        - lesson_id
+        - status
+        - created_at
+        - _all
+    G_attendanceAvgAggregateOutputType:
+      type: object
+      properties:
+        id:
+          oneOf:
+            - type: "null"
+            - type: number
+        user_id:
+          oneOf:
+            - type: "null"
+            - type: number
+        course_id:
+          oneOf:
+            - type: "null"
+            - type: number
+        lesson_id:
+          oneOf:
+            - type: "null"
+            - type: number
+    G_attendanceSumAggregateOutputType:
+      type: object
+      properties:
+        id:
+          oneOf:
+            - type: "null"
+            - type: integer
+        user_id:
+          oneOf:
+            - type: "null"
+            - type: integer
+        course_id:
+          oneOf:
+            - type: "null"
+            - type: integer
+        lesson_id:
+          oneOf:
+            - type: "null"
+            - type: integer
+    G_attendanceMinAggregateOutputType:
+      type: object
+      properties:
+        id:
+          oneOf:
+            - type: "null"
+            - type: integer
+        user_id:
+          oneOf:
+            - type: "null"
+            - type: integer
+        course_id:
+          oneOf:
+            - type: "null"
+            - type: integer
+        lesson_id:
+          oneOf:
+            - type: "null"
+            - type: integer
+        status:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/AttendanceStatus"
+        created_at:
+          oneOf:
+            - type: "null"
+            - type: string
+              format: date-time
+    G_attendanceMaxAggregateOutputType:
+      type: object
+      properties:
+        id:
+          oneOf:
+            - type: "null"
+            - type: integer
+        user_id:
+          oneOf:
+            - type: "null"
+            - type: integer
+        course_id:
+          oneOf:
+            - type: "null"
+            - type: integer
+        lesson_id:
+          oneOf:
+            - type: "null"
+            - type: integer
+        status:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/AttendanceStatus"
+        created_at:
+          oneOf:
+            - type: "null"
+            - type: string
+              format: date-time
     _Meta:
       type: object
       description: Meta information about the request or response
@@ -37002,89 +38919,99 @@ components:
           type: integer
         meta:
           $ref: "#/components/schemas/_Meta"
-    PostsCreateArgs:
+    G_classroom_groupsCreateArgs:
       type: object
       required:
         - data
       properties:
         select:
-          $ref: "#/components/schemas/PostsSelect"
+          $ref: "#/components/schemas/G_classroom_groupsSelect"
+        include:
+          $ref: "#/components/schemas/G_classroom_groupsInclude"
         data:
-          $ref: "#/components/schemas/PostsCreateInput"
+          $ref: "#/components/schemas/G_classroom_groupsCreateInput"
         meta:
           $ref: "#/components/schemas/_Meta"
-    PostsCreateManyArgs:
+    G_classroom_groupsCreateManyArgs:
       type: object
       required:
         - data
       properties:
         data:
           oneOf:
-            - $ref: "#/components/schemas/PostsCreateManyInput"
+            - $ref: "#/components/schemas/G_classroom_groupsCreateManyInput"
             - type: array
               items:
-                $ref: "#/components/schemas/PostsCreateManyInput"
+                $ref: "#/components/schemas/G_classroom_groupsCreateManyInput"
         skipDuplicates:
           type: boolean
           description: Do not insert records with unique fields or ID fields that already
             exist.
         meta:
           $ref: "#/components/schemas/_Meta"
-    PostsFindUniqueArgs:
+    G_classroom_groupsFindUniqueArgs:
       type: object
       required:
         - where
       properties:
         select:
-          $ref: "#/components/schemas/PostsSelect"
+          $ref: "#/components/schemas/G_classroom_groupsSelect"
+        include:
+          $ref: "#/components/schemas/G_classroom_groupsInclude"
         where:
-          $ref: "#/components/schemas/PostsWhereUniqueInput"
+          $ref: "#/components/schemas/G_classroom_groupsWhereUniqueInput"
         meta:
           $ref: "#/components/schemas/_Meta"
-    PostsFindFirstArgs:
+    G_classroom_groupsFindFirstArgs:
       type: object
       properties:
         select:
-          $ref: "#/components/schemas/PostsSelect"
+          $ref: "#/components/schemas/G_classroom_groupsSelect"
+        include:
+          $ref: "#/components/schemas/G_classroom_groupsInclude"
         where:
-          $ref: "#/components/schemas/PostsWhereInput"
+          $ref: "#/components/schemas/G_classroom_groupsWhereInput"
         meta:
           $ref: "#/components/schemas/_Meta"
-    PostsFindManyArgs:
+    G_classroom_groupsFindManyArgs:
       type: object
       properties:
         select:
-          $ref: "#/components/schemas/PostsSelect"
+          $ref: "#/components/schemas/G_classroom_groupsSelect"
+        include:
+          $ref: "#/components/schemas/G_classroom_groupsInclude"
         where:
-          $ref: "#/components/schemas/PostsWhereInput"
+          $ref: "#/components/schemas/G_classroom_groupsWhereInput"
         meta:
           $ref: "#/components/schemas/_Meta"
-    PostsUpdateArgs:
+    G_classroom_groupsUpdateArgs:
       type: object
       required:
         - where
         - data
       properties:
         select:
-          $ref: "#/components/schemas/PostsSelect"
+          $ref: "#/components/schemas/G_classroom_groupsSelect"
+        include:
+          $ref: "#/components/schemas/G_classroom_groupsInclude"
         where:
-          $ref: "#/components/schemas/PostsWhereUniqueInput"
+          $ref: "#/components/schemas/G_classroom_groupsWhereUniqueInput"
         data:
-          $ref: "#/components/schemas/PostsUpdateInput"
+          $ref: "#/components/schemas/G_classroom_groupsUpdateInput"
         meta:
           $ref: "#/components/schemas/_Meta"
-    PostsUpdateManyArgs:
+    G_classroom_groupsUpdateManyArgs:
       type: object
       required:
         - data
       properties:
         where:
-          $ref: "#/components/schemas/PostsWhereInput"
+          $ref: "#/components/schemas/G_classroom_groupsWhereInput"
         data:
-          $ref: "#/components/schemas/PostsUpdateManyMutationInput"
+          $ref: "#/components/schemas/G_classroom_groupsUpdateManyMutationInput"
         meta:
           $ref: "#/components/schemas/_Meta"
-    PostsUpsertArgs:
+    G_classroom_groupsUpsertArgs:
       type: object
       required:
         - create
@@ -37092,68 +39019,403 @@ components:
         - where
       properties:
         select:
-          $ref: "#/components/schemas/PostsSelect"
+          $ref: "#/components/schemas/G_classroom_groupsSelect"
+        include:
+          $ref: "#/components/schemas/G_classroom_groupsInclude"
         where:
-          $ref: "#/components/schemas/PostsWhereUniqueInput"
+          $ref: "#/components/schemas/G_classroom_groupsWhereUniqueInput"
         create:
-          $ref: "#/components/schemas/PostsCreateInput"
+          $ref: "#/components/schemas/G_classroom_groupsCreateInput"
         update:
-          $ref: "#/components/schemas/PostsUpdateInput"
+          $ref: "#/components/schemas/G_classroom_groupsUpdateInput"
         meta:
           $ref: "#/components/schemas/_Meta"
-    PostsDeleteUniqueArgs:
+    G_classroom_groupsDeleteUniqueArgs:
       type: object
       required:
         - where
       properties:
         select:
-          $ref: "#/components/schemas/PostsSelect"
+          $ref: "#/components/schemas/G_classroom_groupsSelect"
+        include:
+          $ref: "#/components/schemas/G_classroom_groupsInclude"
         where:
-          $ref: "#/components/schemas/PostsWhereUniqueInput"
+          $ref: "#/components/schemas/G_classroom_groupsWhereUniqueInput"
         meta:
           $ref: "#/components/schemas/_Meta"
-    PostsDeleteManyArgs:
+    G_classroom_groupsDeleteManyArgs:
       type: object
       properties:
         where:
-          $ref: "#/components/schemas/PostsWhereInput"
+          $ref: "#/components/schemas/G_classroom_groupsWhereInput"
         meta:
           $ref: "#/components/schemas/_Meta"
-    PostsCountArgs:
+    G_classroom_groupsCountArgs:
       type: object
       properties:
         select:
-          $ref: "#/components/schemas/PostsSelect"
+          $ref: "#/components/schemas/G_classroom_groupsSelect"
         where:
-          $ref: "#/components/schemas/PostsWhereInput"
+          $ref: "#/components/schemas/G_classroom_groupsWhereInput"
         meta:
           $ref: "#/components/schemas/_Meta"
-    PostsAggregateArgs:
+    G_classroom_groupsAggregateArgs:
       type: object
       properties:
         where:
-          $ref: "#/components/schemas/PostsWhereInput"
+          $ref: "#/components/schemas/G_classroom_groupsWhereInput"
         orderBy:
-          $ref: "#/components/schemas/PostsOrderByWithRelationInput"
+          $ref: "#/components/schemas/G_classroom_groupsOrderByWithRelationInput"
         cursor:
-          $ref: "#/components/schemas/PostsWhereUniqueInput"
+          $ref: "#/components/schemas/G_classroom_groupsWhereUniqueInput"
         take:
           type: integer
         skip:
           type: integer
         meta:
           $ref: "#/components/schemas/_Meta"
-    PostsGroupByArgs:
+    G_classroom_groupsGroupByArgs:
       type: object
       properties:
         where:
-          $ref: "#/components/schemas/PostsWhereInput"
+          $ref: "#/components/schemas/G_classroom_groupsWhereInput"
         orderBy:
-          $ref: "#/components/schemas/PostsOrderByWithRelationInput"
+          $ref: "#/components/schemas/G_classroom_groupsOrderByWithRelationInput"
         by:
-          $ref: "#/components/schemas/PostsScalarFieldEnum"
+          $ref: "#/components/schemas/G_classroom_groupsScalarFieldEnum"
         having:
-          $ref: "#/components/schemas/PostsScalarWhereWithAggregatesInput"
+          $ref: "#/components/schemas/G_classroom_groupsScalarWhereWithAggregatesInput"
+        take:
+          type: integer
+        skip:
+          type: integer
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    G_classroom_groups_usersCreateArgs:
+      type: object
+      required:
+        - data
+      properties:
+        select:
+          $ref: "#/components/schemas/G_classroom_groups_usersSelect"
+        include:
+          $ref: "#/components/schemas/G_classroom_groups_usersInclude"
+        data:
+          $ref: "#/components/schemas/G_classroom_groups_usersCreateInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    G_classroom_groups_usersCreateManyArgs:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          oneOf:
+            - $ref: "#/components/schemas/G_classroom_groups_usersCreateManyInput"
+            - type: array
+              items:
+                $ref: "#/components/schemas/G_classroom_groups_usersCreateManyInput"
+        skipDuplicates:
+          type: boolean
+          description: Do not insert records with unique fields or ID fields that already
+            exist.
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    G_classroom_groups_usersFindUniqueArgs:
+      type: object
+      required:
+        - where
+      properties:
+        select:
+          $ref: "#/components/schemas/G_classroom_groups_usersSelect"
+        include:
+          $ref: "#/components/schemas/G_classroom_groups_usersInclude"
+        where:
+          $ref: "#/components/schemas/G_classroom_groups_usersWhereUniqueInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    G_classroom_groups_usersFindFirstArgs:
+      type: object
+      properties:
+        select:
+          $ref: "#/components/schemas/G_classroom_groups_usersSelect"
+        include:
+          $ref: "#/components/schemas/G_classroom_groups_usersInclude"
+        where:
+          $ref: "#/components/schemas/G_classroom_groups_usersWhereInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    G_classroom_groups_usersFindManyArgs:
+      type: object
+      properties:
+        select:
+          $ref: "#/components/schemas/G_classroom_groups_usersSelect"
+        include:
+          $ref: "#/components/schemas/G_classroom_groups_usersInclude"
+        where:
+          $ref: "#/components/schemas/G_classroom_groups_usersWhereInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    G_classroom_groups_usersUpdateArgs:
+      type: object
+      required:
+        - where
+        - data
+      properties:
+        select:
+          $ref: "#/components/schemas/G_classroom_groups_usersSelect"
+        include:
+          $ref: "#/components/schemas/G_classroom_groups_usersInclude"
+        where:
+          $ref: "#/components/schemas/G_classroom_groups_usersWhereUniqueInput"
+        data:
+          $ref: "#/components/schemas/G_classroom_groups_usersUpdateInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    G_classroom_groups_usersUpdateManyArgs:
+      type: object
+      required:
+        - data
+      properties:
+        where:
+          $ref: "#/components/schemas/G_classroom_groups_usersWhereInput"
+        data:
+          $ref: "#/components/schemas/G_classroom_groups_usersUpdateManyMutationInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    G_classroom_groups_usersUpsertArgs:
+      type: object
+      required:
+        - create
+        - update
+        - where
+      properties:
+        select:
+          $ref: "#/components/schemas/G_classroom_groups_usersSelect"
+        include:
+          $ref: "#/components/schemas/G_classroom_groups_usersInclude"
+        where:
+          $ref: "#/components/schemas/G_classroom_groups_usersWhereUniqueInput"
+        create:
+          $ref: "#/components/schemas/G_classroom_groups_usersCreateInput"
+        update:
+          $ref: "#/components/schemas/G_classroom_groups_usersUpdateInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    G_classroom_groups_usersDeleteUniqueArgs:
+      type: object
+      required:
+        - where
+      properties:
+        select:
+          $ref: "#/components/schemas/G_classroom_groups_usersSelect"
+        include:
+          $ref: "#/components/schemas/G_classroom_groups_usersInclude"
+        where:
+          $ref: "#/components/schemas/G_classroom_groups_usersWhereUniqueInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    G_classroom_groups_usersDeleteManyArgs:
+      type: object
+      properties:
+        where:
+          $ref: "#/components/schemas/G_classroom_groups_usersWhereInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    G_classroom_groups_usersCountArgs:
+      type: object
+      properties:
+        select:
+          $ref: "#/components/schemas/G_classroom_groups_usersSelect"
+        where:
+          $ref: "#/components/schemas/G_classroom_groups_usersWhereInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    G_classroom_groups_usersAggregateArgs:
+      type: object
+      properties:
+        where:
+          $ref: "#/components/schemas/G_classroom_groups_usersWhereInput"
+        orderBy:
+          $ref: "#/components/schemas/G_classroom_groups_usersOrderByWithRelationInput"
+        cursor:
+          $ref: "#/components/schemas/G_classroom_groups_usersWhereUniqueInput"
+        take:
+          type: integer
+        skip:
+          type: integer
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    G_classroom_groups_usersGroupByArgs:
+      type: object
+      properties:
+        where:
+          $ref: "#/components/schemas/G_classroom_groups_usersWhereInput"
+        orderBy:
+          $ref: "#/components/schemas/G_classroom_groups_usersOrderByWithRelationInput"
+        by:
+          $ref: "#/components/schemas/G_classroom_groups_usersScalarFieldEnum"
+        having:
+          $ref: "#/components/schemas/G_classroom_groups_usersScalarWhereWithAggregatesIn\
+            put"
+        take:
+          type: integer
+        skip:
+          type: integer
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    G_attendanceCreateArgs:
+      type: object
+      required:
+        - data
+      properties:
+        select:
+          $ref: "#/components/schemas/G_attendanceSelect"
+        data:
+          $ref: "#/components/schemas/G_attendanceCreateInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    G_attendanceCreateManyArgs:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          oneOf:
+            - $ref: "#/components/schemas/G_attendanceCreateManyInput"
+            - type: array
+              items:
+                $ref: "#/components/schemas/G_attendanceCreateManyInput"
+        skipDuplicates:
+          type: boolean
+          description: Do not insert records with unique fields or ID fields that already
+            exist.
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    G_attendanceFindUniqueArgs:
+      type: object
+      required:
+        - where
+      properties:
+        select:
+          $ref: "#/components/schemas/G_attendanceSelect"
+        where:
+          $ref: "#/components/schemas/G_attendanceWhereUniqueInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    G_attendanceFindFirstArgs:
+      type: object
+      properties:
+        select:
+          $ref: "#/components/schemas/G_attendanceSelect"
+        where:
+          $ref: "#/components/schemas/G_attendanceWhereInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    G_attendanceFindManyArgs:
+      type: object
+      properties:
+        select:
+          $ref: "#/components/schemas/G_attendanceSelect"
+        where:
+          $ref: "#/components/schemas/G_attendanceWhereInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    G_attendanceUpdateArgs:
+      type: object
+      required:
+        - where
+        - data
+      properties:
+        select:
+          $ref: "#/components/schemas/G_attendanceSelect"
+        where:
+          $ref: "#/components/schemas/G_attendanceWhereUniqueInput"
+        data:
+          $ref: "#/components/schemas/G_attendanceUpdateInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    G_attendanceUpdateManyArgs:
+      type: object
+      required:
+        - data
+      properties:
+        where:
+          $ref: "#/components/schemas/G_attendanceWhereInput"
+        data:
+          $ref: "#/components/schemas/G_attendanceUpdateManyMutationInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    G_attendanceUpsertArgs:
+      type: object
+      required:
+        - create
+        - update
+        - where
+      properties:
+        select:
+          $ref: "#/components/schemas/G_attendanceSelect"
+        where:
+          $ref: "#/components/schemas/G_attendanceWhereUniqueInput"
+        create:
+          $ref: "#/components/schemas/G_attendanceCreateInput"
+        update:
+          $ref: "#/components/schemas/G_attendanceUpdateInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    G_attendanceDeleteUniqueArgs:
+      type: object
+      required:
+        - where
+      properties:
+        select:
+          $ref: "#/components/schemas/G_attendanceSelect"
+        where:
+          $ref: "#/components/schemas/G_attendanceWhereUniqueInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    G_attendanceDeleteManyArgs:
+      type: object
+      properties:
+        where:
+          $ref: "#/components/schemas/G_attendanceWhereInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    G_attendanceCountArgs:
+      type: object
+      properties:
+        select:
+          $ref: "#/components/schemas/G_attendanceSelect"
+        where:
+          $ref: "#/components/schemas/G_attendanceWhereInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    G_attendanceAggregateArgs:
+      type: object
+      properties:
+        where:
+          $ref: "#/components/schemas/G_attendanceWhereInput"
+        orderBy:
+          $ref: "#/components/schemas/G_attendanceOrderByWithRelationInput"
+        cursor:
+          $ref: "#/components/schemas/G_attendanceWhereUniqueInput"
+        take:
+          type: integer
+        skip:
+          type: integer
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    G_attendanceGroupByArgs:
+      type: object
+      properties:
+        where:
+          $ref: "#/components/schemas/G_attendanceWhereInput"
+        orderBy:
+          $ref: "#/components/schemas/G_attendanceOrderByWithRelationInput"
+        by:
+          $ref: "#/components/schemas/G_attendanceScalarFieldEnum"
+        having:
+          $ref: "#/components/schemas/G_attendanceScalarWhereWithAggregatesInput"
         take:
           type: integer
         skip:
@@ -66022,12 +68284,12 @@ paths:
           content:
             application/json:
               schema: {}
-  /api/model/posts/create:
+  /api/model/g_classroom_groups/create:
     post:
-      operationId: createPosts
-      description: Create a new Posts
+      operationId: createG_classroom_groups
+      description: Create a new G_classroom_groups
       tags:
-        - posts
+        - g_classroom_groups
       responses:
         "201":
           description: Successful operation
@@ -66039,7 +68301,7 @@ paths:
                   - data
                 properties:
                   data:
-                    $ref: "#/components/schemas/Posts"
+                    $ref: "#/components/schemas/G_classroom_groups"
                     description: The Prisma response data serialized with superjson
                   meta:
                     $ref: "#/components/schemas/_Meta"
@@ -66066,13 +68328,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/PostsCreateArgs"
-  /api/model/posts/createMany:
+              $ref: "#/components/schemas/G_classroom_groupsCreateArgs"
+  /api/model/g_classroom_groups/createMany:
     post:
-      operationId: createManyPosts
-      description: Create several Posts
+      operationId: createManyG_classroom_groups
+      description: Create several G_classroom_groups
       tags:
-        - posts
+        - g_classroom_groups
       responses:
         "201":
           description: Successful operation
@@ -66111,13 +68373,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/PostsCreateManyArgs"
-  /api/model/posts/findUnique:
+              $ref: "#/components/schemas/G_classroom_groupsCreateManyArgs"
+  /api/model/g_classroom_groups/findUnique:
     get:
-      operationId: findUniquePosts
-      description: Find one unique Posts
+      operationId: findUniqueG_classroom_groups
+      description: Find one unique G_classroom_groups
       tags:
-        - posts
+        - g_classroom_groups
       responses:
         "200":
           description: Successful operation
@@ -66129,7 +68391,7 @@ paths:
                   - data
                 properties:
                   data:
-                    $ref: "#/components/schemas/Posts"
+                    $ref: "#/components/schemas/G_classroom_groups"
                     description: The Prisma response data serialized with superjson
                   meta:
                     $ref: "#/components/schemas/_Meta"
@@ -66160,19 +68422,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PostsFindUniqueArgs"
+                $ref: "#/components/schemas/G_classroom_groupsFindUniqueArgs"
         - name: meta
           in: query
           description: Superjson serialization metadata for parameter "q"
           content:
             application/json:
               schema: {}
-  /api/model/posts/findFirst:
+  /api/model/g_classroom_groups/findFirst:
     get:
-      operationId: findFirstPosts
-      description: Find the first Posts matching the given condition
+      operationId: findFirstG_classroom_groups
+      description: Find the first G_classroom_groups matching the given condition
       tags:
-        - posts
+        - g_classroom_groups
       responses:
         "200":
           description: Successful operation
@@ -66184,7 +68446,7 @@ paths:
                   - data
                 properties:
                   data:
-                    $ref: "#/components/schemas/Posts"
+                    $ref: "#/components/schemas/G_classroom_groups"
                     description: The Prisma response data serialized with superjson
                   meta:
                     $ref: "#/components/schemas/_Meta"
@@ -66215,19 +68477,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PostsFindFirstArgs"
+                $ref: "#/components/schemas/G_classroom_groupsFindFirstArgs"
         - name: meta
           in: query
           description: Superjson serialization metadata for parameter "q"
           content:
             application/json:
               schema: {}
-  /api/model/posts/findMany:
+  /api/model/g_classroom_groups/findMany:
     get:
-      operationId: findManyPosts
-      description: Find a list of Posts
+      operationId: findManyG_classroom_groups
+      description: Find a list of G_classroom_groups
       tags:
-        - posts
+        - g_classroom_groups
       responses:
         "200":
           description: Successful operation
@@ -66241,7 +68503,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: "#/components/schemas/Posts"
+                      $ref: "#/components/schemas/G_classroom_groups"
                     description: The Prisma response data serialized with superjson
                   meta:
                     $ref: "#/components/schemas/_Meta"
@@ -66272,19 +68534,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PostsFindManyArgs"
+                $ref: "#/components/schemas/G_classroom_groupsFindManyArgs"
         - name: meta
           in: query
           description: Superjson serialization metadata for parameter "q"
           content:
             application/json:
               schema: {}
-  /api/model/posts/update:
+  /api/model/g_classroom_groups/update:
     patch:
-      operationId: updatePosts
-      description: Update a Posts
+      operationId: updateG_classroom_groups
+      description: Update a G_classroom_groups
       tags:
-        - posts
+        - g_classroom_groups
       responses:
         "200":
           description: Successful operation
@@ -66296,7 +68558,7 @@ paths:
                   - data
                 properties:
                   data:
-                    $ref: "#/components/schemas/Posts"
+                    $ref: "#/components/schemas/G_classroom_groups"
                     description: The Prisma response data serialized with superjson
                   meta:
                     $ref: "#/components/schemas/_Meta"
@@ -66323,13 +68585,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/PostsUpdateArgs"
-  /api/model/posts/updateMany:
+              $ref: "#/components/schemas/G_classroom_groupsUpdateArgs"
+  /api/model/g_classroom_groups/updateMany:
     patch:
-      operationId: updateManyPosts
-      description: Update Postss matching the given condition
+      operationId: updateManyG_classroom_groups
+      description: Update G_classroom_groupss matching the given condition
       tags:
-        - posts
+        - g_classroom_groups
       responses:
         "200":
           description: Successful operation
@@ -66368,13 +68630,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/PostsUpdateManyArgs"
-  /api/model/posts/upsert:
+              $ref: "#/components/schemas/G_classroom_groupsUpdateManyArgs"
+  /api/model/g_classroom_groups/upsert:
     post:
-      operationId: upsertPosts
-      description: Upsert a Posts
+      operationId: upsertG_classroom_groups
+      description: Upsert a G_classroom_groups
       tags:
-        - posts
+        - g_classroom_groups
       responses:
         "200":
           description: Successful operation
@@ -66386,7 +68648,7 @@ paths:
                   - data
                 properties:
                   data:
-                    $ref: "#/components/schemas/Posts"
+                    $ref: "#/components/schemas/G_classroom_groups"
                     description: The Prisma response data serialized with superjson
                   meta:
                     $ref: "#/components/schemas/_Meta"
@@ -66413,13 +68675,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/PostsUpsertArgs"
-  /api/model/posts/delete:
+              $ref: "#/components/schemas/G_classroom_groupsUpsertArgs"
+  /api/model/g_classroom_groups/delete:
     delete:
-      operationId: deletePosts
-      description: Delete one unique Posts
+      operationId: deleteG_classroom_groups
+      description: Delete one unique G_classroom_groups
       tags:
-        - posts
+        - g_classroom_groups
       responses:
         "200":
           description: Successful operation
@@ -66431,7 +68693,7 @@ paths:
                   - data
                 properties:
                   data:
-                    $ref: "#/components/schemas/Posts"
+                    $ref: "#/components/schemas/G_classroom_groups"
                     description: The Prisma response data serialized with superjson
                   meta:
                     $ref: "#/components/schemas/_Meta"
@@ -66462,19 +68724,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PostsDeleteUniqueArgs"
+                $ref: "#/components/schemas/G_classroom_groupsDeleteUniqueArgs"
         - name: meta
           in: query
           description: Superjson serialization metadata for parameter "q"
           content:
             application/json:
               schema: {}
-  /api/model/posts/deleteMany:
+  /api/model/g_classroom_groups/deleteMany:
     delete:
-      operationId: deleteManyPosts
-      description: Delete Postss matching the given condition
+      operationId: deleteManyG_classroom_groups
+      description: Delete G_classroom_groupss matching the given condition
       tags:
-        - posts
+        - g_classroom_groups
       responses:
         "200":
           description: Successful operation
@@ -66517,19 +68779,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PostsDeleteManyArgs"
+                $ref: "#/components/schemas/G_classroom_groupsDeleteManyArgs"
         - name: meta
           in: query
           description: Superjson serialization metadata for parameter "q"
           content:
             application/json:
               schema: {}
-  /api/model/posts/count:
+  /api/model/g_classroom_groups/count:
     get:
-      operationId: countPosts
-      description: Find a list of Posts
+      operationId: countG_classroom_groups
+      description: Find a list of G_classroom_groups
       tags:
-        - posts
+        - g_classroom_groups
       responses:
         "200":
           description: Successful operation
@@ -66543,7 +68805,7 @@ paths:
                   data:
                     oneOf:
                       - type: integer
-                      - $ref: "#/components/schemas/PostsCountAggregateOutputType"
+                      - $ref: "#/components/schemas/G_classroom_groupsCountAggregateOutputType"
                     description: The Prisma response data serialized with superjson
                   meta:
                     $ref: "#/components/schemas/_Meta"
@@ -66574,19 +68836,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PostsCountArgs"
+                $ref: "#/components/schemas/G_classroom_groupsCountArgs"
         - name: meta
           in: query
           description: Superjson serialization metadata for parameter "q"
           content:
             application/json:
               schema: {}
-  /api/model/posts/aggregate:
+  /api/model/g_classroom_groups/aggregate:
     get:
-      operationId: aggregatePosts
-      description: Aggregate Postss
+      operationId: aggregateG_classroom_groups
+      description: Aggregate G_classroom_groupss
       tags:
-        - posts
+        - g_classroom_groups
       responses:
         "200":
           description: Successful operation
@@ -66598,7 +68860,7 @@ paths:
                   - data
                 properties:
                   data:
-                    $ref: "#/components/schemas/AggregatePosts"
+                    $ref: "#/components/schemas/AggregateG_classroom_groups"
                     description: The Prisma response data serialized with superjson
                   meta:
                     $ref: "#/components/schemas/_Meta"
@@ -66629,19 +68891,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PostsAggregateArgs"
+                $ref: "#/components/schemas/G_classroom_groupsAggregateArgs"
         - name: meta
           in: query
           description: Superjson serialization metadata for parameter "q"
           content:
             application/json:
               schema: {}
-  /api/model/posts/groupBy:
+  /api/model/g_classroom_groups/groupBy:
     get:
-      operationId: groupByPosts
-      description: Group Postss by fields
+      operationId: groupByG_classroom_groups
+      description: Group G_classroom_groupss by fields
       tags:
-        - posts
+        - g_classroom_groups
       responses:
         "200":
           description: Successful operation
@@ -66655,7 +68917,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: "#/components/schemas/PostsGroupByOutputType"
+                      $ref: "#/components/schemas/G_classroom_groupsGroupByOutputType"
                     description: The Prisma response data serialized with superjson
                   meta:
                     $ref: "#/components/schemas/_Meta"
@@ -66686,7 +68948,1349 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PostsGroupByArgs"
+                $ref: "#/components/schemas/G_classroom_groupsGroupByArgs"
+        - name: meta
+          in: query
+          description: Superjson serialization metadata for parameter "q"
+          content:
+            application/json:
+              schema: {}
+  /api/model/g_classroom_groups_users/create:
+    post:
+      operationId: createG_classroom_groups_users
+      description: Create a new G_classroom_groups_users
+      tags:
+        - g_classroom_groups_users
+      responses:
+        "201":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/G_classroom_groups_users"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/G_classroom_groups_usersCreateArgs"
+  /api/model/g_classroom_groups_users/createMany:
+    post:
+      operationId: createManyG_classroom_groups_users
+      description: Create several G_classroom_groups_users
+      tags:
+        - g_classroom_groups_users
+      responses:
+        "201":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/BatchPayload"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/G_classroom_groups_usersCreateManyArgs"
+  /api/model/g_classroom_groups_users/findUnique:
+    get:
+      operationId: findUniqueG_classroom_groups_users
+      description: Find one unique G_classroom_groups_users
+      tags:
+        - g_classroom_groups_users
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/G_classroom_groups_users"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Superjson-serialized Prisma query object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/G_classroom_groups_usersFindUniqueArgs"
+        - name: meta
+          in: query
+          description: Superjson serialization metadata for parameter "q"
+          content:
+            application/json:
+              schema: {}
+  /api/model/g_classroom_groups_users/findFirst:
+    get:
+      operationId: findFirstG_classroom_groups_users
+      description: Find the first G_classroom_groups_users matching the given condition
+      tags:
+        - g_classroom_groups_users
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/G_classroom_groups_users"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Superjson-serialized Prisma query object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/G_classroom_groups_usersFindFirstArgs"
+        - name: meta
+          in: query
+          description: Superjson serialization metadata for parameter "q"
+          content:
+            application/json:
+              schema: {}
+  /api/model/g_classroom_groups_users/findMany:
+    get:
+      operationId: findManyG_classroom_groups_users
+      description: Find a list of G_classroom_groups_users
+      tags:
+        - g_classroom_groups_users
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/G_classroom_groups_users"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Superjson-serialized Prisma query object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/G_classroom_groups_usersFindManyArgs"
+        - name: meta
+          in: query
+          description: Superjson serialization metadata for parameter "q"
+          content:
+            application/json:
+              schema: {}
+  /api/model/g_classroom_groups_users/update:
+    patch:
+      operationId: updateG_classroom_groups_users
+      description: Update a G_classroom_groups_users
+      tags:
+        - g_classroom_groups_users
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/G_classroom_groups_users"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/G_classroom_groups_usersUpdateArgs"
+  /api/model/g_classroom_groups_users/updateMany:
+    patch:
+      operationId: updateManyG_classroom_groups_users
+      description: Update G_classroom_groups_userss matching the given condition
+      tags:
+        - g_classroom_groups_users
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/BatchPayload"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/G_classroom_groups_usersUpdateManyArgs"
+  /api/model/g_classroom_groups_users/upsert:
+    post:
+      operationId: upsertG_classroom_groups_users
+      description: Upsert a G_classroom_groups_users
+      tags:
+        - g_classroom_groups_users
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/G_classroom_groups_users"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/G_classroom_groups_usersUpsertArgs"
+  /api/model/g_classroom_groups_users/delete:
+    delete:
+      operationId: deleteG_classroom_groups_users
+      description: Delete one unique G_classroom_groups_users
+      tags:
+        - g_classroom_groups_users
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/G_classroom_groups_users"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Superjson-serialized Prisma query object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/G_classroom_groups_usersDeleteUniqueArgs"
+        - name: meta
+          in: query
+          description: Superjson serialization metadata for parameter "q"
+          content:
+            application/json:
+              schema: {}
+  /api/model/g_classroom_groups_users/deleteMany:
+    delete:
+      operationId: deleteManyG_classroom_groups_users
+      description: Delete G_classroom_groups_userss matching the given condition
+      tags:
+        - g_classroom_groups_users
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/BatchPayload"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Superjson-serialized Prisma query object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/G_classroom_groups_usersDeleteManyArgs"
+        - name: meta
+          in: query
+          description: Superjson serialization metadata for parameter "q"
+          content:
+            application/json:
+              schema: {}
+  /api/model/g_classroom_groups_users/count:
+    get:
+      operationId: countG_classroom_groups_users
+      description: Find a list of G_classroom_groups_users
+      tags:
+        - g_classroom_groups_users
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    oneOf:
+                      - type: integer
+                      - $ref: "#/components/schemas/G_classroom_groups_usersCountAggregateOutputType"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Superjson-serialized Prisma query object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/G_classroom_groups_usersCountArgs"
+        - name: meta
+          in: query
+          description: Superjson serialization metadata for parameter "q"
+          content:
+            application/json:
+              schema: {}
+  /api/model/g_classroom_groups_users/aggregate:
+    get:
+      operationId: aggregateG_classroom_groups_users
+      description: Aggregate G_classroom_groups_userss
+      tags:
+        - g_classroom_groups_users
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/AggregateG_classroom_groups_users"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Superjson-serialized Prisma query object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/G_classroom_groups_usersAggregateArgs"
+        - name: meta
+          in: query
+          description: Superjson serialization metadata for parameter "q"
+          content:
+            application/json:
+              schema: {}
+  /api/model/g_classroom_groups_users/groupBy:
+    get:
+      operationId: groupByG_classroom_groups_users
+      description: Group G_classroom_groups_userss by fields
+      tags:
+        - g_classroom_groups_users
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/G_classroom_groups_usersGroupByOutputType"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Superjson-serialized Prisma query object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/G_classroom_groups_usersGroupByArgs"
+        - name: meta
+          in: query
+          description: Superjson serialization metadata for parameter "q"
+          content:
+            application/json:
+              schema: {}
+  /api/model/g_attendance/create:
+    post:
+      operationId: createG_attendance
+      description: Create a new G_attendance
+      tags:
+        - g_attendance
+      responses:
+        "201":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/G_attendance"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/G_attendanceCreateArgs"
+  /api/model/g_attendance/createMany:
+    post:
+      operationId: createManyG_attendance
+      description: Create several G_attendance
+      tags:
+        - g_attendance
+      responses:
+        "201":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/BatchPayload"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/G_attendanceCreateManyArgs"
+  /api/model/g_attendance/findUnique:
+    get:
+      operationId: findUniqueG_attendance
+      description: Find one unique G_attendance
+      tags:
+        - g_attendance
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/G_attendance"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Superjson-serialized Prisma query object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/G_attendanceFindUniqueArgs"
+        - name: meta
+          in: query
+          description: Superjson serialization metadata for parameter "q"
+          content:
+            application/json:
+              schema: {}
+  /api/model/g_attendance/findFirst:
+    get:
+      operationId: findFirstG_attendance
+      description: Find the first G_attendance matching the given condition
+      tags:
+        - g_attendance
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/G_attendance"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Superjson-serialized Prisma query object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/G_attendanceFindFirstArgs"
+        - name: meta
+          in: query
+          description: Superjson serialization metadata for parameter "q"
+          content:
+            application/json:
+              schema: {}
+  /api/model/g_attendance/findMany:
+    get:
+      operationId: findManyG_attendance
+      description: Find a list of G_attendance
+      tags:
+        - g_attendance
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/G_attendance"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Superjson-serialized Prisma query object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/G_attendanceFindManyArgs"
+        - name: meta
+          in: query
+          description: Superjson serialization metadata for parameter "q"
+          content:
+            application/json:
+              schema: {}
+  /api/model/g_attendance/update:
+    patch:
+      operationId: updateG_attendance
+      description: Update a G_attendance
+      tags:
+        - g_attendance
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/G_attendance"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/G_attendanceUpdateArgs"
+  /api/model/g_attendance/updateMany:
+    patch:
+      operationId: updateManyG_attendance
+      description: Update G_attendances matching the given condition
+      tags:
+        - g_attendance
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/BatchPayload"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/G_attendanceUpdateManyArgs"
+  /api/model/g_attendance/upsert:
+    post:
+      operationId: upsertG_attendance
+      description: Upsert a G_attendance
+      tags:
+        - g_attendance
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/G_attendance"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/G_attendanceUpsertArgs"
+  /api/model/g_attendance/delete:
+    delete:
+      operationId: deleteG_attendance
+      description: Delete one unique G_attendance
+      tags:
+        - g_attendance
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/G_attendance"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Superjson-serialized Prisma query object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/G_attendanceDeleteUniqueArgs"
+        - name: meta
+          in: query
+          description: Superjson serialization metadata for parameter "q"
+          content:
+            application/json:
+              schema: {}
+  /api/model/g_attendance/deleteMany:
+    delete:
+      operationId: deleteManyG_attendance
+      description: Delete G_attendances matching the given condition
+      tags:
+        - g_attendance
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/BatchPayload"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Superjson-serialized Prisma query object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/G_attendanceDeleteManyArgs"
+        - name: meta
+          in: query
+          description: Superjson serialization metadata for parameter "q"
+          content:
+            application/json:
+              schema: {}
+  /api/model/g_attendance/count:
+    get:
+      operationId: countG_attendance
+      description: Find a list of G_attendance
+      tags:
+        - g_attendance
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    oneOf:
+                      - type: integer
+                      - $ref: "#/components/schemas/G_attendanceCountAggregateOutputType"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Superjson-serialized Prisma query object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/G_attendanceCountArgs"
+        - name: meta
+          in: query
+          description: Superjson serialization metadata for parameter "q"
+          content:
+            application/json:
+              schema: {}
+  /api/model/g_attendance/aggregate:
+    get:
+      operationId: aggregateG_attendance
+      description: Aggregate G_attendances
+      tags:
+        - g_attendance
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/AggregateG_attendance"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Superjson-serialized Prisma query object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/G_attendanceAggregateArgs"
+        - name: meta
+          in: query
+          description: Superjson serialization metadata for parameter "q"
+          content:
+            application/json:
+              schema: {}
+  /api/model/g_attendance/groupBy:
+    get:
+      operationId: groupByG_attendance
+      description: Group G_attendances by fields
+      tags:
+        - g_attendance
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/G_attendanceGroupByOutputType"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Superjson-serialized Prisma query object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/G_attendanceGroupByArgs"
         - name: meta
           in: query
           description: Superjson serialization metadata for parameter "q"
