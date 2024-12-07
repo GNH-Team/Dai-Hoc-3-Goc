@@ -1,0 +1,35 @@
+Table g_classroom_groups {
+  created_at DateTime [default: `now()`, not null]
+  updated_at DateTime [not null]
+  id Int [pk, increment]
+  course_id Int [not null]
+  group_name String [not null, note: '@length(max: 100)']
+  description String [not null, note: '@length(max: 255)']
+  created_by BigInt [not null]
+  users_group g_classroom_groups_users [not null]
+}
+
+Table g_classroom_groups_users {
+  id Int [pk, increment]
+  user_id BigInt [not null]
+  group_id Int [not null]
+  group g_classroom_groups [not null]
+  role GroupRole [not null, default: 'THANHVIEN']
+  order Int [not null]
+  created_by BigInt [not null]
+  created_at DateTime [default: `now()`, not null]
+}
+
+Enum AttendanceStatus {
+  TRONVEN
+  VANGMAT
+  MUON
+}
+
+Enum GroupRole {
+  TRUONGTHON
+  PHOTHON
+  THANHVIEN
+}
+
+Ref: g_classroom_groups_users.group_id > g_classroom_groups.id [delete: Cascade]
