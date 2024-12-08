@@ -38,7 +38,7 @@ if (IS_LOCAL) {
 	// ini_set('display_startup_errors', 1);
 	// error_reporting(E_ERROR);
 
-	define('WP_DEBUG_LOG', true);
+ 	define('WP_DEBUG_LOG', true);
 	define('WP_DEBUG', false);
 	define('WP_ENVIRONMENT_TYPE', 'local');
 	$_SERVER['HTTPS'] = 'off';
@@ -53,7 +53,7 @@ if (IS_LOCAL) {
 
 if (IS_LOCAL) {
 	/** The name of the database for WordPress */
-	define('DB_NAME', '3g_dh3g');
+	define('DB_NAME', 'dh3g_v3');
 
 	/** Database username */
 	define('DB_USER', 'root');
@@ -66,7 +66,7 @@ if (IS_LOCAL) {
 } else {
 
 	/** The name of the database for WordPress */
-	define('DB_NAME', '3g_dh3g');
+	define('DB_NAME', 'dh3g_v3');
 
 	/** Database username */
 	define('DB_USER', '3g_adm');
@@ -83,6 +83,13 @@ define('DB_CHARSET', 'utf8mb4');
 
 /** The database collate type. Don't change this if in doubt. */
 define('DB_COLLATE', '');
+
+/**
+ * The SAVEQUERIES definition saves database queries to an array, which can then be displayed to help analyze those queries. 
+ * When the constant is set to true, it causes each query to be saved along with the time it took to execute and the function that called it.
+ * see more: https://developer.wordpress.org/advanced-administration/debug/debug-wordpress/
+ */
+// define( 'SAVEQUERIES', true );
 
 /**#@+
  * Authentication unique keys and salts.
@@ -112,7 +119,7 @@ define('NONCE_SALT',       ' SJo[oX[_$yW1@dS!c8.nvY04qN*O1iK|Pp9}A({(Phn~?]GS_wU
  * You can have multiple installations in one database if you give each
  * a unique prefix. Only numbers, letters, and underscores please!
  */
-$table_prefix = '3g_';
+$table_prefix = 'dg_';
 
 /* Add any custom values between this line and the "stop editing" line. */
 
