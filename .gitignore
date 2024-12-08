@@ -33,6 +33,9 @@ wp-content/debug.log
 **/plugins/user-role-editor
 **/plugins/elementor-pro
 **/masterstudy-templates-premium
+**/lms
+**/lmspro
+**/h5p
 
 **/plugins/masterstudy-lms-learning-management-system
 **/plugins/masterstudy-lms-learning-management-system-pro
