@@ -1,77 +1,77 @@
-// src/config/env.ts  
-import dotenv from 'dotenv';  
-import path from 'path';  
-import { fileURLToPath } from 'url';  
+// src/config/env.ts
+import dotenv from "dotenv"
+import path from "path"
+import { fileURLToPath } from "url"
 
-const __filename = fileURLToPath(import.meta.url);  
-const __dirname = path.dirname(__filename);  
+const fileName = fileURLToPath(import.meta.url)
+const dirName = path.dirname(fileName)
 
-export interface EnvConfig {  
-  PORT: number;  
-  DATABASE_URL: string;  
-  API_KEY: string;  
-  JWT_SECRET: string;  
-  NODE_ENV: string;  
-}  
+export interface EnvConfig {
+    PORT: number;
+    DATABASE_URL: string;
+    API_KEY: string;
+    JWT_SECRET: string;
+    NODE_ENV: string;
+}
 
-export class EnvironmentConfig {  
-  private config: EnvConfig;  
+export class EnvironmentConfig {
+    private config: EnvConfig
 
-  constructor() {  
-    this.config = this.loadEnvConfig();  
-  }  
+    constructor() {
+        this.config = this.loadEnvConfig()
+    }
 
-  private loadEnvConfig(): EnvConfig {  
-    const env = process.env.NODE_ENV || 'development';  
-    
-    // Load environment specific .env file  
-    dotenv.config({  
-      path: path.resolve(__dirname, `../.env.${env}`)  
-    });  
+    private loadEnvConfig(): EnvConfig {
+        const env = process.env.NODE_ENV || "development"
 
-    // Load default .env file  
-    dotenv.config({  
-      path: path.resolve(__dirname, '../.env')  
-    });  
+        // Load environment specific .env file
+        dotenv.config({
+            path: path.resolve(dirName, `../.env.${env}`)
+        })
 
-    // Validate and transform environment variables  
-    this.validateEnv();  
+        // Load default .env file
+        dotenv.config({
+            path: path.resolve(dirName, "../.env")
+        })
 
-    return {  
-      PORT: parseInt(process.env.PORT || '3000', 10),  
-      DATABASE_URL: process.env.DATABASE_URL!,  
-      API_KEY: process.env.API_KEY!,  
-      JWT_SECRET: process.env.JWT_SECRET!,  
-      NODE_ENV: env  
-    };  
-  }  
+        // Validate and transform environment variables
+        this.validateEnv()
 
-  private validateEnv(): void {  
-    const requiredEnvVars = [  
-      'PORT',  
-      'DATABASE_URL',  
-      'JWT_SECRET'  
-    ];  
+        return {
+            PORT: parseInt(process.env.PORT || "3000", 10),
+            DATABASE_URL: process.env.DATABASE_URL!,
+            API_KEY: process.env.API_KEY!,
+            JWT_SECRET: process.env.JWT_SECRET!,
+            NODE_ENV: env
+        }
+    }
 
-    const missingEnvVars = requiredEnvVars.filter(  
-      (envVar) => !process.env[envVar]  
-    );  
+    private validateEnv(): void {
+        const requiredEnvVars = [
+            "PORT",
+            "DATABASE_URL",
+            "JWT_SECRET"
+        ]
 
-    if (missingEnvVars.length > 0) {  
-      throw new Error(  
-        `Missing required environment variables: ${missingEnvVars.join(', ')}`  
-      );  
-    }  
-  }  
+        const missingEnvVars = requiredEnvVars.filter(
+            (envVar) => !process.env[envVar]
+        )
 
-  public getConfig(): EnvConfig {  
-    return this.config;  
-  }  
+        if (missingEnvVars.length > 0) {
+            throw new Error(
+                `Missing required environment variables: ${missingEnvVars.join(", ")}`
+            )
+        }
+    }
 
-  public get<K extends keyof EnvConfig>(key: K): EnvConfig[K] {  
-    return this.config[key];  
-  }  
-}  
+    public getConfig(): EnvConfig {
+        return this.config
+    }
 
-// Tạo singleton instance  
-export const envConfig = new EnvironmentConfig();  
+    public get<K extends keyof EnvConfig>(key: K): EnvConfig[K] {
+        return this.config[key]
+    }
+}
+
+// Tạo singleton instance
+export const envConfig = new EnvironmentConfig()

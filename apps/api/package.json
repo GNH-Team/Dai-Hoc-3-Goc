@@ -4,7 +4,7 @@
   "description": "",
   "type": "module",
   "scripts": {
-    "z:init": "npx zenstack init",
+    "z:init": "npx zenstack init && tsx ./zmodel/init-zmodel.ts",
     "z:gen": "npx zenstack generate && pnpm run dbml",
     "pull": "npx prisma db pull",
     "push": "npx prisma db push",

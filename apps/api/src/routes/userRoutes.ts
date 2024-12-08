@@ -1,9 +1,10 @@
-import { FastifyInstance, FastifyPluginOptions } from 'fastify';
-import { getUsers, createUser } from '@/controllers/userController';
+import { FastifyInstance, FastifyPluginOptions } from "fastify"
+
+import { createUser, getUsers } from "@/controllers/userController"
 
 async function userRoutes(fastify: FastifyInstance, options: FastifyPluginOptions) {
-  fastify.get('/', getUsers);
-  fastify.post('/', createUser);
+    fastify.get("/", getUsers)
+    fastify.post("/", createUser)
 }
 
-export default userRoutes;
+export default userRoutes
