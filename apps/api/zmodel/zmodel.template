@@ -1,4 +1,4 @@
-import "./zmodel/wp-original"
+import "./zmodel/wp-none-enhance"
 import "./zmodel/wp-enhance"
 import "./zmodel/custom"
 

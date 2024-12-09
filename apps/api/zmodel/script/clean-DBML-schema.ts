@@ -1,14 +1,16 @@
 // made by Claude AI
+/**
+ * ! script sử dụng để lọc các table, enum, reference từ file DBML schema khi plugin DBML của prisma tạo ra
+ * ! chỉ giữ lại các table, enum, reference cần thiết để xem trên dbdiagram.io
+ * ! loại bỏ các table không liên quan đến service API cho đỡ rối mắt
+ */
 
 // Import required modules
 import * as fs from "fs"
 
-interface DBMLCleaner {
-    content: string;
-    includeObject: string[];
-}
+import { SPLIT_MODEL } from "./main"
 
-function cleanDBMLSchema({ content, includeObject = [] }: DBMLCleaner): string {
+function cleanDBMLSchema(content: string, includeObject: string[]): string {
     // Tách nội dung thành các block, giữ nguyên cấu trúc của mỗi block
     const blocks = content.split(/(?=Table|Enum|Ref:)/).filter((block) => block.trim())
 
@@ -45,13 +47,12 @@ function cleanDBMLSchema({ content, includeObject = [] }: DBMLCleaner): string {
 
 const schemaFilePath = "./prisma/dbml/schema.dbml"
 const outputPath = "./prisma/dbml/filtered_schema.dbml"
-const includeObject = ["g_classroom_groups_users", "g_classroom_groups", "AttendanceStatus", "GroupRole"]
 
 const schemaContent = fs.readFileSync(schemaFilePath, "utf8")
-const cleanedSchema = cleanDBMLSchema({
-    content: schemaContent,
-    includeObject
-})
+const cleanedSchema = cleanDBMLSchema(
+    schemaContent,
+    SPLIT_MODEL
+)
 
 // Join the filtered lines and write back to the file
 fs.writeFileSync(outputPath, cleanedSchema, "utf8")
