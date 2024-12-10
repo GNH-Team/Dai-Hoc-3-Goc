@@ -25,8 +25,6 @@ yarn-error.log*
 .env.production.local
 
 wp-content/debug.log
-**/plugins/image-optimization
-**/plugins/user-role-editor
 **/masterstudy-templates-premium
 **/lms
 **/lmspro
