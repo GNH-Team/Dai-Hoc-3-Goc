@@ -29,7 +29,7 @@ define('WP_HOME', WP_SITEURL);
 define('WP_CONTENT_URL', WP_SITEURL . '/wp-content');
 
 define('FS_METHOD', 'direct');
-define('WP_AUTO_UPDATE_CORE', false);
+define('WP_AUTO_UPDATE_CORE', false); // tắt tự động update wordpress vì cần check tương thích với các plugin trước khi update
 define('WP_MEMORY_LIMIT', '256M');
 define('DISABLE_WP_CRON', true);
 

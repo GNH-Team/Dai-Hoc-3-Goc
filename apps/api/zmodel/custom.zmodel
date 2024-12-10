@@ -56,7 +56,7 @@ model aa_activity extends g_base_min {
     id            Int                @id @default(autoincrement())
     type_id       Int
     type          aa_activity_type   @relation(fields: [type_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-    post_id       Int // ! làm sao để validate được post_id này thuộc sở hữu của user đang tạo activity này
+    post_id       Int // ! làm sao để validate được post_id này thuộc sở hữu của user đang tạo activity này mỗi khi INSERT
     name          String             @length(max: 255)
     min_count     Int                @default(1)
     end_date      DateTime?
