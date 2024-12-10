@@ -28,13 +28,11 @@ wp-content/debug.log
 **/masterstudy-templates-premium
 **/lms
 **/lmspro
-**/h5p
 
 **/plugins/masterstudy-lms-learning-management-system
 **/plugins/masterstudy-lms-learning-management-system-pro
 **/plugins/presto-player
 **/plugins/presto-player-pro
-**/plugins/eroom-zoom-meetings-webinar
 
 backup
 
