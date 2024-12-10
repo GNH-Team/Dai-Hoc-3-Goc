@@ -26,8 +26,6 @@ yarn-error.log*
 
 wp-content/debug.log
 **/plugins/image-optimization
-**/plugins/mailchimp-for-wp
-**/plugins/loco-translate
 **/plugins/user-role-editor
 **/masterstudy-templates-premium
 **/lms
