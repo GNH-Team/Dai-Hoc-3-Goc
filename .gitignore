@@ -25,29 +25,18 @@ yarn-error.log*
 .env.production.local
 
 wp-content/debug.log
-**/plugins/elementor
-**/plugins/header-footer-elementor
-**/plugins/image-optimization
-**/plugins/mailchimp-for-wp
-**/plugins/loco-translate
-**/plugins/user-role-editor
-**/plugins/elementor-pro
 **/masterstudy-templates-premium
 **/lms
 **/lmspro
-**/h5p
 
 **/plugins/masterstudy-lms-learning-management-system
 **/plugins/masterstudy-lms-learning-management-system-pro
-**/plugins/presto-player
-**/plugins/presto-player-pro
-**/plugins/eroom-zoom-meetings-webinar
+# **/plugins/presto-player
+# **/plugins/presto-player-pro
 
 backup
 
 twentytwentyfour
-wp-admin
-wp-includes
 
 apps/wp/wp-content/languages/plugins/*.json
 apps/wp/wp-content/languages/plugins/*-backup-*
