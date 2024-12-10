@@ -1,3 +1,9 @@
+## 2.0.3 - 2024-11-21
+- **NEW**: Small bug fixes.
+
+## 2.0.2 - 2024-11-08
+- **NEW**: Introduced 2 new templates: Coaching, Technology.
+
 ## 2.0.1 - 2024-10-14
 - **Enhancement**: Added option to customize text of the message in Mailchimp widget.
 - **Enhancement**: Added validation for comment form in Single Posts.

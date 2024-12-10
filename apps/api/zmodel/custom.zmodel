@@ -1,90 +1,91 @@
-
 abstract model g_base {
+    created_at DateTime  @default(now())
+    updated_at DateTime  @updatedAt
+    deleted_at DateTime?
+}
+
+abstract model g_base_min {
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
 }
 
-model g_usermeta {
-    umeta_id   BigInt  @id @default(autoincrement()) @db.UnsignedBigInt
-    user_id    BigInt  @default(0) @db.UnsignedBigInt
-    meta_key   String? @db.VarChar(255)
-    meta_value String? @db.LongText
-
-    @@index([meta_key(length: 191)], map: "meta_key")
-    @@index([user_id], map: "user_id")
-    @@map("3g_usermeta")
-}
-
-model g_users {
-    ID                  BigInt   @id @default(autoincrement()) @db.UnsignedBigInt
-    user_login          String   @default("") @db.VarChar(60)
-    user_pass           String   @default("") @db.VarChar(255)
-    user_nicename       String   @default("") @db.VarChar(50)
-    user_email          String   @default("") @db.VarChar(100)
-    user_url            String   @default("") @db.VarChar(100)
-    user_registered     DateTime @default(dbgenerated("('0000-00-00 00:00:00')")) @db.DateTime(0)
-    user_activation_key String   @default("") @db.VarChar(255)
-    user_status         Int      @default(0)
-    display_name        String   @default("") @db.VarChar(250)
-
-    @@index([user_email], map: "user_email")
-    @@index([user_login], map: "user_login_key")
-    @@index([user_nicename], map: "user_nicename")
-    @@map("3g_users")
-    @@auth
-}
-
-model g_stm_lms_user_courses {
-    user_course_id    Int     @id @default(autoincrement()) @db.MediumInt
-    user_id           BigInt
-    course_id         Int
-    current_lesson_id Int?
-    progress_percent  Int     @db.MediumInt
-    status            String  @default("") @db.VarChar(45)
-    lng_code          String  @default("en_US") @db.VarChar(45)
-    subscription_id   Int?
-    enterprise_id     Int?    @default(0)
-    bundle_id         Int?    @default(0)
-    start_time        Int
-    end_time          Int?    @default(0)
-    for_points        String? @default("") @db.VarChar(255)
-
-    @@index([user_id, course_id, bundle_id], map: "ix_user_course_bundle")
-    @@index([user_id, course_id, current_lesson_id], map: "ix_user_course_current")
-    @@index([user_id, course_id, enterprise_id], map: "ix_user_course_enterprice")
-    @@index([user_id, course_id, start_time], map: "ix_user_course_start_time")
-    @@map("3g_stm_lms_user_courses")
-}
-
-model g_classroom_groups extends g_base {
-    id          Int                        @id @default(autoincrement())
+model aa_classroom_groups extends g_base {
+    id          Int                          @id @default(autoincrement())
     course_id   Int
-    group_name  String                     @length(max: 100)
-    description String                     @length(max: 255)
-    created_by  BigInt                     @default(auth().ID) @db.UnsignedBigInt
+    group_name  String                       @length(max: 100)
+    description String                       @length(max: 255)
+    cover       String                       @length(max: 100)
+    avatar      String                       @length(max: 100)
+    created_by  BigInt                       @default(auth().ID) @db.UnsignedBigInt
 
-    users_group g_classroom_groups_users[]
+    users_group aa_classroom_group_members[]
 }
 
-model g_classroom_groups_users {
-    id         Int                @id @default(autoincrement())
+model aa_classroom_group_members {
+    id         Int                 @id @default(autoincrement())
     user_id    BigInt
     group_id   Int
-    group      g_classroom_groups @relation(fields: [group_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-    role       GroupRole          @default(THANHVIEN)
-    order      Int
+    group      aa_classroom_groups @relation(fields: [group_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    role       GroupRole           @default(THANHVIEN)
+    order      Int // số thứ tự của mỗi học viên trong nhóm -> thứ tự đệ nhị thân
 
-    created_by BigInt             @default(auth().ID) @db.UnsignedBigInt
-    created_at DateTime           @default(now())
+    created_by BigInt              @default(auth().ID) @db.UnsignedBigInt // tạo 1 user là robot sử dụng cho các hoạt động tự động hoá như auto thêm học viên vào group lớp
+    created_at DateTime            @default(now())
 }
 
-model g_attendance {
+model aa_attendance {
     id         Int              @id @default(autoincrement())
     user_id    BigInt
     course_id  Int
     lesson_id  Int
     status     AttendanceStatus
     created_at DateTime         @default(now())
+}
+
+model aa_activity_type {
+    id         Int           @id @default(autoincrement())
+    name       String        @length(max: 30)
+    icon       String        @length(max: 100)
+    created_at DateTime      @default(now())
+    updated_at DateTime      @updatedAt
+
+    activities aa_activity[]
+}
+
+model aa_activity extends g_base_min {
+    id            Int                @id @default(autoincrement())
+    type_id       Int
+    type          aa_activity_type   @relation(fields: [type_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    post_id       Int // ! làm sao để validate được post_id này thuộc sở hữu của user đang tạo activity này mỗi khi INSERT
+    name          String             @length(max: 255)
+    min_count     Int                @default(1)
+    end_date      DateTime?
+
+    activity_logs aa_activity_logs[]
+}
+
+model aa_activity_logs extends g_base_min {
+    id          BigInt         @id @default(autoincrement())
+    activity_id Int
+    activity    aa_activity    @relation(fields: [activity_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+    content     String         @length(max: 500)
+    status      ActivityStatus
+
+    created_by  BigInt         @default(auth().ID) @db.UnsignedBigInt
+}
+
+model aa_activity_relationships {
+    id              Int      @id @default(autoincrement())
+    user_id         BigInt
+    activity_id     Int
+    activity_log_id BigInt
+    created_at      DateTime @default(now())
+}
+
+enum ActivityStatus {
+    PUBLISH
+    DRAFT
 }
 
 enum AttendanceStatus {

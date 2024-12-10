@@ -20,7 +20,9 @@
     "typeRoots": [
       "./src/types"
     ],
-    "rootDir": "./src",
+    "rootDirs": [
+      "./src",
+    ],
     "outDir": "./dist",
     "baseUrl": "./",
     "paths": {

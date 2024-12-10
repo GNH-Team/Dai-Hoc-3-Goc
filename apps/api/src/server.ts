@@ -1,87 +1,83 @@
-import Fastify from 'fastify';
-import userRoutes from './routes/userRoutes';
-import {envConfig} from './env';
+import path from "node:path"
 
-import { enhance } from '@zenstackhq/runtime';
-import { ZenStackFastifyPlugin } from '@zenstackhq/server/fastify';
-import prisma  from './db';
+import cors from "@fastify/cors"
+import fastifyStatic from "@fastify/static"
+import { enhance } from "@zenstackhq/runtime"
+import { ZenStackFastifyPlugin } from "@zenstackhq/server/fastify"
+import Fastify from "fastify"
 
-import cors from '@fastify/cors'
-import fastifyStatic from '@fastify/static';
-import path from 'node:path';
+import prisma from "./db"
+import { envConfig } from "./env"
+import userRoutes from "./routes/userRoutes"
 
 function getUserId(req: any) {
-  // return parseInt(req.header('X-USER-ID')!);
-  return 1;
+    // return parseInt(req.header('X-USER-ID')!);
+    return 1
 }
 
 // Gets a Prisma client bound to the current user identity
 function getPrisma(req: any) {
-  return enhance(prisma, {
-      user: { id: getUserId(req) },
-  });
+    return enhance(prisma, {
+        user: { ID: getUserId(req) },
+    })
 }
 
 const envToLogger = {
-  development: {
-    transport: {
-      target: 'pino-pretty',
-      options: {
-        translateTime: 'HH:MM:ss Z',
-        ignore: 'pid,hostname',
-      },
+    development: {
+        transport: {
+            target: "pino-pretty",
+            options: {
+                translateTime: "HH:MM:ss Z",
+                ignore: "pid,hostname",
+            },
+        },
     },
-  },
-  production: true,
-  test: false,
+    production: true,
+    test: false,
 }
 
 const server = Fastify(
-  {
-    logger: envToLogger[envConfig.get('NODE_ENV')] ?? true // defaults to true if no entry matches in the map
-  }
-);
+    {
+        logger: envToLogger[envConfig.get("NODE_ENV")] ?? true // defaults to true if no entry matches in the map
+    }
+)
 
-await server.register(cors, { 
-  origin: '*',
+await server.register(cors, {
+    origin: "*",
 })
 
 // Đăng ký plugin @fastify/static với Fastify
 server.register(fastifyStatic, {
-  root: path.join(process.cwd(), 'public'),
-  prefix: '/public/',
-  setHeaders: (res, path) => {
+    root: path.join(process.cwd(), "public"),
+    prefix: "/public/",
+    setHeaders: (res) => {
     // set CORS headers
-    res.setHeader('Access-Control-Allow-Origin', '*');
-  }
-});
+        res.setHeader("Access-Control-Allow-Origin", "*")
+    }
+})
 
 // serve OpenAPI at /api/model
 server.register(ZenStackFastifyPlugin, {
-  prefix: '/api/model',
-  // getSessionUser extracts the current session user from the request, its
-  // implementation depends on your auth solution
-  getPrisma,
-});
+    prefix: "/api/model",
+    // getSessionUser extracts the current session user from the request, its
+    // implementation depends on your auth solution
+    getPrisma,
+})
 
 // Register routes
-server.register(userRoutes, { prefix: '/api/users' });
+server.register(userRoutes, { prefix: "/api/users" })
 
-server.get('/', async (request, reply) => {
-  return 'Hello world'
-})
+server.get("/", async (request, reply) => "Hello world")
 
 // Start server
 const start = async () => {
-  try {
+    try {
     // server.log.info(`Server is running at http://localhost:3355`);
-    await server.listen({ port: envConfig.get('PORT'), host: 'localhost' });
-  } catch (err) {
-    server.log.error(err);
-    process.exit(1);
-  }
-};
+        await server.listen({ port: envConfig.get("PORT"), host: "localhost" })
+    } catch (err) {
+        server.log.error(err)
+        process.exit(1)
+    }
+}
 
-start();
-
-
+start()
