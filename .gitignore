@@ -46,8 +46,6 @@ wp-content/debug.log
 backup
 
 twentytwentyfour
-wp-admin
-wp-includes
 
 apps/wp/wp-content/languages/plugins/*.json
 apps/wp/wp-content/languages/plugins/*-backup-*
