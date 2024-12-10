@@ -31,8 +31,8 @@ wp-content/debug.log
 
 **/plugins/masterstudy-lms-learning-management-system
 **/plugins/masterstudy-lms-learning-management-system-pro
-**/plugins/presto-player
-**/plugins/presto-player-pro
+# **/plugins/presto-player
+# **/plugins/presto-player-pro
 
 backup
 
