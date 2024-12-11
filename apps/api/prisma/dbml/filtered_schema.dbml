@@ -38,7 +38,7 @@ Table dg_stm_lms_user_courses {
   current_lesson_id Int
   progress_percent Int [not null]
   status String [not null, default: '']
-  lng_code String [not null, default: 'en_US']
+  lng_code String [not null, default: 'vi']
   subscription_id Int
   enterprise_id Int [default: 0]
   bundle_id Int [default: 0]
@@ -54,6 +54,16 @@ Table dg_stm_lms_user_lessons {
   lesson_id Int [not null]
   start_time Int
   end_time Int
+}
+
+Table dg_stm_lms_user_points {
+  user_points_id Int [pk, increment]
+  user_id Int [not null]
+  id Int [not null]
+  action_id String [not null]
+  score Int [not null]
+  timestamp Int [not null]
+  completed Boolean [default: false]
 }
 
 Table dg_usermeta {

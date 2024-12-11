@@ -348,6 +348,32 @@ Table dg_links {
   link_rss String [not null, default: '']
 }
 
+Table dg_litespeed_avatar {
+  id BigInt [pk, increment]
+  url String [not null, default: '']
+  md5 String [unique, not null, default: '']
+  dateline Int [not null, default: 0]
+}
+
+Table dg_litespeed_url {
+  id BigInt [pk, increment]
+  url String [unique, not null]
+  cache_tags String [not null, default: '']
+}
+
+Table dg_litespeed_url_file {
+  id BigInt [pk, increment]
+  url_id BigInt [not null]
+  vary String [not null, default: '']
+  filename String [not null, default: '']
+  type Int [not null]
+  mobile Int [not null]
+  webp Int [not null]
+  expired Int [not null, default: 0]
+
+  Note: 'This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments'
+}
+
 Table dg_options {
   option_id BigInt [pk, increment]
   option_name String [unique, not null, default: '']
@@ -669,7 +695,7 @@ Table dg_stm_lms_user_courses {
   current_lesson_id Int
   progress_percent Int [not null]
   status String [not null, default: '']
-  lng_code String [not null, default: 'en_US']
+  lng_code String [not null, default: 'vi']
   subscription_id Int
   enterprise_id Int [default: 0]
   bundle_id Int [default: 0]
@@ -685,6 +711,16 @@ Table dg_stm_lms_user_lessons {
   lesson_id Int [not null]
   start_time Int
   end_time Int
+}
+
+Table dg_stm_lms_user_points {
+  user_points_id Int [pk, increment]
+  user_id Int [not null]
+  id Int [not null]
+  action_id String [not null]
+  score Int [not null]
+  timestamp Int [not null]
+  completed Boolean [default: false]
 }
 
 Table dg_usermeta {

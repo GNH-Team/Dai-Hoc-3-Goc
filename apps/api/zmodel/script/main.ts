@@ -3,13 +3,13 @@
 import * as fs from "fs"
 
 // ! Danh sách các table, enum cần nâng cao bằng zenstack model để thêm các chức năng phân quyền
-export const SPLIT_MODEL = [
+export const ENHANCE_MODEL = [
     "dg_users", "dg_usermeta", "dg_posts", "dg_postmeta", "dg_stm_lms_user_courses",
-    "dg_stm_lms_user_lessons", "dg_stm_lms_user_points",
-    "aa_classroom_groups", "aa_classroom_group_members", "aa_attendance",
-    "aa_activity_type", "aa_activity", "aa_activity_logs",
-    "aa_activity_relationships", "ActivityStatus", "AttendanceStatus", "GroupRole"
+    "dg_stm_lms_user_lessons", "dg_stm_lms_user_points"
 ]
+
+// eslint-disable-next-line
+export const CUSTOM_MODEL = extractModelsAndEnums(fs.readFileSync("./zmodel/custom.zmodel", "utf8"))
 
 export function split(schemaContent: string, splitModel: string[], include: boolean): string {
     // Tách nội dung thành các block, giữ nguyên cấu trúc của mỗi block
@@ -43,7 +43,7 @@ export function splitZmodel() {
     // tách các table wordpress cần thiết để custom lại schema cho service API
     const enhanceSchema = split(
         originalSchemaContent,
-        SPLIT_MODEL,
+        ENHANCE_MODEL,
         true
     )
     fs.writeFileSync("./zmodel/wp-enhance.zmodel", enhanceSchema, "utf8")
@@ -52,11 +52,37 @@ export function splitZmodel() {
     // tách các table wordpress không sử dụng trong service API ra một schema riêng để tránh chỉnh sửa nhầm
     const noneEnhanceSchema = split(
         originalSchemaContent,
-        SPLIT_MODEL,
+        ENHANCE_MODEL.concat(CUSTOM_MODEL),
         false
     )
     fs.writeFileSync("./zmodel/wp-none-enhance.zmodel", noneEnhanceSchema, "utf8")
 
     // ghi đè lên file schema.zmodel
     fs.writeFileSync("./schema.zmodel", fs.readFileSync("./zmodel/zmodel.template", "utf8"), "utf8")
+}
+
+export function extractModelsAndEnums(fileContent: string): string[] {
+    // Biểu thức chính quy để tìm các tên model
+    const modelRegex = /model\s+(\w+)/g
+    // Biểu thức chính quy để tìm các tên enum
+    const enumRegex = /enum\s+(\w+)/g
+
+    const models: string[] = []
+    const enums: string[] = []
+
+    let match: RegExpExecArray | null
+
+    // Trích xuất các tên model
+    // eslint-disable-next-line
+    while ((match = modelRegex.exec(fileContent)) !== null) {
+        models.push(match[1])
+    }
+
+    // Trích xuất các tên enum
+    // eslint-disable-next-line
+    while ((match = enumRegex.exec(fileContent)) !== null) {
+        enums.push(match[1])
+    }
+
+    return models.concat(enums)
 }

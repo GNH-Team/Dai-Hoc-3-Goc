@@ -7,6 +7,87 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model aa_activity {
+  created_at       DateTime           @default(now())
+  updated_at       DateTime
+  id               Int                @id @default(autoincrement())
+  type_id          Int
+  post_id          Int
+  name             String
+  min_count        Int                @default(1)
+  end_date         DateTime?
+  aa_activity_type aa_activity_type   @relation(fields: [type_id], references: [id], onDelete: Cascade)
+  aa_activity_logs aa_activity_logs[]
+
+  @@index([type_id], map: "aa_activity_type_id_fkey")
+}
+
+model aa_activity_logs {
+  created_at  DateTime                @default(now())
+  updated_at  DateTime
+  id          BigInt                  @id @default(autoincrement())
+  activity_id Int
+  content     String
+  status      aa_activity_logs_status
+  created_by  BigInt                  @db.UnsignedBigInt
+  aa_activity aa_activity             @relation(fields: [activity_id], references: [id], onDelete: Cascade)
+
+  @@index([activity_id], map: "aa_activity_logs_activity_id_fkey")
+}
+
+model aa_activity_relationships {
+  id              Int      @id @default(autoincrement())
+  user_id         BigInt
+  activity_id     Int
+  activity_log_id BigInt
+  created_at      DateTime @default(now())
+}
+
+model aa_activity_type {
+  id          Int           @id @default(autoincrement())
+  name        String
+  icon        String
+  created_at  DateTime      @default(now())
+  updated_at  DateTime
+  aa_activity aa_activity[]
+}
+
+model aa_attendance {
+  id         Int                  @id @default(autoincrement())
+  user_id    BigInt
+  course_id  Int
+  lesson_id  Int
+  status     aa_attendance_status
+  created_at DateTime             @default(now())
+}
+
+model aa_classroom_group_members {
+  id                  Int                             @id @default(autoincrement())
+  user_id             BigInt
+  group_id            Int
+  role                aa_classroom_group_members_role @default(THANHVIEN)
+  order               Int
+  created_by          BigInt                          @db.UnsignedBigInt
+  created_at          DateTime                        @default(now())
+  aa_classroom_groups aa_classroom_groups             @relation(fields: [group_id], references: [id], onDelete: Cascade)
+
+  @@index([group_id], map: "aa_classroom_group_members_group_id_fkey")
+}
+
+model aa_classroom_groups {
+  created_at                 DateTime                     @default(now())
+  updated_at                 DateTime
+  deleted_at                 DateTime?
+  id                         Int                          @id @default(autoincrement())
+  course_id                  Int
+  group_name                 String
+  description                String
+  cover                      String
+  avatar                     String
+  created_by                 BigInt                       @db.UnsignedBigInt
+  aa_classroom_group_members aa_classroom_group_members[]
+}
+
 model dg_actionscheduler_actions {
   action_id            BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
   hook                 String
@@ -417,6 +498,41 @@ model dg_links {
   @@index([link_visible], map: "link_visible")
 }
 
+model dg_litespeed_avatar {
+  id       BigInt @id @default(autoincrement()) @db.UnsignedBigInt
+  url      String @default("") @db.VarChar(1000)
+  md5      String @unique(map: "md5") @default("") @db.VarChar(128)
+  dateline Int    @default(0)
+
+  @@index([dateline], map: "dateline")
+}
+
+model dg_litespeed_url {
+  id         BigInt @id @default(autoincrement())
+  url        String @unique(map: "url", length: 191) @db.VarChar(500)
+  cache_tags String @default("") @db.VarChar(1000)
+
+  @@index([cache_tags(length: 191)], map: "cache_tags")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model dg_litespeed_url_file {
+  id       BigInt @id @default(autoincrement())
+  url_id   BigInt
+  vary     String @default("") @db.VarChar(32)
+  filename String @default("") @db.VarChar(32)
+  type     Int    @db.TinyInt
+  mobile   Int    @db.TinyInt
+  webp     Int    @db.TinyInt
+  expired  Int    @default(0)
+
+  @@index([filename], map: "filename")
+  @@index([filename, expired], map: "filename_2")
+  @@index([type], map: "type")
+  @@index([url_id, expired], map: "url_id")
+  @@index([url_id, vary, type], map: "url_id_2")
+}
+
 model dg_options {
   option_id    BigInt @id @default(autoincrement()) @db.UnsignedBigInt
   option_name  String @unique(map: "option_name") @default("")
@@ -703,7 +819,7 @@ model dg_stm_lms_user_courses {
   current_lesson_id Int?
   progress_percent  Int     @db.MediumInt
   status            String  @default("") @db.VarChar(45)
-  lng_code          String  @default("en_US") @db.VarChar(45)
+  lng_code          String  @default("vi") @db.VarChar(45)
   subscription_id   Int?
   enterprise_id     Int?    @default(0)
   bundle_id         Int?    @default(0)
@@ -726,6 +842,16 @@ model dg_stm_lms_user_lessons {
   end_time       Int?
 
   @@index([user_id, course_id, lesson_id], map: "ix_user_course_lesson")
+}
+
+model dg_stm_lms_user_points {
+  user_points_id Int      @id @default(autoincrement())
+  user_id        Int
+  id             Int
+  action_id      String   @db.Text
+  score          Int      @db.MediumInt
+  timestamp      Int
+  completed      Boolean? @default(false)
 }
 
 model dg_stm_lms_user_quizzes {
@@ -825,4 +951,21 @@ model dg_users {
   @@index([user_email], map: "user_email")
   @@index([user_login], map: "user_login_key")
   @@index([user_nicename], map: "user_nicename")
+}
+
+enum aa_classroom_group_members_role {
+  TRUONGTHON
+  PHOTHON
+  THANHVIEN
+}
+
+enum aa_attendance_status {
+  TRONVEN
+  VANGMAT
+  MUON
+}
+
+enum aa_activity_logs_status {
+  PUBLISH
+  DRAFT
 }

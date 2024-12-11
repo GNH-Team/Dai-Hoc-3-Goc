@@ -46,7 +46,7 @@ model dg_stm_lms_user_courses {
   current_lesson_id Int?
   progress_percent  Int     @db.MediumInt
   status            String  @default("") @db.VarChar(45)
-  lng_code          String  @default("en_US") @db.VarChar(45)
+  lng_code          String  @default("vi") @db.VarChar(45)
   subscription_id   Int?
   enterprise_id     Int?    @default(0)
   bundle_id         Int?    @default(0)
@@ -69,6 +69,16 @@ model dg_stm_lms_user_lessons {
   end_time       Int?
 
   @@index([user_id, course_id, lesson_id], map: "ix_user_course_lesson")
+}
+
+model dg_stm_lms_user_points {
+  user_points_id Int      @id @default(autoincrement())
+  user_id        Int
+  id             Int
+  action_id      String   @db.Text
+  score          Int      @db.MediumInt
+  timestamp      Int
+  completed      Boolean? @default(false)
 }
 
 model dg_usermeta {

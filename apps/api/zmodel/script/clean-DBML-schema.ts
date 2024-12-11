@@ -8,7 +8,7 @@
 // Import required modules
 import * as fs from "fs"
 
-import { SPLIT_MODEL } from "./main"
+import { CUSTOM_MODEL, ENHANCE_MODEL } from "./main"
 
 function cleanDBMLSchema(content: string, includeObject: string[]): string {
     // Tách nội dung thành các block, giữ nguyên cấu trúc của mỗi block
@@ -51,7 +51,7 @@ const outputPath = "./prisma/dbml/filtered_schema.dbml"
 const schemaContent = fs.readFileSync(schemaFilePath, "utf8")
 const cleanedSchema = cleanDBMLSchema(
     schemaContent,
-    SPLIT_MODEL
+    ENHANCE_MODEL.concat(CUSTOM_MODEL)
 )
 
 // Join the filtered lines and write back to the file

@@ -57,6 +57,12 @@ tags:
     description: dg_h5p_tmpfiles operations
   - name: dg_links
     description: dg_links operations
+  - name: dg_litespeed_avatar
+    description: dg_litespeed_avatar operations
+  - name: dg_litespeed_url
+    description: dg_litespeed_url operations
+  - name: dg_litespeed_url_file
+    description: dg_litespeed_url_file operations
   - name: dg_options
     description: dg_options operations
   - name: dg_presto_player_audio_presets
@@ -109,6 +115,8 @@ tags:
     description: dg_stm_lms_user_courses operations
   - name: dg_stm_lms_user_lessons
     description: dg_stm_lms_user_lessons operations
+  - name: dg_stm_lms_user_points
+    description: dg_stm_lms_user_points operations
   - name: dg_usermeta
     description: dg_usermeta operations
   - name: dg_users
@@ -458,6 +466,30 @@ components:
         - link_rel
         - link_notes
         - link_rss
+    Dg_litespeed_avatarScalarFieldEnum:
+      type: string
+      enum:
+        - id
+        - url
+        - md5
+        - dateline
+    Dg_litespeed_urlScalarFieldEnum:
+      type: string
+      enum:
+        - id
+        - url
+        - cache_tags
+    Dg_litespeed_url_fileScalarFieldEnum:
+      type: string
+      enum:
+        - id
+        - url_id
+        - vary
+        - filename
+        - type
+        - mobile
+        - webp
+        - expired
     Dg_optionsScalarFieldEnum:
       type: string
       enum:
@@ -789,6 +821,16 @@ components:
         - lesson_id
         - start_time
         - end_time
+    Dg_stm_lms_user_pointsScalarFieldEnum:
+      type: string
+      enum:
+        - user_points_id
+        - user_id
+        - id
+        - action_id
+        - score
+        - timestamp
+        - completed
     Dg_usermetaScalarFieldEnum:
       type: string
       enum:
@@ -1065,6 +1107,21 @@ components:
         - link_rel
         - link_notes
         - link_rss
+    Dg_litespeed_avatarOrderByRelevanceFieldEnum:
+      type: string
+      enum:
+        - url
+        - md5
+    Dg_litespeed_urlOrderByRelevanceFieldEnum:
+      type: string
+      enum:
+        - url
+        - cache_tags
+    Dg_litespeed_url_fileOrderByRelevanceFieldEnum:
+      type: string
+      enum:
+        - vary
+        - filename
     Dg_optionsOrderByRelevanceFieldEnum:
       type: string
       enum:
@@ -1207,6 +1264,10 @@ components:
         - status
         - lng_code
         - for_points
+    Dg_stm_lms_user_pointsOrderByRelevanceFieldEnum:
+      type: string
+      enum:
+        - action_id
     Dg_usermetaOrderByRelevanceFieldEnum:
       type: string
       enum:
@@ -2130,6 +2191,63 @@ components:
         - link_rel
         - link_notes
         - link_rss
+    Dg_litespeed_avatar:
+      type: object
+      properties:
+        id:
+          type: integer
+        url:
+          type: string
+        md5:
+          type: string
+        dateline:
+          type: integer
+      required:
+        - id
+        - url
+        - md5
+        - dateline
+    Dg_litespeed_url:
+      type: object
+      properties:
+        id:
+          type: integer
+        url:
+          type: string
+        cache_tags:
+          type: string
+      required:
+        - id
+        - url
+        - cache_tags
+    Dg_litespeed_url_file:
+      type: object
+      properties:
+        id:
+          type: integer
+        url_id:
+          type: integer
+        vary:
+          type: string
+        filename:
+          type: string
+        type:
+          type: integer
+        mobile:
+          type: integer
+        webp:
+          type: integer
+        expired:
+          type: integer
+      required:
+        - id
+        - url_id
+        - vary
+        - filename
+        - type
+        - mobile
+        - webp
+        - expired
     Dg_options:
       type: object
       properties:
@@ -3080,6 +3198,32 @@ components:
         - user_id
         - course_id
         - lesson_id
+    Dg_stm_lms_user_points:
+      type: object
+      properties:
+        user_points_id:
+          type: integer
+        user_id:
+          type: integer
+        id:
+          type: integer
+        action_id:
+          type: string
+        score:
+          type: integer
+        timestamp:
+          type: integer
+        completed:
+          oneOf:
+            - type: "null"
+            - type: boolean
+      required:
+        - user_points_id
+        - user_id
+        - id
+        - action_id
+        - score
+        - timestamp
     Dg_usermeta:
       type: object
       properties:
@@ -8664,6 +8808,392 @@ components:
           oneOf:
             - $ref: "#/components/schemas/StringWithAggregatesFilter"
             - type: string
+    Dg_litespeed_avatarWhereInput:
+      type: object
+      properties:
+        AND:
+          oneOf:
+            - $ref: "#/components/schemas/Dg_litespeed_avatarWhereInput"
+            - type: array
+              items:
+                $ref: "#/components/schemas/Dg_litespeed_avatarWhereInput"
+        OR:
+          type: array
+          items:
+            $ref: "#/components/schemas/Dg_litespeed_avatarWhereInput"
+        NOT:
+          oneOf:
+            - $ref: "#/components/schemas/Dg_litespeed_avatarWhereInput"
+            - type: array
+              items:
+                $ref: "#/components/schemas/Dg_litespeed_avatarWhereInput"
+        id:
+          oneOf:
+            - $ref: "#/components/schemas/BigIntFilter"
+            - type: integer
+        url:
+          oneOf:
+            - $ref: "#/components/schemas/StringFilter"
+            - type: string
+        md5:
+          oneOf:
+            - $ref: "#/components/schemas/StringFilter"
+            - type: string
+        dateline:
+          oneOf:
+            - $ref: "#/components/schemas/IntFilter"
+            - type: integer
+    Dg_litespeed_avatarOrderByWithRelationInput:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/SortOrder"
+        url:
+          $ref: "#/components/schemas/SortOrder"
+        md5:
+          $ref: "#/components/schemas/SortOrder"
+        dateline:
+          $ref: "#/components/schemas/SortOrder"
+        _relevance:
+          $ref: "#/components/schemas/Dg_litespeed_avatarOrderByRelevanceInput"
+    Dg_litespeed_avatarWhereUniqueInput:
+      type: object
+      properties:
+        id:
+          type: integer
+        md5:
+          type: string
+        AND:
+          oneOf:
+            - $ref: "#/components/schemas/Dg_litespeed_avatarWhereInput"
+            - type: array
+              items:
+                $ref: "#/components/schemas/Dg_litespeed_avatarWhereInput"
+        OR:
+          type: array
+          items:
+            $ref: "#/components/schemas/Dg_litespeed_avatarWhereInput"
+        NOT:
+          oneOf:
+            - $ref: "#/components/schemas/Dg_litespeed_avatarWhereInput"
+            - type: array
+              items:
+                $ref: "#/components/schemas/Dg_litespeed_avatarWhereInput"
+        url:
+          oneOf:
+            - $ref: "#/components/schemas/StringFilter"
+            - type: string
+        dateline:
+          oneOf:
+            - $ref: "#/components/schemas/IntFilter"
+            - type: integer
+    Dg_litespeed_avatarScalarWhereWithAggregatesInput:
+      type: object
+      properties:
+        AND:
+          oneOf:
+            - $ref: "#/components/schemas/Dg_litespeed_avatarScalarWhereWithAggregatesInput"
+            - type: array
+              items:
+                $ref: "#/components/schemas/Dg_litespeed_avatarScalarWhereWithAggregatesInput"
+        OR:
+          type: array
+          items:
+            $ref: "#/components/schemas/Dg_litespeed_avatarScalarWhereWithAggregatesInput"
+        NOT:
+          oneOf:
+            - $ref: "#/components/schemas/Dg_litespeed_avatarScalarWhereWithAggregatesInput"
+            - type: array
+              items:
+                $ref: "#/components/schemas/Dg_litespeed_avatarScalarWhereWithAggregatesInput"
+        id:
+          oneOf:
+            - $ref: "#/components/schemas/BigIntWithAggregatesFilter"
+            - type: integer
+        url:
+          oneOf:
+            - $ref: "#/components/schemas/StringWithAggregatesFilter"
+            - type: string
+        md5:
+          oneOf:
+            - $ref: "#/components/schemas/StringWithAggregatesFilter"
+            - type: string
+        dateline:
+          oneOf:
+            - $ref: "#/components/schemas/IntWithAggregatesFilter"
+            - type: integer
+    Dg_litespeed_urlWhereInput:
+      type: object
+      properties:
+        AND:
+          oneOf:
+            - $ref: "#/components/schemas/Dg_litespeed_urlWhereInput"
+            - type: array
+              items:
+                $ref: "#/components/schemas/Dg_litespeed_urlWhereInput"
+        OR:
+          type: array
+          items:
+            $ref: "#/components/schemas/Dg_litespeed_urlWhereInput"
+        NOT:
+          oneOf:
+            - $ref: "#/components/schemas/Dg_litespeed_urlWhereInput"
+            - type: array
+              items:
+                $ref: "#/components/schemas/Dg_litespeed_urlWhereInput"
+        id:
+          oneOf:
+            - $ref: "#/components/schemas/BigIntFilter"
+            - type: integer
+        url:
+          oneOf:
+            - $ref: "#/components/schemas/StringFilter"
+            - type: string
+        cache_tags:
+          oneOf:
+            - $ref: "#/components/schemas/StringFilter"
+            - type: string
+    Dg_litespeed_urlOrderByWithRelationInput:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/SortOrder"
+        url:
+          $ref: "#/components/schemas/SortOrder"
+        cache_tags:
+          $ref: "#/components/schemas/SortOrder"
+        _relevance:
+          $ref: "#/components/schemas/Dg_litespeed_urlOrderByRelevanceInput"
+    Dg_litespeed_urlWhereUniqueInput:
+      type: object
+      properties:
+        id:
+          type: integer
+        url:
+          type: string
+        AND:
+          oneOf:
+            - $ref: "#/components/schemas/Dg_litespeed_urlWhereInput"
+            - type: array
+              items:
+                $ref: "#/components/schemas/Dg_litespeed_urlWhereInput"
+        OR:
+          type: array
+          items:
+            $ref: "#/components/schemas/Dg_litespeed_urlWhereInput"
+        NOT:
+          oneOf:
+            - $ref: "#/components/schemas/Dg_litespeed_urlWhereInput"
+            - type: array
+              items:
+                $ref: "#/components/schemas/Dg_litespeed_urlWhereInput"
+        cache_tags:
+          oneOf:
+            - $ref: "#/components/schemas/StringFilter"
+            - type: string
+    Dg_litespeed_urlScalarWhereWithAggregatesInput:
+      type: object
+      properties:
+        AND:
+          oneOf:
+            - $ref: "#/components/schemas/Dg_litespeed_urlScalarWhereWithAggregatesInput"
+            - type: array
+              items:
+                $ref: "#/components/schemas/Dg_litespeed_urlScalarWhereWithAggregatesInput"
+        OR:
+          type: array
+          items:
+            $ref: "#/components/schemas/Dg_litespeed_urlScalarWhereWithAggregatesInput"
+        NOT:
+          oneOf:
+            - $ref: "#/components/schemas/Dg_litespeed_urlScalarWhereWithAggregatesInput"
+            - type: array
+              items:
+                $ref: "#/components/schemas/Dg_litespeed_urlScalarWhereWithAggregatesInput"
+        id:
+          oneOf:
+            - $ref: "#/components/schemas/BigIntWithAggregatesFilter"
+            - type: integer
+        url:
+          oneOf:
+            - $ref: "#/components/schemas/StringWithAggregatesFilter"
+            - type: string
+        cache_tags:
+          oneOf:
+            - $ref: "#/components/schemas/StringWithAggregatesFilter"
+            - type: string
+    Dg_litespeed_url_fileWhereInput:
+      type: object
+      properties:
+        AND:
+          oneOf:
+            - $ref: "#/components/schemas/Dg_litespeed_url_fileWhereInput"
+            - type: array
+              items:
+                $ref: "#/components/schemas/Dg_litespeed_url_fileWhereInput"
+        OR:
+          type: array
+          items:
+            $ref: "#/components/schemas/Dg_litespeed_url_fileWhereInput"
+        NOT:
+          oneOf:
+            - $ref: "#/components/schemas/Dg_litespeed_url_fileWhereInput"
+            - type: array
+              items:
+                $ref: "#/components/schemas/Dg_litespeed_url_fileWhereInput"
+        id:
+          oneOf:
+            - $ref: "#/components/schemas/BigIntFilter"
+            - type: integer
+        url_id:
+          oneOf:
+            - $ref: "#/components/schemas/BigIntFilter"
+            - type: integer
+        vary:
+          oneOf:
+            - $ref: "#/components/schemas/StringFilter"
+            - type: string
+        filename:
+          oneOf:
+            - $ref: "#/components/schemas/StringFilter"
+            - type: string
+        type:
+          oneOf:
+            - $ref: "#/components/schemas/IntFilter"
+            - type: integer
+        mobile:
+          oneOf:
+            - $ref: "#/components/schemas/IntFilter"
+            - type: integer
+        webp:
+          oneOf:
+            - $ref: "#/components/schemas/IntFilter"
+            - type: integer
+        expired:
+          oneOf:
+            - $ref: "#/components/schemas/IntFilter"
+            - type: integer
+    Dg_litespeed_url_fileOrderByWithRelationInput:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/SortOrder"
+        url_id:
+          $ref: "#/components/schemas/SortOrder"
+        vary:
+          $ref: "#/components/schemas/SortOrder"
+        filename:
+          $ref: "#/components/schemas/SortOrder"
+        type:
+          $ref: "#/components/schemas/SortOrder"
+        mobile:
+          $ref: "#/components/schemas/SortOrder"
+        webp:
+          $ref: "#/components/schemas/SortOrder"
+        expired:
+          $ref: "#/components/schemas/SortOrder"
+        _relevance:
+          $ref: "#/components/schemas/Dg_litespeed_url_fileOrderByRelevanceInput"
+    Dg_litespeed_url_fileWhereUniqueInput:
+      type: object
+      properties:
+        id:
+          type: integer
+        AND:
+          oneOf:
+            - $ref: "#/components/schemas/Dg_litespeed_url_fileWhereInput"
+            - type: array
+              items:
+                $ref: "#/components/schemas/Dg_litespeed_url_fileWhereInput"
+        OR:
+          type: array
+          items:
+            $ref: "#/components/schemas/Dg_litespeed_url_fileWhereInput"
+        NOT:
+          oneOf:
+            - $ref: "#/components/schemas/Dg_litespeed_url_fileWhereInput"
+            - type: array
+              items:
+                $ref: "#/components/schemas/Dg_litespeed_url_fileWhereInput"
+        url_id:
+          oneOf:
+            - $ref: "#/components/schemas/BigIntFilter"
+            - type: integer
+        vary:
+          oneOf:
+            - $ref: "#/components/schemas/StringFilter"
+            - type: string
+        filename:
+          oneOf:
+            - $ref: "#/components/schemas/StringFilter"
+            - type: string
+        type:
+          oneOf:
+            - $ref: "#/components/schemas/IntFilter"
+            - type: integer
+        mobile:
+          oneOf:
+            - $ref: "#/components/schemas/IntFilter"
+            - type: integer
+        webp:
+          oneOf:
+            - $ref: "#/components/schemas/IntFilter"
+            - type: integer
+        expired:
+          oneOf:
+            - $ref: "#/components/schemas/IntFilter"
+            - type: integer
+    Dg_litespeed_url_fileScalarWhereWithAggregatesInput:
+      type: object
+      properties:
+        AND:
+          oneOf:
+            - $ref: "#/components/schemas/Dg_litespeed_url_fileScalarWhereWithAggregatesInput"
+            - type: array
+              items:
+                $ref: "#/components/schemas/Dg_litespeed_url_fileScalarWhereWithAggregatesInput"
+        OR:
+          type: array
+          items:
+            $ref: "#/components/schemas/Dg_litespeed_url_fileScalarWhereWithAggregatesInput"
+        NOT:
+          oneOf:
+            - $ref: "#/components/schemas/Dg_litespeed_url_fileScalarWhereWithAggregatesInput"
+            - type: array
+              items:
+                $ref: "#/components/schemas/Dg_litespeed_url_fileScalarWhereWithAggregatesInput"
+        id:
+          oneOf:
+            - $ref: "#/components/schemas/BigIntWithAggregatesFilter"
+            - type: integer
+        url_id:
+          oneOf:
+            - $ref: "#/components/schemas/BigIntWithAggregatesFilter"
+            - type: integer
+        vary:
+          oneOf:
+            - $ref: "#/components/schemas/StringWithAggregatesFilter"
+            - type: string
+        filename:
+          oneOf:
+            - $ref: "#/components/schemas/StringWithAggregatesFilter"
+            - type: string
+        type:
+          oneOf:
+            - $ref: "#/components/schemas/IntWithAggregatesFilter"
+            - type: integer
+        mobile:
+          oneOf:
+            - $ref: "#/components/schemas/IntWithAggregatesFilter"
+            - type: integer
+        webp:
+          oneOf:
+            - $ref: "#/components/schemas/IntWithAggregatesFilter"
+            - type: integer
+        expired:
+          oneOf:
+            - $ref: "#/components/schemas/IntWithAggregatesFilter"
+            - type: integer
     Dg_optionsWhereInput:
       type: object
       properties:
@@ -14239,6 +14769,174 @@ components:
             - $ref: "#/components/schemas/IntNullableWithAggregatesFilter"
             - type: integer
             - type: "null"
+    Dg_stm_lms_user_pointsWhereInput:
+      type: object
+      properties:
+        AND:
+          oneOf:
+            - $ref: "#/components/schemas/Dg_stm_lms_user_pointsWhereInput"
+            - type: array
+              items:
+                $ref: "#/components/schemas/Dg_stm_lms_user_pointsWhereInput"
+        OR:
+          type: array
+          items:
+            $ref: "#/components/schemas/Dg_stm_lms_user_pointsWhereInput"
+        NOT:
+          oneOf:
+            - $ref: "#/components/schemas/Dg_stm_lms_user_pointsWhereInput"
+            - type: array
+              items:
+                $ref: "#/components/schemas/Dg_stm_lms_user_pointsWhereInput"
+        user_points_id:
+          oneOf:
+            - $ref: "#/components/schemas/IntFilter"
+            - type: integer
+        user_id:
+          oneOf:
+            - $ref: "#/components/schemas/IntFilter"
+            - type: integer
+        id:
+          oneOf:
+            - $ref: "#/components/schemas/IntFilter"
+            - type: integer
+        action_id:
+          oneOf:
+            - $ref: "#/components/schemas/StringFilter"
+            - type: string
+        score:
+          oneOf:
+            - $ref: "#/components/schemas/IntFilter"
+            - type: integer
+        timestamp:
+          oneOf:
+            - $ref: "#/components/schemas/IntFilter"
+            - type: integer
+        completed:
+          oneOf:
+            - $ref: "#/components/schemas/BoolNullableFilter"
+            - type: boolean
+            - type: "null"
+    Dg_stm_lms_user_pointsOrderByWithRelationInput:
+      type: object
+      properties:
+        user_points_id:
+          $ref: "#/components/schemas/SortOrder"
+        user_id:
+          $ref: "#/components/schemas/SortOrder"
+        id:
+          $ref: "#/components/schemas/SortOrder"
+        action_id:
+          $ref: "#/components/schemas/SortOrder"
+        score:
+          $ref: "#/components/schemas/SortOrder"
+        timestamp:
+          $ref: "#/components/schemas/SortOrder"
+        completed:
+          oneOf:
+            - $ref: "#/components/schemas/SortOrder"
+            - $ref: "#/components/schemas/SortOrderInput"
+        _relevance:
+          $ref: "#/components/schemas/Dg_stm_lms_user_pointsOrderByRelevanceInput"
+    Dg_stm_lms_user_pointsWhereUniqueInput:
+      type: object
+      properties:
+        user_points_id:
+          type: integer
+        AND:
+          oneOf:
+            - $ref: "#/components/schemas/Dg_stm_lms_user_pointsWhereInput"
+            - type: array
+              items:
+                $ref: "#/components/schemas/Dg_stm_lms_user_pointsWhereInput"
+        OR:
+          type: array
+          items:
+            $ref: "#/components/schemas/Dg_stm_lms_user_pointsWhereInput"
+        NOT:
+          oneOf:
+            - $ref: "#/components/schemas/Dg_stm_lms_user_pointsWhereInput"
+            - type: array
+              items:
+                $ref: "#/components/schemas/Dg_stm_lms_user_pointsWhereInput"
+        user_id:
+          oneOf:
+            - $ref: "#/components/schemas/IntFilter"
+            - type: integer
+        id:
+          oneOf:
+            - $ref: "#/components/schemas/IntFilter"
+            - type: integer
+        action_id:
+          oneOf:
+            - $ref: "#/components/schemas/StringFilter"
+            - type: string
+        score:
+          oneOf:
+            - $ref: "#/components/schemas/IntFilter"
+            - type: integer
+        timestamp:
+          oneOf:
+            - $ref: "#/components/schemas/IntFilter"
+            - type: integer
+        completed:
+          oneOf:
+            - $ref: "#/components/schemas/BoolNullableFilter"
+            - type: boolean
+            - type: "null"
+    Dg_stm_lms_user_pointsScalarWhereWithAggregatesInput:
+      type: object
+      properties:
+        AND:
+          oneOf:
+            - $ref: "#/components/schemas/Dg_stm_lms_user_pointsScalarWhereWithAggregatesInpu\
+                t"
+            - type: array
+              items:
+                $ref: "#/components/schemas/Dg_stm_lms_user_pointsScalarWhereWithAggregatesInpu\
+                  t"
+        OR:
+          type: array
+          items:
+            $ref: "#/components/schemas/Dg_stm_lms_user_pointsScalarWhereWithAggregatesInpu\
+              t"
+        NOT:
+          oneOf:
+            - $ref: "#/components/schemas/Dg_stm_lms_user_pointsScalarWhereWithAggregatesInpu\
+                t"
+            - type: array
+              items:
+                $ref: "#/components/schemas/Dg_stm_lms_user_pointsScalarWhereWithAggregatesInpu\
+                  t"
+        user_points_id:
+          oneOf:
+            - $ref: "#/components/schemas/IntWithAggregatesFilter"
+            - type: integer
+        user_id:
+          oneOf:
+            - $ref: "#/components/schemas/IntWithAggregatesFilter"
+            - type: integer
+        id:
+          oneOf:
+            - $ref: "#/components/schemas/IntWithAggregatesFilter"
+            - type: integer
+        action_id:
+          oneOf:
+            - $ref: "#/components/schemas/StringWithAggregatesFilter"
+            - type: string
+        score:
+          oneOf:
+            - $ref: "#/components/schemas/IntWithAggregatesFilter"
+            - type: integer
+        timestamp:
+          oneOf:
+            - $ref: "#/components/schemas/IntWithAggregatesFilter"
+            - type: integer
+        completed:
+          oneOf:
+            - $ref: "#/components/schemas/BoolNullableWithAggregatesFilter"
+            - type: boolean
+            - type: "null"
     Dg_usermetaWhereInput:
       type: object
       properties:
@@ -19520,6 +20218,236 @@ components:
           oneOf:
             - type: string
             - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
+    Dg_litespeed_avatarCreateInput:
+      type: object
+      properties:
+        id:
+          type: integer
+        url:
+          type: string
+        md5:
+          type: string
+        dateline:
+          type: integer
+    Dg_litespeed_avatarUpdateInput:
+      type: object
+      properties:
+        id:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/BigIntFieldUpdateOperationsInput"
+        url:
+          oneOf:
+            - type: string
+            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
+        md5:
+          oneOf:
+            - type: string
+            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
+        dateline:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/IntFieldUpdateOperationsInput"
+    Dg_litespeed_avatarCreateManyInput:
+      type: object
+      properties:
+        id:
+          type: integer
+        url:
+          type: string
+        md5:
+          type: string
+        dateline:
+          type: integer
+    Dg_litespeed_avatarUpdateManyMutationInput:
+      type: object
+      properties:
+        id:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/BigIntFieldUpdateOperationsInput"
+        url:
+          oneOf:
+            - type: string
+            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
+        md5:
+          oneOf:
+            - type: string
+            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
+        dateline:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/IntFieldUpdateOperationsInput"
+    Dg_litespeed_urlCreateInput:
+      type: object
+      properties:
+        id:
+          type: integer
+        url:
+          type: string
+        cache_tags:
+          type: string
+      required:
+        - url
+    Dg_litespeed_urlUpdateInput:
+      type: object
+      properties:
+        id:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/BigIntFieldUpdateOperationsInput"
+        url:
+          oneOf:
+            - type: string
+            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
+        cache_tags:
+          oneOf:
+            - type: string
+            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
+    Dg_litespeed_urlCreateManyInput:
+      type: object
+      properties:
+        id:
+          type: integer
+        url:
+          type: string
+        cache_tags:
+          type: string
+      required:
+        - url
+    Dg_litespeed_urlUpdateManyMutationInput:
+      type: object
+      properties:
+        id:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/BigIntFieldUpdateOperationsInput"
+        url:
+          oneOf:
+            - type: string
+            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
+        cache_tags:
+          oneOf:
+            - type: string
+            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
+    Dg_litespeed_url_fileCreateInput:
+      type: object
+      properties:
+        id:
+          type: integer
+        url_id:
+          type: integer
+        vary:
+          type: string
+        filename:
+          type: string
+        type:
+          type: integer
+        mobile:
+          type: integer
+        webp:
+          type: integer
+        expired:
+          type: integer
+      required:
+        - url_id
+        - type
+        - mobile
+        - webp
+    Dg_litespeed_url_fileUpdateInput:
+      type: object
+      properties:
+        id:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/BigIntFieldUpdateOperationsInput"
+        url_id:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/BigIntFieldUpdateOperationsInput"
+        vary:
+          oneOf:
+            - type: string
+            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
+        filename:
+          oneOf:
+            - type: string
+            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
+        type:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/IntFieldUpdateOperationsInput"
+        mobile:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/IntFieldUpdateOperationsInput"
+        webp:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/IntFieldUpdateOperationsInput"
+        expired:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/IntFieldUpdateOperationsInput"
+    Dg_litespeed_url_fileCreateManyInput:
+      type: object
+      properties:
+        id:
+          type: integer
+        url_id:
+          type: integer
+        vary:
+          type: string
+        filename:
+          type: string
+        type:
+          type: integer
+        mobile:
+          type: integer
+        webp:
+          type: integer
+        expired:
+          type: integer
+      required:
+        - url_id
+        - type
+        - mobile
+        - webp
+    Dg_litespeed_url_fileUpdateManyMutationInput:
+      type: object
+      properties:
+        id:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/BigIntFieldUpdateOperationsInput"
+        url_id:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/BigIntFieldUpdateOperationsInput"
+        vary:
+          oneOf:
+            - type: string
+            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
+        filename:
+          oneOf:
+            - type: string
+            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
+        type:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/IntFieldUpdateOperationsInput"
+        mobile:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/IntFieldUpdateOperationsInput"
+        webp:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/IntFieldUpdateOperationsInput"
+        expired:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/IntFieldUpdateOperationsInput"
     Dg_optionsCreateInput:
       type: object
       properties:
@@ -23420,6 +24348,110 @@ components:
             - type: integer
             - $ref: "#/components/schemas/NullableIntFieldUpdateOperationsInput"
             - type: "null"
+    Dg_stm_lms_user_pointsCreateInput:
+      type: object
+      properties:
+        user_id:
+          type: integer
+        id:
+          type: integer
+        action_id:
+          type: string
+        score:
+          type: integer
+        timestamp:
+          type: integer
+        completed:
+          oneOf:
+            - type: "null"
+            - type: boolean
+      required:
+        - user_id
+        - id
+        - action_id
+        - score
+        - timestamp
+    Dg_stm_lms_user_pointsUpdateInput:
+      type: object
+      properties:
+        user_id:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/IntFieldUpdateOperationsInput"
+        id:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/IntFieldUpdateOperationsInput"
+        action_id:
+          oneOf:
+            - type: string
+            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
+        score:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/IntFieldUpdateOperationsInput"
+        timestamp:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/IntFieldUpdateOperationsInput"
+        completed:
+          oneOf:
+            - type: boolean
+            - $ref: "#/components/schemas/NullableBoolFieldUpdateOperationsInput"
+            - type: "null"
+    Dg_stm_lms_user_pointsCreateManyInput:
+      type: object
+      properties:
+        user_points_id:
+          type: integer
+        user_id:
+          type: integer
+        id:
+          type: integer
+        action_id:
+          type: string
+        score:
+          type: integer
+        timestamp:
+          type: integer
+        completed:
+          oneOf:
+            - type: "null"
+            - type: boolean
+      required:
+        - user_id
+        - id
+        - action_id
+        - score
+        - timestamp
+    Dg_stm_lms_user_pointsUpdateManyMutationInput:
+      type: object
+      properties:
+        user_id:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/IntFieldUpdateOperationsInput"
+        id:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/IntFieldUpdateOperationsInput"
+        action_id:
+          oneOf:
+            - type: string
+            - $ref: "#/components/schemas/StringFieldUpdateOperationsInput"
+        score:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/IntFieldUpdateOperationsInput"
+        timestamp:
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/IntFieldUpdateOperationsInput"
+        completed:
+          oneOf:
+            - type: boolean
+            - $ref: "#/components/schemas/NullableBoolFieldUpdateOperationsInput"
+            - type: "null"
     Dg_usermetaCreateInput:
       type: object
       properties:
@@ -25466,6 +26498,57 @@ components:
         - fields
         - sort
         - search
+    Dg_litespeed_avatarOrderByRelevanceInput:
+      type: object
+      properties:
+        fields:
+          oneOf:
+            - $ref: "#/components/schemas/Dg_litespeed_avatarOrderByRelevanceFieldEnum"
+            - type: array
+              items:
+                $ref: "#/components/schemas/Dg_litespeed_avatarOrderByRelevanceFieldEnum"
+        sort:
+          $ref: "#/components/schemas/SortOrder"
+        search:
+          type: string
+      required:
+        - fields
+        - sort
+        - search
+    Dg_litespeed_urlOrderByRelevanceInput:
+      type: object
+      properties:
+        fields:
+          oneOf:
+            - $ref: "#/components/schemas/Dg_litespeed_urlOrderByRelevanceFieldEnum"
+            - type: array
+              items:
+                $ref: "#/components/schemas/Dg_litespeed_urlOrderByRelevanceFieldEnum"
+        sort:
+          $ref: "#/components/schemas/SortOrder"
+        search:
+          type: string
+      required:
+        - fields
+        - sort
+        - search
+    Dg_litespeed_url_fileOrderByRelevanceInput:
+      type: object
+      properties:
+        fields:
+          oneOf:
+            - $ref: "#/components/schemas/Dg_litespeed_url_fileOrderByRelevanceFieldEnum"
+            - type: array
+              items:
+                $ref: "#/components/schemas/Dg_litespeed_url_fileOrderByRelevanceFieldEnum"
+        sort:
+          $ref: "#/components/schemas/SortOrder"
+        search:
+          type: string
+      required:
+        - fields
+        - sort
+        - search
     Dg_optionsOrderByRelevanceInput:
       type: object
       properties:
@@ -25987,6 +27070,53 @@ components:
         - fields
         - sort
         - search
+    BoolNullableFilter:
+      type: object
+      properties:
+        equals:
+          oneOf:
+            - type: "null"
+            - type: boolean
+        not:
+          oneOf:
+            - type: boolean
+            - $ref: "#/components/schemas/NestedBoolNullableFilter"
+            - type: "null"
+    Dg_stm_lms_user_pointsOrderByRelevanceInput:
+      type: object
+      properties:
+        fields:
+          oneOf:
+            - $ref: "#/components/schemas/Dg_stm_lms_user_pointsOrderByRelevanceFieldEnum"
+            - type: array
+              items:
+                $ref: "#/components/schemas/Dg_stm_lms_user_pointsOrderByRelevanceFieldEnum"
+        sort:
+          $ref: "#/components/schemas/SortOrder"
+        search:
+          type: string
+      required:
+        - fields
+        - sort
+        - search
+    BoolNullableWithAggregatesFilter:
+      type: object
+      properties:
+        equals:
+          oneOf:
+            - type: "null"
+            - type: boolean
+        not:
+          oneOf:
+            - type: boolean
+            - $ref: "#/components/schemas/NestedBoolNullableWithAggregatesFilter"
+            - type: "null"
+        _count:
+          $ref: "#/components/schemas/NestedIntNullableFilter"
+        _min:
+          $ref: "#/components/schemas/NestedBoolNullableFilter"
+        _max:
+          $ref: "#/components/schemas/NestedBoolNullableFilter"
     Dg_usermetaOrderByRelevanceInput:
       type: object
       properties:
@@ -26387,6 +27517,13 @@ components:
           type: number
         divide:
           type: number
+    NullableBoolFieldUpdateOperationsInput:
+      type: object
+      properties:
+        set:
+          oneOf:
+            - type: "null"
+            - type: boolean
     Aa_classroom_group_membersCreateNestedManyWithoutGroupInput:
       type: object
       properties:
@@ -27656,6 +28793,36 @@ components:
           $ref: "#/components/schemas/NestedFloatFilter"
         _max:
           $ref: "#/components/schemas/NestedFloatFilter"
+    NestedBoolNullableFilter:
+      type: object
+      properties:
+        equals:
+          oneOf:
+            - type: "null"
+            - type: boolean
+        not:
+          oneOf:
+            - type: boolean
+            - $ref: "#/components/schemas/NestedBoolNullableFilter"
+            - type: "null"
+    NestedBoolNullableWithAggregatesFilter:
+      type: object
+      properties:
+        equals:
+          oneOf:
+            - type: "null"
+            - type: boolean
+        not:
+          oneOf:
+            - type: boolean
+            - $ref: "#/components/schemas/NestedBoolNullableWithAggregatesFilter"
+            - type: "null"
+        _count:
+          $ref: "#/components/schemas/NestedIntNullableFilter"
+        _min:
+          $ref: "#/components/schemas/NestedBoolNullableFilter"
+        _max:
+          $ref: "#/components/schemas/NestedBoolNullableFilter"
     NestedEnumGroupRoleFilter:
       type: object
       properties:
@@ -29734,6 +30901,45 @@ components:
           type: boolean
         link_rss:
           type: boolean
+    Dg_litespeed_avatarSelect:
+      type: object
+      properties:
+        id:
+          type: boolean
+        url:
+          type: boolean
+        md5:
+          type: boolean
+        dateline:
+          type: boolean
+    Dg_litespeed_urlSelect:
+      type: object
+      properties:
+        id:
+          type: boolean
+        url:
+          type: boolean
+        cache_tags:
+          type: boolean
+    Dg_litespeed_url_fileSelect:
+      type: object
+      properties:
+        id:
+          type: boolean
+        url_id:
+          type: boolean
+        vary:
+          type: boolean
+        filename:
+          type: boolean
+        type:
+          type: boolean
+        mobile:
+          type: boolean
+        webp:
+          type: boolean
+        expired:
+          type: boolean
     Dg_optionsSelect:
       type: object
       properties:
@@ -30317,6 +31523,23 @@ components:
         start_time:
           type: boolean
         end_time:
+          type: boolean
+    Dg_stm_lms_user_pointsSelect:
+      type: object
+      properties:
+        user_points_id:
+          type: boolean
+        user_id:
+          type: boolean
+        id:
+          type: boolean
+        action_id:
+          type: boolean
+        score:
+          type: boolean
+        timestamp:
+          type: boolean
+        completed:
           type: boolean
     Dg_usermetaSelect:
       type: object
@@ -32558,6 +33781,192 @@ components:
         - link_rel
         - link_notes
         - link_rss
+    AggregateDg_litespeed_avatar:
+      type: object
+      properties:
+        _count:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/Dg_litespeed_avatarCountAggregateOutputType"
+        _avg:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/Dg_litespeed_avatarAvgAggregateOutputType"
+        _sum:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/Dg_litespeed_avatarSumAggregateOutputType"
+        _min:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/Dg_litespeed_avatarMinAggregateOutputType"
+        _max:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/Dg_litespeed_avatarMaxAggregateOutputType"
+    Dg_litespeed_avatarGroupByOutputType:
+      type: object
+      properties:
+        id:
+          type: integer
+        url:
+          type: string
+        md5:
+          type: string
+        dateline:
+          type: integer
+        _count:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/Dg_litespeed_avatarCountAggregateOutputType"
+        _avg:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/Dg_litespeed_avatarAvgAggregateOutputType"
+        _sum:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/Dg_litespeed_avatarSumAggregateOutputType"
+        _min:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/Dg_litespeed_avatarMinAggregateOutputType"
+        _max:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/Dg_litespeed_avatarMaxAggregateOutputType"
+      required:
+        - id
+        - url
+        - md5
+        - dateline
+    AggregateDg_litespeed_url:
+      type: object
+      properties:
+        _count:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/Dg_litespeed_urlCountAggregateOutputType"
+        _avg:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/Dg_litespeed_urlAvgAggregateOutputType"
+        _sum:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/Dg_litespeed_urlSumAggregateOutputType"
+        _min:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/Dg_litespeed_urlMinAggregateOutputType"
+        _max:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/Dg_litespeed_urlMaxAggregateOutputType"
+    Dg_litespeed_urlGroupByOutputType:
+      type: object
+      properties:
+        id:
+          type: integer
+        url:
+          type: string
+        cache_tags:
+          type: string
+        _count:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/Dg_litespeed_urlCountAggregateOutputType"
+        _avg:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/Dg_litespeed_urlAvgAggregateOutputType"
+        _sum:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/Dg_litespeed_urlSumAggregateOutputType"
+        _min:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/Dg_litespeed_urlMinAggregateOutputType"
+        _max:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/Dg_litespeed_urlMaxAggregateOutputType"
+      required:
+        - id
+        - url
+        - cache_tags
+    AggregateDg_litespeed_url_file:
+      type: object
+      properties:
+        _count:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/Dg_litespeed_url_fileCountAggregateOutputType"
+        _avg:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/Dg_litespeed_url_fileAvgAggregateOutputType"
+        _sum:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/Dg_litespeed_url_fileSumAggregateOutputType"
+        _min:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/Dg_litespeed_url_fileMinAggregateOutputType"
+        _max:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/Dg_litespeed_url_fileMaxAggregateOutputType"
+    Dg_litespeed_url_fileGroupByOutputType:
+      type: object
+      properties:
+        id:
+          type: integer
+        url_id:
+          type: integer
+        vary:
+          type: string
+        filename:
+          type: string
+        type:
+          type: integer
+        mobile:
+          type: integer
+        webp:
+          type: integer
+        expired:
+          type: integer
+        _count:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/Dg_litespeed_url_fileCountAggregateOutputType"
+        _avg:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/Dg_litespeed_url_fileAvgAggregateOutputType"
+        _sum:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/Dg_litespeed_url_fileSumAggregateOutputType"
+        _min:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/Dg_litespeed_url_fileMinAggregateOutputType"
+        _max:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/Dg_litespeed_url_fileMaxAggregateOutputType"
+      required:
+        - id
+        - url_id
+        - vary
+        - filename
+        - type
+        - mobile
+        - webp
+        - expired
     AggregateDg_options:
       type: object
       properties:
@@ -34680,6 +36089,75 @@ components:
         - user_id
         - course_id
         - lesson_id
+    AggregateDg_stm_lms_user_points:
+      type: object
+      properties:
+        _count:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/Dg_stm_lms_user_pointsCountAggregateOutputType"
+        _avg:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/Dg_stm_lms_user_pointsAvgAggregateOutputType"
+        _sum:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/Dg_stm_lms_user_pointsSumAggregateOutputType"
+        _min:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/Dg_stm_lms_user_pointsMinAggregateOutputType"
+        _max:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/Dg_stm_lms_user_pointsMaxAggregateOutputType"
+    Dg_stm_lms_user_pointsGroupByOutputType:
+      type: object
+      properties:
+        user_points_id:
+          type: integer
+        user_id:
+          type: integer
+        id:
+          type: integer
+        action_id:
+          type: string
+        score:
+          type: integer
+        timestamp:
+          type: integer
+        completed:
+          oneOf:
+            - type: "null"
+            - type: boolean
+        _count:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/Dg_stm_lms_user_pointsCountAggregateOutputType"
+        _avg:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/Dg_stm_lms_user_pointsAvgAggregateOutputType"
+        _sum:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/Dg_stm_lms_user_pointsSumAggregateOutputType"
+        _min:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/Dg_stm_lms_user_pointsMinAggregateOutputType"
+        _max:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/Dg_stm_lms_user_pointsMaxAggregateOutputType"
+      required:
+        - user_points_id
+        - user_id
+        - id
+        - action_id
+        - score
+        - timestamp
     AggregateDg_usermeta:
       type: object
       properties:
@@ -39171,6 +40649,300 @@ components:
           oneOf:
             - type: "null"
             - type: string
+    Dg_litespeed_avatarCountAggregateOutputType:
+      type: object
+      properties:
+        id:
+          type: integer
+        url:
+          type: integer
+        md5:
+          type: integer
+        dateline:
+          type: integer
+        _all:
+          type: integer
+      required:
+        - id
+        - url
+        - md5
+        - dateline
+        - _all
+    Dg_litespeed_avatarAvgAggregateOutputType:
+      type: object
+      properties:
+        id:
+          oneOf:
+            - type: "null"
+            - type: number
+        dateline:
+          oneOf:
+            - type: "null"
+            - type: number
+    Dg_litespeed_avatarSumAggregateOutputType:
+      type: object
+      properties:
+        id:
+          oneOf:
+            - type: "null"
+            - type: integer
+        dateline:
+          oneOf:
+            - type: "null"
+            - type: integer
+    Dg_litespeed_avatarMinAggregateOutputType:
+      type: object
+      properties:
+        id:
+          oneOf:
+            - type: "null"
+            - type: integer
+        url:
+          oneOf:
+            - type: "null"
+            - type: string
+        md5:
+          oneOf:
+            - type: "null"
+            - type: string
+        dateline:
+          oneOf:
+            - type: "null"
+            - type: integer
+    Dg_litespeed_avatarMaxAggregateOutputType:
+      type: object
+      properties:
+        id:
+          oneOf:
+            - type: "null"
+            - type: integer
+        url:
+          oneOf:
+            - type: "null"
+            - type: string
+        md5:
+          oneOf:
+            - type: "null"
+            - type: string
+        dateline:
+          oneOf:
+            - type: "null"
+            - type: integer
+    Dg_litespeed_urlCountAggregateOutputType:
+      type: object
+      properties:
+        id:
+          type: integer
+        url:
+          type: integer
+        cache_tags:
+          type: integer
+        _all:
+          type: integer
+      required:
+        - id
+        - url
+        - cache_tags
+        - _all
+    Dg_litespeed_urlAvgAggregateOutputType:
+      type: object
+      properties:
+        id:
+          oneOf:
+            - type: "null"
+            - type: number
+    Dg_litespeed_urlSumAggregateOutputType:
+      type: object
+      properties:
+        id:
+          oneOf:
+            - type: "null"
+            - type: integer
+    Dg_litespeed_urlMinAggregateOutputType:
+      type: object
+      properties:
+        id:
+          oneOf:
+            - type: "null"
+            - type: integer
+        url:
+          oneOf:
+            - type: "null"
+            - type: string
+        cache_tags:
+          oneOf:
+            - type: "null"
+            - type: string
+    Dg_litespeed_urlMaxAggregateOutputType:
+      type: object
+      properties:
+        id:
+          oneOf:
+            - type: "null"
+            - type: integer
+        url:
+          oneOf:
+            - type: "null"
+            - type: string
+        cache_tags:
+          oneOf:
+            - type: "null"
+            - type: string
+    Dg_litespeed_url_fileCountAggregateOutputType:
+      type: object
+      properties:
+        id:
+          type: integer
+        url_id:
+          type: integer
+        vary:
+          type: integer
+        filename:
+          type: integer
+        type:
+          type: integer
+        mobile:
+          type: integer
+        webp:
+          type: integer
+        expired:
+          type: integer
+        _all:
+          type: integer
+      required:
+        - id
+        - url_id
+        - vary
+        - filename
+        - type
+        - mobile
+        - webp
+        - expired
+        - _all
+    Dg_litespeed_url_fileAvgAggregateOutputType:
+      type: object
+      properties:
+        id:
+          oneOf:
+            - type: "null"
+            - type: number
+        url_id:
+          oneOf:
+            - type: "null"
+            - type: number
+        type:
+          oneOf:
+            - type: "null"
+            - type: number
+        mobile:
+          oneOf:
+            - type: "null"
+            - type: number
+        webp:
+          oneOf:
+            - type: "null"
+            - type: number
+        expired:
+          oneOf:
+            - type: "null"
+            - type: number
+    Dg_litespeed_url_fileSumAggregateOutputType:
+      type: object
+      properties:
+        id:
+          oneOf:
+            - type: "null"
+            - type: integer
+        url_id:
+          oneOf:
+            - type: "null"
+            - type: integer
+        type:
+          oneOf:
+            - type: "null"
+            - type: integer
+        mobile:
+          oneOf:
+            - type: "null"
+            - type: integer
+        webp:
+          oneOf:
+            - type: "null"
+            - type: integer
+        expired:
+          oneOf:
+            - type: "null"
+            - type: integer
+    Dg_litespeed_url_fileMinAggregateOutputType:
+      type: object
+      properties:
+        id:
+          oneOf:
+            - type: "null"
+            - type: integer
+        url_id:
+          oneOf:
+            - type: "null"
+            - type: integer
+        vary:
+          oneOf:
+            - type: "null"
+            - type: string
+        filename:
+          oneOf:
+            - type: "null"
+            - type: string
+        type:
+          oneOf:
+            - type: "null"
+            - type: integer
+        mobile:
+          oneOf:
+            - type: "null"
+            - type: integer
+        webp:
+          oneOf:
+            - type: "null"
+            - type: integer
+        expired:
+          oneOf:
+            - type: "null"
+            - type: integer
+    Dg_litespeed_url_fileMaxAggregateOutputType:
+      type: object
+      properties:
+        id:
+          oneOf:
+            - type: "null"
+            - type: integer
+        url_id:
+          oneOf:
+            - type: "null"
+            - type: integer
+        vary:
+          oneOf:
+            - type: "null"
+            - type: string
+        filename:
+          oneOf:
+            - type: "null"
+            - type: string
+        type:
+          oneOf:
+            - type: "null"
+            - type: integer
+        mobile:
+          oneOf:
+            - type: "null"
+            - type: integer
+        webp:
+          oneOf:
+            - type: "null"
+            - type: integer
+        expired:
+          oneOf:
+            - type: "null"
+            - type: integer
     Dg_optionsCountAggregateOutputType:
       type: object
       properties:
@@ -43364,6 +45136,142 @@ components:
           oneOf:
             - type: "null"
             - type: integer
+    Dg_stm_lms_user_pointsCountAggregateOutputType:
+      type: object
+      properties:
+        user_points_id:
+          type: integer
+        user_id:
+          type: integer
+        id:
+          type: integer
+        action_id:
+          type: integer
+        score:
+          type: integer
+        timestamp:
+          type: integer
+        completed:
+          type: integer
+        _all:
+          type: integer
+      required:
+        - user_points_id
+        - user_id
+        - id
+        - action_id
+        - score
+        - timestamp
+        - completed
+        - _all
+    Dg_stm_lms_user_pointsAvgAggregateOutputType:
+      type: object
+      properties:
+        user_points_id:
+          oneOf:
+            - type: "null"
+            - type: number
+        user_id:
+          oneOf:
+            - type: "null"
+            - type: number
+        id:
+          oneOf:
+            - type: "null"
+            - type: number
+        score:
+          oneOf:
+            - type: "null"
+            - type: number
+        timestamp:
+          oneOf:
+            - type: "null"
+            - type: number
+    Dg_stm_lms_user_pointsSumAggregateOutputType:
+      type: object
+      properties:
+        user_points_id:
+          oneOf:
+            - type: "null"
+            - type: integer
+        user_id:
+          oneOf:
+            - type: "null"
+            - type: integer
+        id:
+          oneOf:
+            - type: "null"
+            - type: integer
+        score:
+          oneOf:
+            - type: "null"
+            - type: integer
+        timestamp:
+          oneOf:
+            - type: "null"
+            - type: integer
+    Dg_stm_lms_user_pointsMinAggregateOutputType:
+      type: object
+      properties:
+        user_points_id:
+          oneOf:
+            - type: "null"
+            - type: integer
+        user_id:
+          oneOf:
+            - type: "null"
+            - type: integer
+        id:
+          oneOf:
+            - type: "null"
+            - type: integer
+        action_id:
+          oneOf:
+            - type: "null"
+            - type: string
+        score:
+          oneOf:
+            - type: "null"
+            - type: integer
+        timestamp:
+          oneOf:
+            - type: "null"
+            - type: integer
+        completed:
+          oneOf:
+            - type: "null"
+            - type: boolean
+    Dg_stm_lms_user_pointsMaxAggregateOutputType:
+      type: object
+      properties:
+        user_points_id:
+          oneOf:
+            - type: "null"
+            - type: integer
+        user_id:
+          oneOf:
+            - type: "null"
+            - type: integer
+        id:
+          oneOf:
+            - type: "null"
+            - type: integer
+        action_id:
+          oneOf:
+            - type: "null"
+            - type: string
+        score:
+          oneOf:
+            - type: "null"
+            - type: integer
+        timestamp:
+          oneOf:
+            - type: "null"
+            - type: integer
+        completed:
+          oneOf:
+            - type: "null"
+            - type: boolean
     Dg_usermetaCountAggregateOutputType:
       type: object
       properties:
@@ -48796,6 +50704,480 @@ components:
           type: integer
         meta:
           $ref: "#/components/schemas/_Meta"
+    Dg_litespeed_avatarCreateArgs:
+      type: object
+      required:
+        - data
+      properties:
+        select:
+          $ref: "#/components/schemas/Dg_litespeed_avatarSelect"
+        data:
+          $ref: "#/components/schemas/Dg_litespeed_avatarCreateInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    Dg_litespeed_avatarCreateManyArgs:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          oneOf:
+            - $ref: "#/components/schemas/Dg_litespeed_avatarCreateManyInput"
+            - type: array
+              items:
+                $ref: "#/components/schemas/Dg_litespeed_avatarCreateManyInput"
+        skipDuplicates:
+          type: boolean
+          description: Do not insert records with unique fields or ID fields that already
+            exist.
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    Dg_litespeed_avatarFindUniqueArgs:
+      type: object
+      required:
+        - where
+      properties:
+        select:
+          $ref: "#/components/schemas/Dg_litespeed_avatarSelect"
+        where:
+          $ref: "#/components/schemas/Dg_litespeed_avatarWhereUniqueInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    Dg_litespeed_avatarFindFirstArgs:
+      type: object
+      properties:
+        select:
+          $ref: "#/components/schemas/Dg_litespeed_avatarSelect"
+        where:
+          $ref: "#/components/schemas/Dg_litespeed_avatarWhereInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    Dg_litespeed_avatarFindManyArgs:
+      type: object
+      properties:
+        select:
+          $ref: "#/components/schemas/Dg_litespeed_avatarSelect"
+        where:
+          $ref: "#/components/schemas/Dg_litespeed_avatarWhereInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    Dg_litespeed_avatarUpdateArgs:
+      type: object
+      required:
+        - where
+        - data
+      properties:
+        select:
+          $ref: "#/components/schemas/Dg_litespeed_avatarSelect"
+        where:
+          $ref: "#/components/schemas/Dg_litespeed_avatarWhereUniqueInput"
+        data:
+          $ref: "#/components/schemas/Dg_litespeed_avatarUpdateInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    Dg_litespeed_avatarUpdateManyArgs:
+      type: object
+      required:
+        - data
+      properties:
+        where:
+          $ref: "#/components/schemas/Dg_litespeed_avatarWhereInput"
+        data:
+          $ref: "#/components/schemas/Dg_litespeed_avatarUpdateManyMutationInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    Dg_litespeed_avatarUpsertArgs:
+      type: object
+      required:
+        - create
+        - update
+        - where
+      properties:
+        select:
+          $ref: "#/components/schemas/Dg_litespeed_avatarSelect"
+        where:
+          $ref: "#/components/schemas/Dg_litespeed_avatarWhereUniqueInput"
+        create:
+          $ref: "#/components/schemas/Dg_litespeed_avatarCreateInput"
+        update:
+          $ref: "#/components/schemas/Dg_litespeed_avatarUpdateInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    Dg_litespeed_avatarDeleteUniqueArgs:
+      type: object
+      required:
+        - where
+      properties:
+        select:
+          $ref: "#/components/schemas/Dg_litespeed_avatarSelect"
+        where:
+          $ref: "#/components/schemas/Dg_litespeed_avatarWhereUniqueInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    Dg_litespeed_avatarDeleteManyArgs:
+      type: object
+      properties:
+        where:
+          $ref: "#/components/schemas/Dg_litespeed_avatarWhereInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    Dg_litespeed_avatarCountArgs:
+      type: object
+      properties:
+        select:
+          $ref: "#/components/schemas/Dg_litespeed_avatarSelect"
+        where:
+          $ref: "#/components/schemas/Dg_litespeed_avatarWhereInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    Dg_litespeed_avatarAggregateArgs:
+      type: object
+      properties:
+        where:
+          $ref: "#/components/schemas/Dg_litespeed_avatarWhereInput"
+        orderBy:
+          $ref: "#/components/schemas/Dg_litespeed_avatarOrderByWithRelationInput"
+        cursor:
+          $ref: "#/components/schemas/Dg_litespeed_avatarWhereUniqueInput"
+        take:
+          type: integer
+        skip:
+          type: integer
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    Dg_litespeed_avatarGroupByArgs:
+      type: object
+      properties:
+        where:
+          $ref: "#/components/schemas/Dg_litespeed_avatarWhereInput"
+        orderBy:
+          $ref: "#/components/schemas/Dg_litespeed_avatarOrderByWithRelationInput"
+        by:
+          $ref: "#/components/schemas/Dg_litespeed_avatarScalarFieldEnum"
+        having:
+          $ref: "#/components/schemas/Dg_litespeed_avatarScalarWhereWithAggregatesInput"
+        take:
+          type: integer
+        skip:
+          type: integer
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    Dg_litespeed_urlCreateArgs:
+      type: object
+      required:
+        - data
+      properties:
+        select:
+          $ref: "#/components/schemas/Dg_litespeed_urlSelect"
+        data:
+          $ref: "#/components/schemas/Dg_litespeed_urlCreateInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    Dg_litespeed_urlCreateManyArgs:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          oneOf:
+            - $ref: "#/components/schemas/Dg_litespeed_urlCreateManyInput"
+            - type: array
+              items:
+                $ref: "#/components/schemas/Dg_litespeed_urlCreateManyInput"
+        skipDuplicates:
+          type: boolean
+          description: Do not insert records with unique fields or ID fields that already
+            exist.
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    Dg_litespeed_urlFindUniqueArgs:
+      type: object
+      required:
+        - where
+      properties:
+        select:
+          $ref: "#/components/schemas/Dg_litespeed_urlSelect"
+        where:
+          $ref: "#/components/schemas/Dg_litespeed_urlWhereUniqueInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    Dg_litespeed_urlFindFirstArgs:
+      type: object
+      properties:
+        select:
+          $ref: "#/components/schemas/Dg_litespeed_urlSelect"
+        where:
+          $ref: "#/components/schemas/Dg_litespeed_urlWhereInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    Dg_litespeed_urlFindManyArgs:
+      type: object
+      properties:
+        select:
+          $ref: "#/components/schemas/Dg_litespeed_urlSelect"
+        where:
+          $ref: "#/components/schemas/Dg_litespeed_urlWhereInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    Dg_litespeed_urlUpdateArgs:
+      type: object
+      required:
+        - where
+        - data
+      properties:
+        select:
+          $ref: "#/components/schemas/Dg_litespeed_urlSelect"
+        where:
+          $ref: "#/components/schemas/Dg_litespeed_urlWhereUniqueInput"
+        data:
+          $ref: "#/components/schemas/Dg_litespeed_urlUpdateInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    Dg_litespeed_urlUpdateManyArgs:
+      type: object
+      required:
+        - data
+      properties:
+        where:
+          $ref: "#/components/schemas/Dg_litespeed_urlWhereInput"
+        data:
+          $ref: "#/components/schemas/Dg_litespeed_urlUpdateManyMutationInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    Dg_litespeed_urlUpsertArgs:
+      type: object
+      required:
+        - create
+        - update
+        - where
+      properties:
+        select:
+          $ref: "#/components/schemas/Dg_litespeed_urlSelect"
+        where:
+          $ref: "#/components/schemas/Dg_litespeed_urlWhereUniqueInput"
+        create:
+          $ref: "#/components/schemas/Dg_litespeed_urlCreateInput"
+        update:
+          $ref: "#/components/schemas/Dg_litespeed_urlUpdateInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    Dg_litespeed_urlDeleteUniqueArgs:
+      type: object
+      required:
+        - where
+      properties:
+        select:
+          $ref: "#/components/schemas/Dg_litespeed_urlSelect"
+        where:
+          $ref: "#/components/schemas/Dg_litespeed_urlWhereUniqueInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    Dg_litespeed_urlDeleteManyArgs:
+      type: object
+      properties:
+        where:
+          $ref: "#/components/schemas/Dg_litespeed_urlWhereInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    Dg_litespeed_urlCountArgs:
+      type: object
+      properties:
+        select:
+          $ref: "#/components/schemas/Dg_litespeed_urlSelect"
+        where:
+          $ref: "#/components/schemas/Dg_litespeed_urlWhereInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    Dg_litespeed_urlAggregateArgs:
+      type: object
+      properties:
+        where:
+          $ref: "#/components/schemas/Dg_litespeed_urlWhereInput"
+        orderBy:
+          $ref: "#/components/schemas/Dg_litespeed_urlOrderByWithRelationInput"
+        cursor:
+          $ref: "#/components/schemas/Dg_litespeed_urlWhereUniqueInput"
+        take:
+          type: integer
+        skip:
+          type: integer
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    Dg_litespeed_urlGroupByArgs:
+      type: object
+      properties:
+        where:
+          $ref: "#/components/schemas/Dg_litespeed_urlWhereInput"
+        orderBy:
+          $ref: "#/components/schemas/Dg_litespeed_urlOrderByWithRelationInput"
+        by:
+          $ref: "#/components/schemas/Dg_litespeed_urlScalarFieldEnum"
+        having:
+          $ref: "#/components/schemas/Dg_litespeed_urlScalarWhereWithAggregatesInput"
+        take:
+          type: integer
+        skip:
+          type: integer
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    Dg_litespeed_url_fileCreateArgs:
+      type: object
+      required:
+        - data
+      properties:
+        select:
+          $ref: "#/components/schemas/Dg_litespeed_url_fileSelect"
+        data:
+          $ref: "#/components/schemas/Dg_litespeed_url_fileCreateInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    Dg_litespeed_url_fileCreateManyArgs:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          oneOf:
+            - $ref: "#/components/schemas/Dg_litespeed_url_fileCreateManyInput"
+            - type: array
+              items:
+                $ref: "#/components/schemas/Dg_litespeed_url_fileCreateManyInput"
+        skipDuplicates:
+          type: boolean
+          description: Do not insert records with unique fields or ID fields that already
+            exist.
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    Dg_litespeed_url_fileFindUniqueArgs:
+      type: object
+      required:
+        - where
+      properties:
+        select:
+          $ref: "#/components/schemas/Dg_litespeed_url_fileSelect"
+        where:
+          $ref: "#/components/schemas/Dg_litespeed_url_fileWhereUniqueInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    Dg_litespeed_url_fileFindFirstArgs:
+      type: object
+      properties:
+        select:
+          $ref: "#/components/schemas/Dg_litespeed_url_fileSelect"
+        where:
+          $ref: "#/components/schemas/Dg_litespeed_url_fileWhereInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    Dg_litespeed_url_fileFindManyArgs:
+      type: object
+      properties:
+        select:
+          $ref: "#/components/schemas/Dg_litespeed_url_fileSelect"
+        where:
+          $ref: "#/components/schemas/Dg_litespeed_url_fileWhereInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    Dg_litespeed_url_fileUpdateArgs:
+      type: object
+      required:
+        - where
+        - data
+      properties:
+        select:
+          $ref: "#/components/schemas/Dg_litespeed_url_fileSelect"
+        where:
+          $ref: "#/components/schemas/Dg_litespeed_url_fileWhereUniqueInput"
+        data:
+          $ref: "#/components/schemas/Dg_litespeed_url_fileUpdateInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    Dg_litespeed_url_fileUpdateManyArgs:
+      type: object
+      required:
+        - data
+      properties:
+        where:
+          $ref: "#/components/schemas/Dg_litespeed_url_fileWhereInput"
+        data:
+          $ref: "#/components/schemas/Dg_litespeed_url_fileUpdateManyMutationInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    Dg_litespeed_url_fileUpsertArgs:
+      type: object
+      required:
+        - create
+        - update
+        - where
+      properties:
+        select:
+          $ref: "#/components/schemas/Dg_litespeed_url_fileSelect"
+        where:
+          $ref: "#/components/schemas/Dg_litespeed_url_fileWhereUniqueInput"
+        create:
+          $ref: "#/components/schemas/Dg_litespeed_url_fileCreateInput"
+        update:
+          $ref: "#/components/schemas/Dg_litespeed_url_fileUpdateInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    Dg_litespeed_url_fileDeleteUniqueArgs:
+      type: object
+      required:
+        - where
+      properties:
+        select:
+          $ref: "#/components/schemas/Dg_litespeed_url_fileSelect"
+        where:
+          $ref: "#/components/schemas/Dg_litespeed_url_fileWhereUniqueInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    Dg_litespeed_url_fileDeleteManyArgs:
+      type: object
+      properties:
+        where:
+          $ref: "#/components/schemas/Dg_litespeed_url_fileWhereInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    Dg_litespeed_url_fileCountArgs:
+      type: object
+      properties:
+        select:
+          $ref: "#/components/schemas/Dg_litespeed_url_fileSelect"
+        where:
+          $ref: "#/components/schemas/Dg_litespeed_url_fileWhereInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    Dg_litespeed_url_fileAggregateArgs:
+      type: object
+      properties:
+        where:
+          $ref: "#/components/schemas/Dg_litespeed_url_fileWhereInput"
+        orderBy:
+          $ref: "#/components/schemas/Dg_litespeed_url_fileOrderByWithRelationInput"
+        cursor:
+          $ref: "#/components/schemas/Dg_litespeed_url_fileWhereUniqueInput"
+        take:
+          type: integer
+        skip:
+          type: integer
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    Dg_litespeed_url_fileGroupByArgs:
+      type: object
+      properties:
+        where:
+          $ref: "#/components/schemas/Dg_litespeed_url_fileWhereInput"
+        orderBy:
+          $ref: "#/components/schemas/Dg_litespeed_url_fileOrderByWithRelationInput"
+        by:
+          $ref: "#/components/schemas/Dg_litespeed_url_fileScalarFieldEnum"
+        having:
+          $ref: "#/components/schemas/Dg_litespeed_url_fileScalarWhereWithAggregatesInput"
+        take:
+          type: integer
+        skip:
+          type: integer
+        meta:
+          $ref: "#/components/schemas/_Meta"
     Dg_optionsCreateArgs:
       type: object
       required:
@@ -52935,6 +55317,165 @@ components:
         having:
           $ref: "#/components/schemas/Dg_stm_lms_user_lessonsScalarWhereWithAggregatesInp\
             ut"
+        take:
+          type: integer
+        skip:
+          type: integer
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    Dg_stm_lms_user_pointsCreateArgs:
+      type: object
+      required:
+        - data
+      properties:
+        select:
+          $ref: "#/components/schemas/Dg_stm_lms_user_pointsSelect"
+        data:
+          $ref: "#/components/schemas/Dg_stm_lms_user_pointsCreateInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    Dg_stm_lms_user_pointsCreateManyArgs:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          oneOf:
+            - $ref: "#/components/schemas/Dg_stm_lms_user_pointsCreateManyInput"
+            - type: array
+              items:
+                $ref: "#/components/schemas/Dg_stm_lms_user_pointsCreateManyInput"
+        skipDuplicates:
+          type: boolean
+          description: Do not insert records with unique fields or ID fields that already
+            exist.
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    Dg_stm_lms_user_pointsFindUniqueArgs:
+      type: object
+      required:
+        - where
+      properties:
+        select:
+          $ref: "#/components/schemas/Dg_stm_lms_user_pointsSelect"
+        where:
+          $ref: "#/components/schemas/Dg_stm_lms_user_pointsWhereUniqueInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    Dg_stm_lms_user_pointsFindFirstArgs:
+      type: object
+      properties:
+        select:
+          $ref: "#/components/schemas/Dg_stm_lms_user_pointsSelect"
+        where:
+          $ref: "#/components/schemas/Dg_stm_lms_user_pointsWhereInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    Dg_stm_lms_user_pointsFindManyArgs:
+      type: object
+      properties:
+        select:
+          $ref: "#/components/schemas/Dg_stm_lms_user_pointsSelect"
+        where:
+          $ref: "#/components/schemas/Dg_stm_lms_user_pointsWhereInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    Dg_stm_lms_user_pointsUpdateArgs:
+      type: object
+      required:
+        - where
+        - data
+      properties:
+        select:
+          $ref: "#/components/schemas/Dg_stm_lms_user_pointsSelect"
+        where:
+          $ref: "#/components/schemas/Dg_stm_lms_user_pointsWhereUniqueInput"
+        data:
+          $ref: "#/components/schemas/Dg_stm_lms_user_pointsUpdateInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    Dg_stm_lms_user_pointsUpdateManyArgs:
+      type: object
+      required:
+        - data
+      properties:
+        where:
+          $ref: "#/components/schemas/Dg_stm_lms_user_pointsWhereInput"
+        data:
+          $ref: "#/components/schemas/Dg_stm_lms_user_pointsUpdateManyMutationInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    Dg_stm_lms_user_pointsUpsertArgs:
+      type: object
+      required:
+        - create
+        - update
+        - where
+      properties:
+        select:
+          $ref: "#/components/schemas/Dg_stm_lms_user_pointsSelect"
+        where:
+          $ref: "#/components/schemas/Dg_stm_lms_user_pointsWhereUniqueInput"
+        create:
+          $ref: "#/components/schemas/Dg_stm_lms_user_pointsCreateInput"
+        update:
+          $ref: "#/components/schemas/Dg_stm_lms_user_pointsUpdateInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    Dg_stm_lms_user_pointsDeleteUniqueArgs:
+      type: object
+      required:
+        - where
+      properties:
+        select:
+          $ref: "#/components/schemas/Dg_stm_lms_user_pointsSelect"
+        where:
+          $ref: "#/components/schemas/Dg_stm_lms_user_pointsWhereUniqueInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    Dg_stm_lms_user_pointsDeleteManyArgs:
+      type: object
+      properties:
+        where:
+          $ref: "#/components/schemas/Dg_stm_lms_user_pointsWhereInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    Dg_stm_lms_user_pointsCountArgs:
+      type: object
+      properties:
+        select:
+          $ref: "#/components/schemas/Dg_stm_lms_user_pointsSelect"
+        where:
+          $ref: "#/components/schemas/Dg_stm_lms_user_pointsWhereInput"
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    Dg_stm_lms_user_pointsAggregateArgs:
+      type: object
+      properties:
+        where:
+          $ref: "#/components/schemas/Dg_stm_lms_user_pointsWhereInput"
+        orderBy:
+          $ref: "#/components/schemas/Dg_stm_lms_user_pointsOrderByWithRelationInput"
+        cursor:
+          $ref: "#/components/schemas/Dg_stm_lms_user_pointsWhereUniqueInput"
+        take:
+          type: integer
+        skip:
+          type: integer
+        meta:
+          $ref: "#/components/schemas/_Meta"
+    Dg_stm_lms_user_pointsGroupByArgs:
+      type: object
+      properties:
+        where:
+          $ref: "#/components/schemas/Dg_stm_lms_user_pointsWhereInput"
+        orderBy:
+          $ref: "#/components/schemas/Dg_stm_lms_user_pointsOrderByWithRelationInput"
+        by:
+          $ref: "#/components/schemas/Dg_stm_lms_user_pointsScalarFieldEnum"
+        having:
+          $ref: "#/components/schemas/Dg_stm_lms_user_pointsScalarWhereWithAggregatesInpu\
+            t"
         take:
           type: integer
         skip:
@@ -72555,6 +75096,2019 @@ paths:
           content:
             application/json:
               schema: {}
+  /api/model/dg_litespeed_avatar/create:
+    post:
+      operationId: createDg_litespeed_avatar
+      description: Create a new Dg_litespeed_avatar
+      tags:
+        - dg_litespeed_avatar
+      responses:
+        "201":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Dg_litespeed_avatar"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Dg_litespeed_avatarCreateArgs"
+  /api/model/dg_litespeed_avatar/createMany:
+    post:
+      operationId: createManyDg_litespeed_avatar
+      description: Create several Dg_litespeed_avatar
+      tags:
+        - dg_litespeed_avatar
+      responses:
+        "201":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/BatchPayload"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Dg_litespeed_avatarCreateManyArgs"
+  /api/model/dg_litespeed_avatar/findUnique:
+    get:
+      operationId: findUniqueDg_litespeed_avatar
+      description: Find one unique Dg_litespeed_avatar
+      tags:
+        - dg_litespeed_avatar
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Dg_litespeed_avatar"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Superjson-serialized Prisma query object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Dg_litespeed_avatarFindUniqueArgs"
+        - name: meta
+          in: query
+          description: Superjson serialization metadata for parameter "q"
+          content:
+            application/json:
+              schema: {}
+  /api/model/dg_litespeed_avatar/findFirst:
+    get:
+      operationId: findFirstDg_litespeed_avatar
+      description: Find the first Dg_litespeed_avatar matching the given condition
+      tags:
+        - dg_litespeed_avatar
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Dg_litespeed_avatar"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Superjson-serialized Prisma query object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Dg_litespeed_avatarFindFirstArgs"
+        - name: meta
+          in: query
+          description: Superjson serialization metadata for parameter "q"
+          content:
+            application/json:
+              schema: {}
+  /api/model/dg_litespeed_avatar/findMany:
+    get:
+      operationId: findManyDg_litespeed_avatar
+      description: Find a list of Dg_litespeed_avatar
+      tags:
+        - dg_litespeed_avatar
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Dg_litespeed_avatar"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Superjson-serialized Prisma query object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Dg_litespeed_avatarFindManyArgs"
+        - name: meta
+          in: query
+          description: Superjson serialization metadata for parameter "q"
+          content:
+            application/json:
+              schema: {}
+  /api/model/dg_litespeed_avatar/update:
+    patch:
+      operationId: updateDg_litespeed_avatar
+      description: Update a Dg_litespeed_avatar
+      tags:
+        - dg_litespeed_avatar
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Dg_litespeed_avatar"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Dg_litespeed_avatarUpdateArgs"
+  /api/model/dg_litespeed_avatar/updateMany:
+    patch:
+      operationId: updateManyDg_litespeed_avatar
+      description: Update Dg_litespeed_avatars matching the given condition
+      tags:
+        - dg_litespeed_avatar
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/BatchPayload"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Dg_litespeed_avatarUpdateManyArgs"
+  /api/model/dg_litespeed_avatar/upsert:
+    post:
+      operationId: upsertDg_litespeed_avatar
+      description: Upsert a Dg_litespeed_avatar
+      tags:
+        - dg_litespeed_avatar
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Dg_litespeed_avatar"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Dg_litespeed_avatarUpsertArgs"
+  /api/model/dg_litespeed_avatar/delete:
+    delete:
+      operationId: deleteDg_litespeed_avatar
+      description: Delete one unique Dg_litespeed_avatar
+      tags:
+        - dg_litespeed_avatar
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Dg_litespeed_avatar"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Superjson-serialized Prisma query object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Dg_litespeed_avatarDeleteUniqueArgs"
+        - name: meta
+          in: query
+          description: Superjson serialization metadata for parameter "q"
+          content:
+            application/json:
+              schema: {}
+  /api/model/dg_litespeed_avatar/deleteMany:
+    delete:
+      operationId: deleteManyDg_litespeed_avatar
+      description: Delete Dg_litespeed_avatars matching the given condition
+      tags:
+        - dg_litespeed_avatar
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/BatchPayload"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Superjson-serialized Prisma query object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Dg_litespeed_avatarDeleteManyArgs"
+        - name: meta
+          in: query
+          description: Superjson serialization metadata for parameter "q"
+          content:
+            application/json:
+              schema: {}
+  /api/model/dg_litespeed_avatar/count:
+    get:
+      operationId: countDg_litespeed_avatar
+      description: Find a list of Dg_litespeed_avatar
+      tags:
+        - dg_litespeed_avatar
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    oneOf:
+                      - type: integer
+                      - $ref: "#/components/schemas/Dg_litespeed_avatarCountAggregateOutputType"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Superjson-serialized Prisma query object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Dg_litespeed_avatarCountArgs"
+        - name: meta
+          in: query
+          description: Superjson serialization metadata for parameter "q"
+          content:
+            application/json:
+              schema: {}
+  /api/model/dg_litespeed_avatar/aggregate:
+    get:
+      operationId: aggregateDg_litespeed_avatar
+      description: Aggregate Dg_litespeed_avatars
+      tags:
+        - dg_litespeed_avatar
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/AggregateDg_litespeed_avatar"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Superjson-serialized Prisma query object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Dg_litespeed_avatarAggregateArgs"
+        - name: meta
+          in: query
+          description: Superjson serialization metadata for parameter "q"
+          content:
+            application/json:
+              schema: {}
+  /api/model/dg_litespeed_avatar/groupBy:
+    get:
+      operationId: groupByDg_litespeed_avatar
+      description: Group Dg_litespeed_avatars by fields
+      tags:
+        - dg_litespeed_avatar
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Dg_litespeed_avatarGroupByOutputType"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Superjson-serialized Prisma query object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Dg_litespeed_avatarGroupByArgs"
+        - name: meta
+          in: query
+          description: Superjson serialization metadata for parameter "q"
+          content:
+            application/json:
+              schema: {}
+  /api/model/dg_litespeed_url/create:
+    post:
+      operationId: createDg_litespeed_url
+      description: Create a new Dg_litespeed_url
+      tags:
+        - dg_litespeed_url
+      responses:
+        "201":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Dg_litespeed_url"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Dg_litespeed_urlCreateArgs"
+  /api/model/dg_litespeed_url/createMany:
+    post:
+      operationId: createManyDg_litespeed_url
+      description: Create several Dg_litespeed_url
+      tags:
+        - dg_litespeed_url
+      responses:
+        "201":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/BatchPayload"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Dg_litespeed_urlCreateManyArgs"
+  /api/model/dg_litespeed_url/findUnique:
+    get:
+      operationId: findUniqueDg_litespeed_url
+      description: Find one unique Dg_litespeed_url
+      tags:
+        - dg_litespeed_url
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Dg_litespeed_url"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Superjson-serialized Prisma query object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Dg_litespeed_urlFindUniqueArgs"
+        - name: meta
+          in: query
+          description: Superjson serialization metadata for parameter "q"
+          content:
+            application/json:
+              schema: {}
+  /api/model/dg_litespeed_url/findFirst:
+    get:
+      operationId: findFirstDg_litespeed_url
+      description: Find the first Dg_litespeed_url matching the given condition
+      tags:
+        - dg_litespeed_url
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Dg_litespeed_url"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Superjson-serialized Prisma query object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Dg_litespeed_urlFindFirstArgs"
+        - name: meta
+          in: query
+          description: Superjson serialization metadata for parameter "q"
+          content:
+            application/json:
+              schema: {}
+  /api/model/dg_litespeed_url/findMany:
+    get:
+      operationId: findManyDg_litespeed_url
+      description: Find a list of Dg_litespeed_url
+      tags:
+        - dg_litespeed_url
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Dg_litespeed_url"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Superjson-serialized Prisma query object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Dg_litespeed_urlFindManyArgs"
+        - name: meta
+          in: query
+          description: Superjson serialization metadata for parameter "q"
+          content:
+            application/json:
+              schema: {}
+  /api/model/dg_litespeed_url/update:
+    patch:
+      operationId: updateDg_litespeed_url
+      description: Update a Dg_litespeed_url
+      tags:
+        - dg_litespeed_url
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Dg_litespeed_url"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Dg_litespeed_urlUpdateArgs"
+  /api/model/dg_litespeed_url/updateMany:
+    patch:
+      operationId: updateManyDg_litespeed_url
+      description: Update Dg_litespeed_urls matching the given condition
+      tags:
+        - dg_litespeed_url
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/BatchPayload"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Dg_litespeed_urlUpdateManyArgs"
+  /api/model/dg_litespeed_url/upsert:
+    post:
+      operationId: upsertDg_litespeed_url
+      description: Upsert a Dg_litespeed_url
+      tags:
+        - dg_litespeed_url
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Dg_litespeed_url"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Dg_litespeed_urlUpsertArgs"
+  /api/model/dg_litespeed_url/delete:
+    delete:
+      operationId: deleteDg_litespeed_url
+      description: Delete one unique Dg_litespeed_url
+      tags:
+        - dg_litespeed_url
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Dg_litespeed_url"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Superjson-serialized Prisma query object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Dg_litespeed_urlDeleteUniqueArgs"
+        - name: meta
+          in: query
+          description: Superjson serialization metadata for parameter "q"
+          content:
+            application/json:
+              schema: {}
+  /api/model/dg_litespeed_url/deleteMany:
+    delete:
+      operationId: deleteManyDg_litespeed_url
+      description: Delete Dg_litespeed_urls matching the given condition
+      tags:
+        - dg_litespeed_url
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/BatchPayload"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Superjson-serialized Prisma query object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Dg_litespeed_urlDeleteManyArgs"
+        - name: meta
+          in: query
+          description: Superjson serialization metadata for parameter "q"
+          content:
+            application/json:
+              schema: {}
+  /api/model/dg_litespeed_url/count:
+    get:
+      operationId: countDg_litespeed_url
+      description: Find a list of Dg_litespeed_url
+      tags:
+        - dg_litespeed_url
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    oneOf:
+                      - type: integer
+                      - $ref: "#/components/schemas/Dg_litespeed_urlCountAggregateOutputType"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Superjson-serialized Prisma query object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Dg_litespeed_urlCountArgs"
+        - name: meta
+          in: query
+          description: Superjson serialization metadata for parameter "q"
+          content:
+            application/json:
+              schema: {}
+  /api/model/dg_litespeed_url/aggregate:
+    get:
+      operationId: aggregateDg_litespeed_url
+      description: Aggregate Dg_litespeed_urls
+      tags:
+        - dg_litespeed_url
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/AggregateDg_litespeed_url"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Superjson-serialized Prisma query object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Dg_litespeed_urlAggregateArgs"
+        - name: meta
+          in: query
+          description: Superjson serialization metadata for parameter "q"
+          content:
+            application/json:
+              schema: {}
+  /api/model/dg_litespeed_url/groupBy:
+    get:
+      operationId: groupByDg_litespeed_url
+      description: Group Dg_litespeed_urls by fields
+      tags:
+        - dg_litespeed_url
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Dg_litespeed_urlGroupByOutputType"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Superjson-serialized Prisma query object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Dg_litespeed_urlGroupByArgs"
+        - name: meta
+          in: query
+          description: Superjson serialization metadata for parameter "q"
+          content:
+            application/json:
+              schema: {}
+  /api/model/dg_litespeed_url_file/create:
+    post:
+      operationId: createDg_litespeed_url_file
+      description: Create a new Dg_litespeed_url_file
+      tags:
+        - dg_litespeed_url_file
+      responses:
+        "201":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Dg_litespeed_url_file"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Dg_litespeed_url_fileCreateArgs"
+  /api/model/dg_litespeed_url_file/createMany:
+    post:
+      operationId: createManyDg_litespeed_url_file
+      description: Create several Dg_litespeed_url_file
+      tags:
+        - dg_litespeed_url_file
+      responses:
+        "201":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/BatchPayload"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Dg_litespeed_url_fileCreateManyArgs"
+  /api/model/dg_litespeed_url_file/findUnique:
+    get:
+      operationId: findUniqueDg_litespeed_url_file
+      description: Find one unique Dg_litespeed_url_file
+      tags:
+        - dg_litespeed_url_file
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Dg_litespeed_url_file"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Superjson-serialized Prisma query object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Dg_litespeed_url_fileFindUniqueArgs"
+        - name: meta
+          in: query
+          description: Superjson serialization metadata for parameter "q"
+          content:
+            application/json:
+              schema: {}
+  /api/model/dg_litespeed_url_file/findFirst:
+    get:
+      operationId: findFirstDg_litespeed_url_file
+      description: Find the first Dg_litespeed_url_file matching the given condition
+      tags:
+        - dg_litespeed_url_file
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Dg_litespeed_url_file"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Superjson-serialized Prisma query object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Dg_litespeed_url_fileFindFirstArgs"
+        - name: meta
+          in: query
+          description: Superjson serialization metadata for parameter "q"
+          content:
+            application/json:
+              schema: {}
+  /api/model/dg_litespeed_url_file/findMany:
+    get:
+      operationId: findManyDg_litespeed_url_file
+      description: Find a list of Dg_litespeed_url_file
+      tags:
+        - dg_litespeed_url_file
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Dg_litespeed_url_file"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Superjson-serialized Prisma query object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Dg_litespeed_url_fileFindManyArgs"
+        - name: meta
+          in: query
+          description: Superjson serialization metadata for parameter "q"
+          content:
+            application/json:
+              schema: {}
+  /api/model/dg_litespeed_url_file/update:
+    patch:
+      operationId: updateDg_litespeed_url_file
+      description: Update a Dg_litespeed_url_file
+      tags:
+        - dg_litespeed_url_file
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Dg_litespeed_url_file"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Dg_litespeed_url_fileUpdateArgs"
+  /api/model/dg_litespeed_url_file/updateMany:
+    patch:
+      operationId: updateManyDg_litespeed_url_file
+      description: Update Dg_litespeed_url_files matching the given condition
+      tags:
+        - dg_litespeed_url_file
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/BatchPayload"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Dg_litespeed_url_fileUpdateManyArgs"
+  /api/model/dg_litespeed_url_file/upsert:
+    post:
+      operationId: upsertDg_litespeed_url_file
+      description: Upsert a Dg_litespeed_url_file
+      tags:
+        - dg_litespeed_url_file
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Dg_litespeed_url_file"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Dg_litespeed_url_fileUpsertArgs"
+  /api/model/dg_litespeed_url_file/delete:
+    delete:
+      operationId: deleteDg_litespeed_url_file
+      description: Delete one unique Dg_litespeed_url_file
+      tags:
+        - dg_litespeed_url_file
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Dg_litespeed_url_file"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Superjson-serialized Prisma query object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Dg_litespeed_url_fileDeleteUniqueArgs"
+        - name: meta
+          in: query
+          description: Superjson serialization metadata for parameter "q"
+          content:
+            application/json:
+              schema: {}
+  /api/model/dg_litespeed_url_file/deleteMany:
+    delete:
+      operationId: deleteManyDg_litespeed_url_file
+      description: Delete Dg_litespeed_url_files matching the given condition
+      tags:
+        - dg_litespeed_url_file
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/BatchPayload"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Superjson-serialized Prisma query object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Dg_litespeed_url_fileDeleteManyArgs"
+        - name: meta
+          in: query
+          description: Superjson serialization metadata for parameter "q"
+          content:
+            application/json:
+              schema: {}
+  /api/model/dg_litespeed_url_file/count:
+    get:
+      operationId: countDg_litespeed_url_file
+      description: Find a list of Dg_litespeed_url_file
+      tags:
+        - dg_litespeed_url_file
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    oneOf:
+                      - type: integer
+                      - $ref: "#/components/schemas/Dg_litespeed_url_fileCountAggregateOutputType"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Superjson-serialized Prisma query object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Dg_litespeed_url_fileCountArgs"
+        - name: meta
+          in: query
+          description: Superjson serialization metadata for parameter "q"
+          content:
+            application/json:
+              schema: {}
+  /api/model/dg_litespeed_url_file/aggregate:
+    get:
+      operationId: aggregateDg_litespeed_url_file
+      description: Aggregate Dg_litespeed_url_files
+      tags:
+        - dg_litespeed_url_file
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/AggregateDg_litespeed_url_file"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Superjson-serialized Prisma query object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Dg_litespeed_url_fileAggregateArgs"
+        - name: meta
+          in: query
+          description: Superjson serialization metadata for parameter "q"
+          content:
+            application/json:
+              schema: {}
+  /api/model/dg_litespeed_url_file/groupBy:
+    get:
+      operationId: groupByDg_litespeed_url_file
+      description: Group Dg_litespeed_url_files by fields
+      tags:
+        - dg_litespeed_url_file
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Dg_litespeed_url_fileGroupByOutputType"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Superjson-serialized Prisma query object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Dg_litespeed_url_fileGroupByArgs"
+        - name: meta
+          in: query
+          description: Superjson serialization metadata for parameter "q"
+          content:
+            application/json:
+              schema: {}
   /api/model/dg_options/create:
     post:
       operationId: createDg_options
@@ -90007,6 +94561,677 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Dg_stm_lms_user_lessonsGroupByArgs"
+        - name: meta
+          in: query
+          description: Superjson serialization metadata for parameter "q"
+          content:
+            application/json:
+              schema: {}
+  /api/model/dg_stm_lms_user_points/create:
+    post:
+      operationId: createDg_stm_lms_user_points
+      description: Create a new Dg_stm_lms_user_points
+      tags:
+        - dg_stm_lms_user_points
+      responses:
+        "201":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Dg_stm_lms_user_points"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Dg_stm_lms_user_pointsCreateArgs"
+  /api/model/dg_stm_lms_user_points/createMany:
+    post:
+      operationId: createManyDg_stm_lms_user_points
+      description: Create several Dg_stm_lms_user_points
+      tags:
+        - dg_stm_lms_user_points
+      responses:
+        "201":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/BatchPayload"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Dg_stm_lms_user_pointsCreateManyArgs"
+  /api/model/dg_stm_lms_user_points/findUnique:
+    get:
+      operationId: findUniqueDg_stm_lms_user_points
+      description: Find one unique Dg_stm_lms_user_points
+      tags:
+        - dg_stm_lms_user_points
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Dg_stm_lms_user_points"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Superjson-serialized Prisma query object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Dg_stm_lms_user_pointsFindUniqueArgs"
+        - name: meta
+          in: query
+          description: Superjson serialization metadata for parameter "q"
+          content:
+            application/json:
+              schema: {}
+  /api/model/dg_stm_lms_user_points/findFirst:
+    get:
+      operationId: findFirstDg_stm_lms_user_points
+      description: Find the first Dg_stm_lms_user_points matching the given condition
+      tags:
+        - dg_stm_lms_user_points
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Dg_stm_lms_user_points"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Superjson-serialized Prisma query object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Dg_stm_lms_user_pointsFindFirstArgs"
+        - name: meta
+          in: query
+          description: Superjson serialization metadata for parameter "q"
+          content:
+            application/json:
+              schema: {}
+  /api/model/dg_stm_lms_user_points/findMany:
+    get:
+      operationId: findManyDg_stm_lms_user_points
+      description: Find a list of Dg_stm_lms_user_points
+      tags:
+        - dg_stm_lms_user_points
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Dg_stm_lms_user_points"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Superjson-serialized Prisma query object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Dg_stm_lms_user_pointsFindManyArgs"
+        - name: meta
+          in: query
+          description: Superjson serialization metadata for parameter "q"
+          content:
+            application/json:
+              schema: {}
+  /api/model/dg_stm_lms_user_points/update:
+    patch:
+      operationId: updateDg_stm_lms_user_points
+      description: Update a Dg_stm_lms_user_points
+      tags:
+        - dg_stm_lms_user_points
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Dg_stm_lms_user_points"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Dg_stm_lms_user_pointsUpdateArgs"
+  /api/model/dg_stm_lms_user_points/updateMany:
+    patch:
+      operationId: updateManyDg_stm_lms_user_points
+      description: Update Dg_stm_lms_user_pointss matching the given condition
+      tags:
+        - dg_stm_lms_user_points
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/BatchPayload"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Dg_stm_lms_user_pointsUpdateManyArgs"
+  /api/model/dg_stm_lms_user_points/upsert:
+    post:
+      operationId: upsertDg_stm_lms_user_points
+      description: Upsert a Dg_stm_lms_user_points
+      tags:
+        - dg_stm_lms_user_points
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Dg_stm_lms_user_points"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Dg_stm_lms_user_pointsUpsertArgs"
+  /api/model/dg_stm_lms_user_points/delete:
+    delete:
+      operationId: deleteDg_stm_lms_user_points
+      description: Delete one unique Dg_stm_lms_user_points
+      tags:
+        - dg_stm_lms_user_points
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Dg_stm_lms_user_points"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Superjson-serialized Prisma query object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Dg_stm_lms_user_pointsDeleteUniqueArgs"
+        - name: meta
+          in: query
+          description: Superjson serialization metadata for parameter "q"
+          content:
+            application/json:
+              schema: {}
+  /api/model/dg_stm_lms_user_points/deleteMany:
+    delete:
+      operationId: deleteManyDg_stm_lms_user_points
+      description: Delete Dg_stm_lms_user_pointss matching the given condition
+      tags:
+        - dg_stm_lms_user_points
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/BatchPayload"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Superjson-serialized Prisma query object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Dg_stm_lms_user_pointsDeleteManyArgs"
+        - name: meta
+          in: query
+          description: Superjson serialization metadata for parameter "q"
+          content:
+            application/json:
+              schema: {}
+  /api/model/dg_stm_lms_user_points/count:
+    get:
+      operationId: countDg_stm_lms_user_points
+      description: Find a list of Dg_stm_lms_user_points
+      tags:
+        - dg_stm_lms_user_points
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    oneOf:
+                      - type: integer
+                      - $ref: "#/components/schemas/Dg_stm_lms_user_pointsCountAggregateOutputType"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Superjson-serialized Prisma query object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Dg_stm_lms_user_pointsCountArgs"
+        - name: meta
+          in: query
+          description: Superjson serialization metadata for parameter "q"
+          content:
+            application/json:
+              schema: {}
+  /api/model/dg_stm_lms_user_points/aggregate:
+    get:
+      operationId: aggregateDg_stm_lms_user_points
+      description: Aggregate Dg_stm_lms_user_pointss
+      tags:
+        - dg_stm_lms_user_points
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/AggregateDg_stm_lms_user_points"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Superjson-serialized Prisma query object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Dg_stm_lms_user_pointsAggregateArgs"
+        - name: meta
+          in: query
+          description: Superjson serialization metadata for parameter "q"
+          content:
+            application/json:
+              schema: {}
+  /api/model/dg_stm_lms_user_points/groupBy:
+    get:
+      operationId: groupByDg_stm_lms_user_points
+      description: Group Dg_stm_lms_user_pointss by fields
+      tags:
+        - dg_stm_lms_user_points
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Dg_stm_lms_user_pointsGroupByOutputType"
+                    description: The Prisma response data serialized with superjson
+                  meta:
+                    $ref: "#/components/schemas/_Meta"
+                    description: The superjson serialization metadata for the "data" field
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Invalid request
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is forbidden
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_Error"
+          description: Request is unprocessable due to validation errors
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Superjson-serialized Prisma query object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Dg_stm_lms_user_pointsGroupByArgs"
         - name: meta
           in: query
           description: Superjson serialization metadata for parameter "q"
