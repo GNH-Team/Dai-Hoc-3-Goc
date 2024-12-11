@@ -1,0 +1,3 @@
+{
+  "extends": "@xstack/tsconfig/base.json"
+}

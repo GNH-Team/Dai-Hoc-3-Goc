@@ -1,0 +1,806 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Table dg_actionscheduler_actions {
+  action_id BigInt [pk, increment]
+  hook String [not null]
+  status String [not null]
+  scheduled_date_gmt DateTime
+  scheduled_date_local DateTime
+  priority Int [not null, default: 10]
+  args String
+  schedule String
+  group_id BigInt [not null, default: 0]
+  attempts Int [not null, default: 0]
+  last_attempt_gmt DateTime
+  last_attempt_local DateTime
+  claim_id BigInt [not null, default: 0]
+  extended_args String
+}
+
+Table dg_actionscheduler_claims {
+  claim_id BigInt [pk, increment]
+  date_created_gmt DateTime
+}
+
+Table dg_actionscheduler_groups {
+  group_id BigInt [pk, increment]
+  slug String [not null]
+}
+
+Table dg_actionscheduler_logs {
+  log_id BigInt [pk, increment]
+  action_id BigInt [not null]
+  message String [not null]
+  log_date_gmt DateTime
+  log_date_local DateTime
+}
+
+Table dg_commentmeta {
+  meta_id BigInt [pk, increment]
+  comment_id BigInt [not null, default: 0]
+  meta_key String
+  meta_value String
+}
+
+Table dg_comments {
+  comment_ID BigInt [pk, increment]
+  comment_post_ID BigInt [not null, default: 0]
+  comment_author String [not null]
+  comment_author_email String [not null, default: '']
+  comment_author_url String [not null, default: '']
+  comment_author_IP String [not null, default: '']
+  comment_date DateTime [not null]
+  comment_date_gmt DateTime [not null]
+  comment_content String [not null]
+  comment_karma Int [not null, default: 0]
+  comment_approved String [not null, default: '1']
+  comment_agent String [not null, default: '']
+  comment_type String [not null, default: 'comment']
+  comment_parent BigInt [not null, default: 0]
+  user_id BigInt [not null, default: 0]
+}
+
+Table dg_e_events {
+  id BigInt [pk, increment]
+  event_data String
+  created_at DateTime [not null]
+}
+
+Table dg_e_notes {
+  id BigInt [pk, increment]
+  route_url String
+  route_title String
+  route_post_id BigInt
+  post_id BigInt
+  element_id String
+  parent_id BigInt [not null, default: 0]
+  author_id BigInt
+  author_display_name String
+  status String [not null, default: 'publish']
+  position String
+  content String
+  is_resolved Boolean [not null, default: false]
+  is_public Boolean [not null, default: true]
+  last_activity_at DateTime
+  created_at DateTime [not null]
+  updated_at DateTime [not null]
+
+  Note: 'This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments'
+}
+
+Table dg_e_notes_users_relations {
+  id BigInt [pk, increment]
+  type String [not null]
+  note_id BigInt [not null]
+  user_id BigInt [not null]
+  created_at DateTime [not null]
+  updated_at DateTime [not null]
+
+  Note: 'This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments'
+}
+
+Table dg_e_submissions {
+  id BigInt [pk, increment]
+  type String
+  hash_id String [unique, not null]
+  main_meta_id BigInt [not null]
+  post_id BigInt [not null]
+  referer String [not null]
+  referer_title String
+  element_id String [not null]
+  form_name String [not null]
+  campaign_id BigInt [not null]
+  user_id BigInt
+  user_ip String [not null]
+  user_agent String [not null]
+  actions_count Int [default: 0]
+  actions_succeeded_count Int [default: 0]
+  status String [not null]
+  is_read Boolean [not null, default: false]
+  meta String
+  created_at_gmt DateTime [not null]
+  updated_at_gmt DateTime [not null]
+  created_at DateTime [not null]
+  updated_at DateTime [not null]
+
+  Note: 'This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments'
+}
+
+Table dg_e_submissions_actions_log {
+  id BigInt [pk, increment]
+  submission_id BigInt [not null]
+  action_name String [not null]
+  action_label String
+  status String [not null]
+  log String
+  created_at_gmt DateTime [not null]
+  updated_at_gmt DateTime [not null]
+  created_at DateTime [not null]
+  updated_at DateTime [not null]
+}
+
+Table dg_e_submissions_values {
+  id BigInt [pk, increment]
+  submission_id BigInt [not null, default: 0]
+  key String
+  value String
+}
+
+Table dg_h5p_contents {
+  id Int [pk, increment]
+  created_at DateTime [not null]
+  updated_at DateTime [not null]
+  user_id Int [not null]
+  title String [not null]
+  library_id Int [not null]
+  parameters String [not null]
+  filtered String [not null]
+  slug String [not null]
+  embed_type String [not null]
+  disable Int [not null, default: 0]
+  content_type String
+  authors String
+  source String
+  year_from Int
+  year_to Int
+  license String
+  license_version String
+  license_extras String
+  author_comments String
+  changes String
+  default_language String
+  a11y_title String
+}
+
+Table dg_h5p_contents_libraries {
+  content_id Int [not null]
+  library_id Int [not null]
+  dependency_type String [not null]
+  weight Int [not null, default: 0]
+  drop_css Int [not null]
+
+  indexes {
+    (content_id, library_id, dependency_type) [pk]
+  }
+}
+
+Table dg_h5p_contents_tags {
+  content_id Int [not null]
+  tag_id Int [not null]
+
+  indexes {
+    (content_id, tag_id) [pk]
+  }
+}
+
+Table dg_h5p_contents_user_data {
+  content_id Int [not null]
+  user_id Int [not null]
+  sub_content_id Int [not null]
+  data_id String [not null]
+  data String [not null]
+  preload Int [not null, default: 0]
+  invalidate Int [not null, default: 0]
+  updated_at DateTime [not null]
+
+  indexes {
+    (content_id, user_id, sub_content_id, data_id) [pk]
+  }
+}
+
+Table dg_h5p_counters {
+  type String [not null]
+  library_name String [not null]
+  library_version String [not null]
+  num Int [not null]
+
+  indexes {
+    (type, library_name, library_version) [pk]
+  }
+}
+
+Table dg_h5p_events {
+  id Int [pk, increment]
+  user_id Int [not null]
+  created_at Int [not null]
+  type String [not null]
+  sub_type String [not null]
+  content_id Int [not null]
+  content_title String [not null]
+  library_name String [not null]
+  library_version String [not null]
+}
+
+Table dg_h5p_libraries {
+  id Int [pk, increment]
+  created_at DateTime [not null]
+  updated_at DateTime [not null]
+  name String [not null]
+  title String [not null]
+  major_version Int [not null]
+  minor_version Int [not null]
+  patch_version Int [not null]
+  runnable Int [not null]
+  restricted Int [not null, default: 0]
+  fullscreen Int [not null]
+  embed_types String [not null]
+  preloaded_js String
+  preloaded_css String
+  drop_library_css String
+  semantics String [not null]
+  tutorial_url String [not null]
+  has_icon Int [not null, default: 0]
+  metadata_settings String
+  add_to String
+}
+
+Table dg_h5p_libraries_cachedassets {
+  library_id Int [not null]
+  hash String [not null]
+
+  indexes {
+    (library_id, hash) [pk]
+  }
+}
+
+Table dg_h5p_libraries_hub_cache {
+  id Int [pk, increment]
+  machine_name String [not null]
+  major_version Int [not null]
+  minor_version Int [not null]
+  patch_version Int [not null]
+  h5p_major_version Int
+  h5p_minor_version Int
+  title String [not null]
+  summary String [not null]
+  description String [not null]
+  icon String [not null]
+  created_at Int [not null]
+  updated_at Int [not null]
+  is_recommended Int [not null]
+  popularity Int [not null]
+  screenshots String
+  license String
+  example String [not null]
+  tutorial String
+  keywords String
+  categories String
+  owner String
+}
+
+Table dg_h5p_libraries_languages {
+  library_id Int [not null]
+  language_code String [not null]
+  translation String [not null]
+
+  indexes {
+    (library_id, language_code) [pk]
+  }
+}
+
+Table dg_h5p_libraries_libraries {
+  library_id Int [not null]
+  required_library_id Int [not null]
+  dependency_type String [not null]
+
+  indexes {
+    (library_id, required_library_id) [pk]
+  }
+}
+
+Table dg_h5p_results {
+  id Int [pk, increment]
+  content_id Int [not null]
+  user_id Int [not null]
+  score Int [not null]
+  max_score Int [not null]
+  opened Int [not null]
+  finished Int [not null]
+  time Int [not null]
+}
+
+Table dg_h5p_tags {
+  id Int [pk, increment]
+  name String [not null]
+}
+
+Table dg_h5p_tmpfiles {
+  id Int [pk, increment]
+  path String [not null]
+  created_at Int [not null]
+}
+
+Table dg_links {
+  link_id BigInt [pk, increment]
+  link_url String [not null, default: '']
+  link_name String [not null, default: '']
+  link_image String [not null, default: '']
+  link_target String [not null, default: '']
+  link_description String [not null, default: '']
+  link_visible String [not null, default: 'Y']
+  link_owner BigInt [not null, default: 1]
+  link_rating Int [not null, default: 0]
+  link_updated DateTime [not null]
+  link_rel String [not null, default: '']
+  link_notes String [not null]
+  link_rss String [not null, default: '']
+}
+
+Table dg_options {
+  option_id BigInt [pk, increment]
+  option_name String [unique, not null, default: '']
+  option_value String [not null]
+  autoload String [not null, default: 'yes']
+}
+
+Table dg_presto_player_audio_presets {
+  id BigInt [pk, increment]
+  name String
+  slug String
+  icon String
+  skin String
+  rewind Boolean [not null, default: false]
+  play Boolean [not null, default: false]
+  play_large Boolean [not null, default: false]
+  fast_forward Boolean [not null, default: false]
+  progress Boolean [not null, default: false]
+  current_time Boolean [not null, default: false]
+  mute Boolean [not null, default: false]
+  volume Boolean [not null, default: false]
+  speed Boolean [not null, default: false]
+  pip Boolean [not null, default: false]
+  reset_on_end Boolean [not null, default: false]
+  save_player_position Boolean [not null, default: false]
+  sticky_scroll Boolean [not null, default: false]
+  sticky_scroll_position String
+  on_video_end String
+  play_video_viewport Boolean [not null, default: false]
+  show_time_elapsed Boolean [not null, default: false]
+  hide_logo Boolean [not null, default: false]
+  border_radius BigInt
+  background_color String
+  control_color String
+  is_locked Boolean [not null, default: false]
+  cta String [not null]
+  email_collection String [not null]
+  action_bar String [not null]
+  created_by BigInt
+  created_at DateTime [default: `now()`, not null]
+  updated_at DateTime [not null]
+  deleted_at DateTime
+}
+
+Table dg_presto_player_email_collection {
+  id BigInt [pk, increment]
+  enabled Boolean [not null, default: false]
+  behavior String [not null]
+  percentage BigInt
+  allow_skip Boolean [not null, default: false]
+  headline String [not null]
+  bottom_text String [not null]
+  button_text String [not null]
+  preset_id BigInt
+  border_radius BigInt [not null]
+  email_provider String
+  email_provider_list String
+  email_provider_tag String
+  created_by BigInt
+  created_at DateTime [default: `now()`, not null]
+  updated_at DateTime [not null]
+  deleted_at DateTime
+}
+
+Table dg_presto_player_presets {
+  id BigInt [pk, increment]
+  name String
+  slug String
+  icon String
+  skin String
+  play_large Boolean [not null, default: false]
+  rewind Boolean [not null, default: false]
+  play Boolean [not null, default: false]
+  fast_forward Boolean [not null, default: false]
+  progress Boolean [not null, default: false]
+  current_time Boolean [not null, default: false]
+  mute Boolean [not null, default: false]
+  volume Boolean [not null, default: false]
+  speed Boolean [not null, default: false]
+  pip Boolean [not null, default: false]
+  fullscreen Boolean [not null, default: false]
+  captions Boolean [not null, default: false]
+  reset_on_end Boolean [not null, default: false]
+  auto_hide Boolean [not null, default: false]
+  show_time_elapsed Boolean [not null, default: false]
+  captions_enabled Boolean [not null, default: false]
+  save_player_position Boolean [not null, default: false]
+  sticky_scroll Boolean [not null, default: false]
+  sticky_scroll_position String
+  on_video_end String
+  play_video_viewport Boolean [not null, default: false]
+  hide_youtube Boolean [not null, default: false]
+  lazy_load_youtube Boolean [not null, default: false]
+  hide_logo Boolean [not null, default: false]
+  border_radius BigInt
+  caption_style String
+  caption_background String
+  is_locked Boolean [not null, default: false]
+  cta String [not null]
+  watermark String [not null]
+  search String [not null]
+  email_collection String [not null]
+  action_bar String [not null]
+  created_by BigInt
+  created_at DateTime [default: `now()`, not null]
+  updated_at DateTime [not null]
+  deleted_at DateTime
+}
+
+Table dg_presto_player_videos {
+  id BigInt [pk, increment]
+  title String [not null]
+  type String [not null]
+  external_id String
+  attachment_id BigInt
+  post_id BigInt
+  src String
+  created_by BigInt
+  created_at DateTime [default: `now()`, not null]
+  updated_at DateTime [not null]
+  deleted_at DateTime
+}
+
+Table dg_presto_player_visits {
+  id BigInt [pk, increment]
+  user_id BigInt
+  duration BigInt [not null]
+  video_id BigInt [not null]
+  ip_address String [default: '']
+  created_at DateTime [default: `now()`, not null]
+  updated_at DateTime [not null]
+  deleted_at DateTime
+}
+
+Table dg_presto_player_webhooks {
+  id BigInt [pk, increment]
+  name String
+  url String
+  method String
+  email_name String
+  headers String
+  created_by BigInt
+  created_at DateTime [default: `now()`, not null]
+  updated_at DateTime [not null]
+  deleted_at DateTime
+}
+
+Table dg_stm_lms_curriculum_materials {
+  id Int [pk, increment]
+  post_id BigInt [not null]
+  post_type String [not null, default: '']
+  section_id Int [not null, default: 0]
+  order Int [not null, default: 0]
+}
+
+Table dg_stm_lms_curriculum_sections {
+  id Int [pk, increment]
+  title String [not null, default: '']
+  course_id BigInt [not null]
+  order Int [not null, default: 0]
+}
+
+Table dg_stm_lms_order_items {
+  id BigInt [pk, increment]
+  order_id BigInt [not null]
+  object_id BigInt [not null]
+  payout_id BigInt
+  quantity Int [not null]
+  price Float
+  transaction String
+}
+
+Table dg_stm_lms_user_answers {
+  user_answer_id Int [pk, increment]
+  user_id BigInt [not null]
+  course_id Int [not null]
+  quiz_id Int [not null]
+  question_id Int [not null]
+  user_answer String [not null, default: '']
+  correct_answer Boolean [not null]
+  attempt_number Int [not null]
+}
+
+Table dg_stm_lms_user_cart {
+  user_cart_id Int [pk, increment]
+  user_id BigInt [not null]
+  item_id Int [not null]
+  quantity Int [not null]
+  price Float [not null]
+  enterprise Float [default: 0]
+  bundle Float [default: 0]
+}
+
+Table dg_stm_lms_user_chat {
+  message_id Int [pk, increment]
+  user_to BigInt [not null]
+  user_from BigInt [not null]
+  timestamp Int [not null]
+  message String [not null]
+  status String [not null]
+  conversation_id Int [not null]
+}
+
+Table dg_stm_lms_user_conversation {
+  conversation_id Int [pk, increment]
+  user_to Int [not null]
+  user_from Int [not null]
+  timestamp Int [not null]
+  messages_number Int [not null]
+  ut_new_messages Int [not null]
+  uf_new_messages Int [not null]
+}
+
+Table dg_stm_lms_user_quizzes {
+  user_quiz_id Int [pk, increment]
+  user_id BigInt [not null]
+  course_id Int [not null]
+  quiz_id Int [not null]
+  progress Int [not null]
+  status String [not null, default: '']
+  sequency String [not null, default: '']
+}
+
+Table dg_stm_lms_user_quizzes_times {
+  user_quiz_time_id Int [pk, increment]
+  user_id BigInt [not null]
+  quiz_id Int [not null]
+  start_time Int [not null]
+  end_time Int [not null]
+}
+
+Table dg_stm_lms_user_searches {
+  user_search_id Int [pk, increment]
+  user_id BigInt
+  time Int
+  search String [not null]
+}
+
+Table dg_stm_lms_user_searches_stats {
+  user_search_stat_id Int [pk, increment]
+  search String [not null]
+  stat BigInt
+}
+
+Table dg_term_relationships {
+  object_id BigInt [not null, default: 0]
+  term_taxonomy_id BigInt [not null, default: 0]
+  term_order Int [not null, default: 0]
+
+  indexes {
+    (object_id, term_taxonomy_id) [pk]
+  }
+}
+
+Table dg_term_taxonomy {
+  term_taxonomy_id BigInt [pk, increment]
+  term_id BigInt [not null, default: 0]
+  taxonomy String [not null, default: '']
+  description String [not null]
+  parent BigInt [not null, default: 0]
+  count BigInt [not null, default: 0]
+
+  indexes {
+    (term_id, taxonomy) [unique]
+  }
+}
+
+Table dg_termmeta {
+  meta_id BigInt [pk, increment]
+  term_id BigInt [not null, default: 0]
+  meta_key String
+  meta_value String
+}
+
+Table dg_terms {
+  term_id BigInt [pk, increment]
+  name String [not null, default: '']
+  slug String [not null, default: '']
+  term_group BigInt [not null, default: 0]
+}
+
+Table dg_postmeta {
+  meta_id BigInt [pk, increment]
+  post_id BigInt [not null, default: 0]
+  meta_key String
+  meta_value String
+}
+
+Table dg_posts {
+  ID BigInt [pk, increment]
+  post_author BigInt [not null, default: 0]
+  post_date DateTime [not null]
+  post_date_gmt DateTime [not null]
+  post_content String [not null]
+  post_title String [not null]
+  post_excerpt String [not null]
+  post_status String [not null, default: 'publish']
+  comment_status String [not null, default: 'open']
+  ping_status String [not null, default: 'open']
+  post_password String [not null, default: '']
+  post_name String [not null, default: '']
+  to_ping String [not null]
+  pinged String [not null]
+  post_modified DateTime [not null]
+  post_modified_gmt DateTime [not null]
+  post_content_filtered String [not null]
+  post_parent BigInt [not null, default: 0]
+  guid String [not null, default: '']
+  menu_order Int [not null, default: 0]
+  post_type String [not null, default: 'post']
+  post_mime_type String [not null, default: '']
+  comment_count BigInt [not null, default: 0]
+}
+
+Table dg_stm_lms_user_courses {
+  user_course_id Int [pk, increment]
+  user_id BigInt [not null]
+  course_id Int [not null]
+  current_lesson_id Int
+  progress_percent Int [not null]
+  status String [not null, default: '']
+  lng_code String [not null, default: 'en_US']
+  subscription_id Int
+  enterprise_id Int [default: 0]
+  bundle_id Int [default: 0]
+  start_time Int [not null]
+  end_time Int [default: 0]
+  for_points String [default: '']
+}
+
+Table dg_stm_lms_user_lessons {
+  user_lesson_id Int [pk, increment]
+  user_id BigInt [not null]
+  course_id Int [not null]
+  lesson_id Int [not null]
+  start_time Int
+  end_time Int
+}
+
+Table dg_usermeta {
+  umeta_id BigInt [pk, increment]
+  user_id BigInt [not null, default: 0]
+  meta_key String
+  meta_value String
+}
+
+Table dg_users {
+  ID BigInt [pk, increment]
+  user_login String [not null, default: '']
+  user_pass String [not null, default: '']
+  user_nicename String [not null, default: '']
+  user_email String [not null, default: '']
+  user_url String [not null, default: '']
+  user_registered DateTime [not null]
+  user_activation_key String [not null, default: '']
+  user_status Int [not null, default: 0]
+  display_name String [not null, default: '']
+}
+
+Table aa_classroom_groups {
+  created_at DateTime [default: `now()`, not null]
+  updated_at DateTime [not null]
+  deleted_at DateTime
+  id Int [pk, increment]
+  course_id Int [not null]
+  group_name String [not null]
+  description String [not null]
+  cover String [not null]
+  avatar String [not null]
+  created_by BigInt [not null]
+  users_group aa_classroom_group_members [not null]
+}
+
+Table aa_classroom_group_members {
+  id Int [pk, increment]
+  user_id BigInt [not null]
+  group_id Int [not null]
+  group aa_classroom_groups [not null]
+  role GroupRole [not null, default: 'THANHVIEN']
+  order Int [not null]
+  created_by BigInt [not null]
+  created_at DateTime [default: `now()`, not null]
+}
+
+Table aa_attendance {
+  id Int [pk, increment]
+  user_id BigInt [not null]
+  course_id Int [not null]
+  lesson_id Int [not null]
+  status AttendanceStatus [not null]
+  created_at DateTime [default: `now()`, not null]
+}
+
+Table aa_activity_type {
+  id Int [pk, increment]
+  name String [not null]
+  icon String [not null]
+  created_at DateTime [default: `now()`, not null]
+  updated_at DateTime [not null]
+  activities aa_activity [not null]
+}
+
+Table aa_activity {
+  created_at DateTime [default: `now()`, not null]
+  updated_at DateTime [not null]
+  id Int [pk, increment]
+  type_id Int [not null]
+  type aa_activity_type [not null]
+  post_id Int [not null]
+  name String [not null]
+  min_count Int [not null, default: 1]
+  end_date DateTime
+  activity_logs aa_activity_logs [not null]
+}
+
+Table aa_activity_logs {
+  created_at DateTime [default: `now()`, not null]
+  updated_at DateTime [not null]
+  id BigInt [pk, increment]
+  activity_id Int [not null]
+  activity aa_activity [not null]
+  content String [not null]
+  status ActivityStatus [not null]
+  created_by BigInt [not null]
+}
+
+Table aa_activity_relationships {
+  id Int [pk, increment]
+  user_id BigInt [not null]
+  activity_id Int [not null]
+  activity_log_id BigInt [not null]
+  created_at DateTime [default: `now()`, not null]
+}
+
+Enum ActivityStatus {
+  PUBLISH
+  DRAFT
+}
+
+Enum AttendanceStatus {
+  TRONVEN
+  VANGMAT
+  MUON
+}
+
+Enum GroupRole {
+  TRUONGTHON
+  PHOTHON
+  THANHVIEN
+}
+
+Ref: aa_classroom_group_members.group_id > aa_classroom_groups.id [delete: Cascade]
+
+Ref: aa_activity.type_id > aa_activity_type.id [delete: Cascade]
+
+Ref: aa_activity_logs.activity_id > aa_activity.id [delete: Cascade]

@@ -1,0 +1,44 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+**/node_modules
+node_modules
+dist
+.pnp
+.pnp.js
+*.zip
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# local env files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+wp-content/debug.log
+**/plugins/lms/
+**/plugins/lmspro/
+
+**/plugins/masterstudy-lms-learning-management-system/
+**/plugins/masterstudy-lms-learning-management-system-pro/
+# **/plugins/presto-player/
+# **/plugins/presto-player-pro/
+
+backup
+
+twentytwentyfour
+
+apps/wp/wp-content/languages/plugins/*.json
+apps/wp/wp-content/languages/plugins/*-backup-*
+apps/wp/wp-content/languages/*.json
+apps/wp/wp-content/uploads/
+apps/wp/wp-content/upgrade/
