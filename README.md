@@ -1,2 +1,0 @@
-# monorepox
-My Monorepo
