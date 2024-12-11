@@ -3,7 +3,8 @@ module.exports = {
     root: true, // Very important!
     parserOptions: {
         project: true
-    }
+    },
+    ignores: ["apps/wp"]
     // Mẫu cấu hình overrides cho eslint
     // overrides: [
     //     {

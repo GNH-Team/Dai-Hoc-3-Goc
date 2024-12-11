@@ -25,14 +25,13 @@ yarn-error.log*
 .env.production.local
 
 wp-content/debug.log
-**/masterstudy-templates-premium
-**/lms
-**/lmspro
+**/plugins/lms/
+**/plugins/lmspro/
 
-**/plugins/masterstudy-lms-learning-management-system
-**/plugins/masterstudy-lms-learning-management-system-pro
-# **/plugins/presto-player
-# **/plugins/presto-player-pro
+**/plugins/masterstudy-lms-learning-management-system/
+**/plugins/masterstudy-lms-learning-management-system-pro/
+# **/plugins/presto-player/
+# **/plugins/presto-player-pro/
 
 backup
 
@@ -41,5 +40,5 @@ twentytwentyfour
 apps/wp/wp-content/languages/plugins/*.json
 apps/wp/wp-content/languages/plugins/*-backup-*
 apps/wp/wp-content/languages/*.json
-apps/wp/wp-content/uploads
-apps/wp/wp-content/upgrade
+apps/wp/wp-content/uploads/
+apps/wp/wp-content/upgrade/
