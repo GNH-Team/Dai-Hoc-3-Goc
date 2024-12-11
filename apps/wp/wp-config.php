@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * The base configuration for WordPress
  *
@@ -31,7 +32,13 @@ define('WP_CONTENT_URL', WP_SITEURL . '/wp-content');
 define('FS_METHOD', 'direct');
 define('WP_AUTO_UPDATE_CORE', false); // tắt tự động update wordpress vì cần check tương thích với các plugin trước khi update
 define('WP_MEMORY_LIMIT', '256M');
-define('DISABLE_WP_CRON', true);
+define('DISABLE_WP_CRON', false);
+define('LIB_PATH', __DIR__ . '/wp-content/lib');
+
+// load .env
+require_once LIB_PATH . '/phpdotenv/vendor/autoload.php';
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
 
 if (IS_LOCAL) {
 	// ini_set('display_errors', 1);
@@ -50,36 +57,20 @@ if (IS_LOCAL) {
 
 // ** Database settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
+/** The name of the database for WordPress */
+define('DB_NAME', $_ENV['DB_NAME']);
 
-if (IS_LOCAL) {
-	/** The name of the database for WordPress */
-	define('DB_NAME', 'dh3g_v3');
+/** Database username */
+define('DB_USER', $_ENV['DB_USER']);
 
-	/** Database username */
-	define('DB_USER', 'root');
+/** Database password */
+define('DB_PASSWORD', $_ENV['DB_PASSWORD']);
 
-	/** Database password */
-	define('DB_PASSWORD', '');
-
-	/** Database hostname */
-	define('DB_HOST', 'ad-power-mysql');
-} else {
-
-	/** The name of the database for WordPress */
-	define('DB_NAME', 'dh3g_v3');
-
-	/** Database username */
-	define('DB_USER', '3g_adm');
-
-	/** Database password */
-	define('DB_PASSWORD', 'uk#d4*N^5AvC+oz0');
-
-	/** Database hostname */
-	define('DB_HOST', 'localhost');
-}
+/** Database hostname */
+define('DB_HOST', $_ENV['DB_HOST']);
 
 /** Database charset to use in creating database tables. */
-define('DB_CHARSET', 'utf8mb4');
+define('DB_CHARSET', $_ENV['DB_CHARSET']);
 
 /** The database collate type. Don't change this if in doubt. */
 define('DB_COLLATE', '');
