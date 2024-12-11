@@ -11,12 +11,13 @@
  */
 
 // Đảm bảo không bị truy cập trực tiếp
-if ( ! defined( 'ABSPATH' ) ) {
+if (! defined('ABSPATH')) {
     exit; // Exit nếu truy cập trực tiếp
 }
 
 // Hàm xử lý shortcode với tham số
-function gen_form_unique_id($atts) {
+function gen_form_unique_id($atts)
+{
     // Thiết lập giá trị mặc định cho các tham số
     $atts = shortcode_atts(
         array(
@@ -32,19 +33,19 @@ function gen_form_unique_id($atts) {
 // Đăng ký shortcode với WordPress
 add_shortcode('gen-form-id', 'gen_form_unique_id');
 
-function send_custom_webhook( $record, $handler ) {
+function send_custom_webhook($record, $handler)
+{
 
-	$form_name = $record->get_form_settings( 'form_name' );
+    $form_name = $record->get_form_settings('form_name');
 
-	$raw_fields = $record->get( 'fields' );
-	$fields = [];
-	foreach ( $raw_fields as $id => $field ) {
-		$fields[ $id ] = $field['value'];
-	}
+    $raw_fields = $record->get('fields');
+    $fields = [];
+    foreach ($raw_fields as $id => $field) {
+        $fields[$id] = $field['value'];
+    }
 
     echo print_r($fields);
     die;
-
 }
 // add_action( 'elementor_pro/forms/new_record', 'send_custom_webhook', 10, 2 );
 
@@ -65,21 +66,24 @@ function add_custom_on_init()
 }
 
 // ẩn phần dynamic sidebar ở sidebar của trang chi tiết combo khoá học
- // xem tại: masterstudy-lms-learning-management-system-pro/stm-lms-templates/bundle/sidebar.php:14
-function stm_lms_bundle_parts_dynamic_sidebar(){
+// xem tại: masterstudy-lms-learning-management-system-pro/stm-lms-templates/bundle/sidebar.php:14
+function stm_lms_bundle_parts_dynamic_sidebar()
+{
     return null;
 }
 
 // ẩn phần thông tin về giảng viên, rating, category ở trang chi tiết combo khoá học
- // xem tại: masterstudy-lms-learning-management-system-pro/stm-lms-templates/bundle/single.php:15
-function stm_lms_bundle_parts_panel_info(){
+// xem tại: masterstudy-lms-learning-management-system-pro/stm-lms-templates/bundle/single.php:15
+function stm_lms_bundle_parts_panel_info()
+{
     return null;
 }
 
 // ẩn phần list course theo category ở page xem khoá học theo danh mục (return null để ẩn)
 // sử dụng widget có sẵn trên elementor để hiển thị danh sách khoá học theo danh mục, không cần sử dụng giao diện từ file courses/archive nên ẩn phần đó đi để không trùng lặp
- // xem tại: masterstudy-lms-learning-management-system/_core/lms/classes/templates.php:51
-function stm_lms_courses_archive($courses){
+// xem tại: masterstudy-lms-learning-management-system/_core/lms/classes/templates.php:51
+function stm_lms_courses_archive($courses)
+{
     return null;
     // return $courses;
 }
@@ -147,3 +151,11 @@ function getPluginAssetsUrl()
 {
     return plugins_url("/assets", __FILE__);
 }
+
+// Hide dashboard update notifications for all users
+function disable_admin_update_notification()
+{
+    remove_action('admin_notices', 'update_nag', 3);
+}
+
+add_action('admin_menu', 'disable_admin_update_notification');

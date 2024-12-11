@@ -42,3 +42,4 @@ apps/wp/wp-content/languages/plugins/*-backup-*
 apps/wp/wp-content/languages/*.json
 apps/wp/wp-content/uploads/
 apps/wp/wp-content/upgrade/
+apps/wp/wp-content/upgrade-temp-backup/
